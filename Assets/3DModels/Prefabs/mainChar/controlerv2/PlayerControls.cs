@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/mainChar/controlerv2/PlayerControls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/3DModels/Prefabs/mainChar/controlerv2/PlayerControls.inputactions'
 
 using System;
 using System.Collections;

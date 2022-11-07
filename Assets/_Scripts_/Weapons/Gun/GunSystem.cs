@@ -79,7 +79,7 @@ public class GunSystem : MonoBehaviour
             }
 
             //Graphics
-            Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.1f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
+            Destroy((Instantiate(bulletHole, rayHit.point + rayHit.normal, Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
             Destroy((Instantiate(muzzleFlash, attackPoint.position, Quaternion.identity)), 1);
 
             bulletsLeft--;

@@ -20,7 +20,8 @@ public class GunSystem : MonoBehaviour
     public RaycastHit rayHit;
     public LayerMask whatIsEnemy;
 
-
+    // Graphics
+    public GameObject muzzleFlash, bulletHole;
 
     private void Start()
     {
@@ -48,6 +49,10 @@ public class GunSystem : MonoBehaviour
                     rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);
                 }
             }
+
+            //Graphics
+            Instantiate(bulletHole, rayHit.point, Quaternion.Euler(0, 180, 0));
+            Instantiate(muzzleFlash, attackPoint.position, Quaternion.identity);
 
             bulletsLeft--;
             Invoke("ResetShoot", timeBetweenShooting);

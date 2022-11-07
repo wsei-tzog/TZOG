@@ -8,16 +8,20 @@ public class InputManager : MonoBehaviour
 {
     [SerializeField] Movement movement;
     [SerializeField] MouseLook mouseLook;
+    [SerializeField] GunSystem gunSystem;
     // [SerializeField] WeaponSwing weaponSwing;
     PlayerControls controls;
     PlayerControls.GroundMovementActions groundMovement;
+    PlayerControls.InteractionsActions interaction;
     Vector2 horizontalInput;
     Vector2 mouseInput;
+    bool isLeftMouseHeld;
 
     private void Awake()
     {
         controls = new PlayerControls();
         groundMovement = controls.GroundMovement;
+        interaction = controls.Interactions;
         // movement
         groundMovement.HorizontalMovement.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>();
         groundMovement.Jump.performed += _ => movement.OnJumpPressed();
@@ -25,7 +29,9 @@ public class InputManager : MonoBehaviour
         // mouse
         groundMovement.MouseX.performed += ctx => mouseInput.x = ctx.ReadValue<float>();
         groundMovement.MouseY.performed += ctx => mouseInput.y = ctx.ReadValue<float>();
-
+        // interaction
+        interaction.Shoot.performed += _ => gunSystem.Shoot();
+        interaction.Reload.performed += _ => gunSystem.Reload();
     }
 
     private void Update()

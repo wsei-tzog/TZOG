@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/3DModels/Prefabs/mainChar/controlerv2/PlayerControls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/_Scripts_/_Movement/controlerv2/PlayerControls.inputactions'
 
 using System;
 using System.Collections;
@@ -160,6 +160,52 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Interactions"",
+            ""id"": ""30b29ce1-2991-405b-9799-d14adeb71bbe"",
+            ""actions"": [
+                {
+                    ""name"": ""Shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""e175269e-9dc5-45b7-b3dc-faf2a8710164"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""2ed54cbe-aead-4e9b-8dc4-3e3de6c9fe3f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1f501b25-c9a1-413d-88a6-7c00c8b8514c"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Hold"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1220384c-0761-45a5-ad7c-6d5f7171724c"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -171,6 +217,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_GroundMovement_MouseX = m_GroundMovement.FindAction("MouseX", throwIfNotFound: true);
         m_GroundMovement_MouseY = m_GroundMovement.FindAction("MouseY", throwIfNotFound: true);
         m_GroundMovement_Sprint = m_GroundMovement.FindAction("Sprint", throwIfNotFound: true);
+        // Interactions
+        m_Interactions = asset.FindActionMap("Interactions", throwIfNotFound: true);
+        m_Interactions_Shoot = m_Interactions.FindAction("Shoot", throwIfNotFound: true);
+        m_Interactions_Reload = m_Interactions.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -281,6 +331,47 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         }
     }
     public GroundMovementActions @GroundMovement => new GroundMovementActions(this);
+
+    // Interactions
+    private readonly InputActionMap m_Interactions;
+    private IInteractionsActions m_InteractionsActionsCallbackInterface;
+    private readonly InputAction m_Interactions_Shoot;
+    private readonly InputAction m_Interactions_Reload;
+    public struct InteractionsActions
+    {
+        private @PlayerControls m_Wrapper;
+        public InteractionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Shoot => m_Wrapper.m_Interactions_Shoot;
+        public InputAction @Reload => m_Wrapper.m_Interactions_Reload;
+        public InputActionMap Get() { return m_Wrapper.m_Interactions; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InteractionsActions set) { return set.Get(); }
+        public void SetCallbacks(IInteractionsActions instance)
+        {
+            if (m_Wrapper.m_InteractionsActionsCallbackInterface != null)
+            {
+                @Shoot.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShoot;
+                @Shoot.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShoot;
+                @Shoot.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShoot;
+                @Reload.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnReload;
+            }
+            m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
+            }
+        }
+    }
+    public InteractionsActions @Interactions => new InteractionsActions(this);
     public interface IGroundMovementActions
     {
         void OnHorizontalMovement(InputAction.CallbackContext context);
@@ -288,5 +379,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMouseX(InputAction.CallbackContext context);
         void OnMouseY(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+    }
+    public interface IInteractionsActions
+    {
+        void OnShoot(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

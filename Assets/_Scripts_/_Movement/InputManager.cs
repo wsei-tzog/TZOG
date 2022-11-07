@@ -26,12 +26,14 @@ public class InputManager : MonoBehaviour
         groundMovement.HorizontalMovement.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>();
         groundMovement.Jump.performed += _ => movement.OnJumpPressed();
         // groundMovement.Sprint.performed += _ => movement.sprint = true;
+
         // mouse
         groundMovement.MouseX.performed += ctx => mouseInput.x = ctx.ReadValue<float>();
         groundMovement.MouseY.performed += ctx => mouseInput.y = ctx.ReadValue<float>();
+
         // interaction
-        interaction.Shoot.performed += _ => gunSystem.Shoot();
-        interaction.Reload.performed += _ => gunSystem.Reload();
+        interaction.Shoot.performed += ctx => gunSystem.OnShootPressed();
+        interaction.Reload.performed += ctx => gunSystem.OnReloadPressed();
     }
 
     private void Update()

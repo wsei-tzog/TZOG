@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 public class GunSystem : MonoBehaviour
 {
     // Gun stats
@@ -13,6 +13,8 @@ public class GunSystem : MonoBehaviour
 
     // bools
     bool shooting, readyToShoot, reloading;
+    bool startShooting;
+    bool reloadNow;
 
     // reference
     public Camera fpsCam;
@@ -22,15 +24,41 @@ public class GunSystem : MonoBehaviour
 
     // Graphics
     public GameObject muzzleFlash, bulletHole;
-
+    public TextMeshProUGUI text;
     private void Start()
     {
+        bulletsLeft = magazineSize;
         readyToShoot = true;
     }
 
-    public void Shoot()
+    private void Update()
     {
-        if (readyToShoot && shooting && !reloading && bulletsLeft > 0)
+        text.SetText(bulletsLeft + " / " + magazineSize);
+
+        if (startShooting)
+        {
+            Shoot();
+        }
+
+        if (reloadNow)
+        {
+            Reload();
+        }
+
+    }
+
+
+
+
+    public void OnShootPressed()
+    {
+        startShooting = true;
+        readyToShoot = true;
+    }
+
+    private void Shoot()
+    {
+        if (readyToShoot && !reloading && bulletsLeft > 0)
         {
             readyToShoot = false;
             //spread
@@ -51,13 +79,17 @@ public class GunSystem : MonoBehaviour
             }
 
             //Graphics
-            Instantiate(bulletHole, rayHit.point, Quaternion.Euler(0, 180, 0));
-            Instantiate(muzzleFlash, attackPoint.position, Quaternion.identity);
+            Destroy((Instantiate(bulletHole, rayHit.point, Quaternion.Euler(0, 90, 0))), 4);
+            Destroy((Instantiate(muzzleFlash, attackPoint.position, Quaternion.identity)), 1);
 
             bulletsLeft--;
             Invoke("ResetShoot", timeBetweenShooting);
-
         }
+        else
+        {
+            Debug.Log("No more bullets");
+        }
+        startShooting = false;
     }
 
     public void ResetShoot()
@@ -66,14 +98,19 @@ public class GunSystem : MonoBehaviour
     }
 
 
-    public void Reload()
+    public void OnReloadPressed()
     {
-        if (bulletsLeft < magazineSize && !reloading) ;
+        reloadNow = true;
+    }
+    private void Reload()
+    {
+        if (bulletsLeft < magazineSize && !reloading)
         {
             reloading = true;
             Invoke("ReloadingFinished", reloadTime);
         }
 
+        reloadNow = false;
     }
 
     private void ReloadingFinished()

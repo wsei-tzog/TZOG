@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
+    [SerializeField] WeaponSwing weaponSwing;
     [SerializeField] float sensitivityX = 5f;
     [SerializeField] float sensitivityY = 1f;
     float mouseX, mouseY;
@@ -14,6 +15,7 @@ public class MouseLook : MonoBehaviour
     {
         mouseX = mouseInput.x * sensitivityX;
         mouseY = mouseInput.y * sensitivityY;
+        weaponSwing.ReceiveInput(mouseInput);
     }
     void Update()
     {

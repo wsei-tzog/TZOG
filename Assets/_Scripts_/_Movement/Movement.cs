@@ -21,7 +21,8 @@ public class Movement : MonoBehaviour
     bool isGrounded;
     bool jump;
 
-    // animations
+    // polish
+    [SerializeField] WeaponSwing weaponSwing;
     private bool isRunning = false;
     private Animator animator;
     Vector3 horizontalVelocity;
@@ -65,10 +66,11 @@ public class Movement : MonoBehaviour
     void AnimateRun()
     {
         isRunning = (horizontalInput.x < 0 || horizontalInput.x > 0) || (horizontalInput.y < 0 || horizontalInput.y > 0) ? true : false;
-        animator.SetBool("isRunning", isRunning);
+        weaponSwing.ReceiveRunningBool(isRunning);
+        // animator.SetBool("isRunning", isRunning);
         Debug.Log("isrunning " + isRunning);
-        Debug.Log("horizontalInput.x " + horizontalInput.x);
-        Debug.Log("horizontalInput.y " + horizontalInput.y);
+        // Debug.Log("horizontalInput.x " + horizontalInput.x);
+        // Debug.Log("horizontalInput.y " + horizontalInput.y);
 
     }
 

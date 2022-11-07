@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
 {
     [SerializeField] Movement movement;
     [SerializeField] MouseLook mouseLook;
+    // [SerializeField] WeaponSwing weaponSwing;
     PlayerControls controls;
     PlayerControls.GroundMovementActions groundMovement;
     Vector2 horizontalInput;
@@ -31,8 +32,6 @@ public class InputManager : MonoBehaviour
     {
         movement.ReceiveInput(horizontalInput);
         mouseLook.ReceiveInput(mouseInput);
-
-
     }
 
 

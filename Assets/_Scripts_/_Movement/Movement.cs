@@ -15,7 +15,6 @@ public class Movement : MonoBehaviour
 
     // gravity && jump settings
     [SerializeField] float gravity = -9.81f;
-    [SerializeField] float fallStrenght = 5f;
     [SerializeField] float jumpHeight = 5f;
     Vector3 verticalVelocity = Vector3.zero;
     [SerializeField] LayerMask groundMask;
@@ -35,9 +34,12 @@ public class Movement : MonoBehaviour
     void Update()
     {
         // gravity
-        verticalVelocity.y += (gravity - fallStrenght) * Time.deltaTime;
-        controller.Move(verticalVelocity * Time.deltaTime);
         isGrounded = Physics.CheckSphere(transform.position, 0.1f, groundMask);
+        if (!isGrounded)
+        {
+            verticalVelocity.y += gravity * Time.deltaTime;
+        }
+        controller.Move(verticalVelocity * Time.deltaTime);
 
         // horizontal move
         Vector3 horizontalVelocity = (transform.right * horizontalInput.x + transform.forward * horizontalInput.y) * speed * Time.deltaTime;

@@ -180,6 +180,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ShootSeries"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""1881a152-092f-4a36-aff5-1b81130a4642"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -204,6 +212,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a01f22db-2646-4521-81b2-ad26af7964d5"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShootSeries"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -221,6 +240,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions = asset.FindActionMap("Interactions", throwIfNotFound: true);
         m_Interactions_Shoot = m_Interactions.FindAction("Shoot", throwIfNotFound: true);
         m_Interactions_Reload = m_Interactions.FindAction("Reload", throwIfNotFound: true);
+        m_Interactions_ShootSeries = m_Interactions.FindAction("ShootSeries", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -337,12 +357,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private IInteractionsActions m_InteractionsActionsCallbackInterface;
     private readonly InputAction m_Interactions_Shoot;
     private readonly InputAction m_Interactions_Reload;
+    private readonly InputAction m_Interactions_ShootSeries;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
         public InteractionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Shoot => m_Wrapper.m_Interactions_Shoot;
         public InputAction @Reload => m_Wrapper.m_Interactions_Reload;
+        public InputAction @ShootSeries => m_Wrapper.m_Interactions_ShootSeries;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -358,6 +380,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Reload.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnReload;
                 @Reload.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnReload;
                 @Reload.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnReload;
+                @ShootSeries.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShootSeries;
+                @ShootSeries.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShootSeries;
+                @ShootSeries.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShootSeries;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -368,6 +393,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
+                @ShootSeries.started += instance.OnShootSeries;
+                @ShootSeries.performed += instance.OnShootSeries;
+                @ShootSeries.canceled += instance.OnShootSeries;
             }
         }
     }
@@ -384,5 +412,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     {
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnShootSeries(InputAction.CallbackContext context);
     }
 }

@@ -68,7 +68,7 @@ public class Movement : MonoBehaviour
         isRunning = (horizontalInput.x < 0 || horizontalInput.x > 0) || (horizontalInput.y < 0 || horizontalInput.y > 0) ? true : false;
         weaponSwing.ReceiveRunningBool(isRunning);
         // animator.SetBool("isRunning", isRunning);
-        Debug.Log("isrunning " + isRunning);
+        // Debug.Log("isrunning " + isRunning);
         // Debug.Log("horizontalInput.x " + horizontalInput.x);
         // Debug.Log("horizontalInput.y " + horizontalInput.y);
 

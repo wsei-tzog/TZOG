@@ -15,8 +15,6 @@ public class InputManager : MonoBehaviour
     PlayerControls.InteractionsActions interaction;
     Vector2 horizontalInput;
     Vector2 mouseInput;
-    bool isLeftMouseHeld;
-
     private void Awake()
     {
         controls = new PlayerControls();
@@ -33,13 +31,19 @@ public class InputManager : MonoBehaviour
 
         // interaction
         interaction.Shoot.performed += ctx => gunSystem.OnShootPressed();
+
         interaction.Reload.performed += ctx => gunSystem.OnReloadPressed();
+
     }
 
     private void Update()
     {
         movement.ReceiveInput(horizontalInput);
         mouseLook.ReceiveInput(mouseInput);
+        if (interaction.ShootSeries.ReadValue<float>() > 0.1f)
+        {
+            gunSystem.ReceiveInput(true);
+        }
     }
 
 

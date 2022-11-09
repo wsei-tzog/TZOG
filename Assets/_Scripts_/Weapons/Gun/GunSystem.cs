@@ -41,7 +41,6 @@ public class GunSystem : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(isLeftMouseHeld);
         text.SetText(bulletsLeft + " / " + magazineSize);
 
         if (!isLeftMouseHeld)

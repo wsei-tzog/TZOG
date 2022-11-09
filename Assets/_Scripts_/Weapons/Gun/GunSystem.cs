@@ -109,8 +109,8 @@ public class GunSystem : MonoBehaviour
             isLeftMouseHeld = false;
             readyToShoot = false;
             //spread
-            float x = Random.Range(-spread * (1 / 2), spread * (1 / 2));
-            float y = Random.Range(-spread * (1 / 2), spread * (1 / 2));
+            float x = Random.Range(-spread * (2), spread * (2));
+            float y = Random.Range(-spread * (2), spread * (2));
 
             //direction with spread
             Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
@@ -127,7 +127,8 @@ public class GunSystem : MonoBehaviour
 
             //Graphics
             Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.05f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
-            Destroy((Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation)), 0.1f);
+            Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
+
 
             bulletsLeft--;
             bulletsShot--;

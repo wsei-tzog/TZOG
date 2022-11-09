@@ -9,7 +9,7 @@ public class muzzle_audio : MonoBehaviour
     {
         float volume = Random.Range(0, 1);
         audioSource.PlayOneShot(audioSource.clip, volume);
-        Destroy(gameObject, 2f);
+        Destroy(gameObject, 4f);
     }
 
 

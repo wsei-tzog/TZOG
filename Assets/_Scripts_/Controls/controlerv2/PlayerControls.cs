@@ -196,6 +196,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Drop"",
+                    ""type"": ""Button"",
+                    ""id"": ""043b58ef-b695-4a00-87e4-b29108515943"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -242,6 +250,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""PickUp"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96a3e8da-4305-4964-856f-b02b446ca238"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -261,6 +280,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions_Reload = m_Interactions.FindAction("Reload", throwIfNotFound: true);
         m_Interactions_ShootSeries = m_Interactions.FindAction("ShootSeries", throwIfNotFound: true);
         m_Interactions_PickUp = m_Interactions.FindAction("PickUp", throwIfNotFound: true);
+        m_Interactions_Drop = m_Interactions.FindAction("Drop", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -379,6 +399,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Interactions_Reload;
     private readonly InputAction m_Interactions_ShootSeries;
     private readonly InputAction m_Interactions_PickUp;
+    private readonly InputAction m_Interactions_Drop;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -387,6 +408,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Reload => m_Wrapper.m_Interactions_Reload;
         public InputAction @ShootSeries => m_Wrapper.m_Interactions_ShootSeries;
         public InputAction @PickUp => m_Wrapper.m_Interactions_PickUp;
+        public InputAction @Drop => m_Wrapper.m_Interactions_Drop;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -408,6 +430,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @PickUp.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPickUp;
                 @PickUp.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPickUp;
                 @PickUp.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPickUp;
+                @Drop.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnDrop;
+                @Drop.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnDrop;
+                @Drop.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnDrop;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -424,6 +449,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @PickUp.started += instance.OnPickUp;
                 @PickUp.performed += instance.OnPickUp;
                 @PickUp.canceled += instance.OnPickUp;
+                @Drop.started += instance.OnDrop;
+                @Drop.performed += instance.OnDrop;
+                @Drop.canceled += instance.OnDrop;
             }
         }
     }
@@ -442,5 +470,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnReload(InputAction.CallbackContext context);
         void OnShootSeries(InputAction.CallbackContext context);
         void OnPickUp(InputAction.CallbackContext context);
+        void OnDrop(InputAction.CallbackContext context);
     }
 }

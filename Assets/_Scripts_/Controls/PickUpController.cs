@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class PickUpController : MonoBehaviour
 {
+    #region reference
     public GunSystem gunSystem;
-    public Rigidbody rb;
-    public BoxCollider coll;
     public Transform player, defaultPosition, fpsCam;
     public RaycastHit rayHit;
+    #endregion
 
-    public float pickUpRange;
-    public float dropForwardForce, dropUpwardForce;
+    #region variables
+    public float pickUpRange, dropForwardForce, dropUpwardForce;
 
-    public bool equipped;
     public static bool slotFull;
-    public bool isPickingUp;
-    public bool isDropping;
+    public bool equipped, isPickingUp, isDropping;
+    #endregion
+
+    #region input
     public void OnPickUpPressed()
     {
         isPickingUp = true;
@@ -25,38 +26,32 @@ public class PickUpController : MonoBehaviour
     {
         isDropping = true;
     }
-
+    #endregion
     private void Start()
     {
         //Setup
         if (!equipped)
         {
             gunSystem.enabled = false;
-            rb.isKinematic = false;
-            coll.isTrigger = false;
         }
         if (equipped)
         {
             gunSystem.enabled = true;
-            rb.isKinematic = true;
-            coll.isTrigger = true;
             slotFull = true;
         }
     }
 
     private void Update()
     {
-        // Vector3 distanceToPlayer = player.position - transform.position;
-        // if (!equipped && distanceToPlayer.magnitude <= pickUpRange && Input.GetKeyDown(KeyCode.E) && !slotFull)
-        //Check if player is in range and "E" is pressed
+        //Check if player is in range and "E" is pressed || Q for drop
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out rayHit, pickUpRange))
-        // if (!equipped && distanceToPlayer.magnitude <= pickUpRange && !slotFull)
         {
             Debug.Log(rayHit.collider.name);
-            InputManager.pickUpController = gameObject.GetComponent<PickUpController>();
-            if (gameObject.CompareTag("Weapon") && isPickingUp)
+            // InputManager.pickUpController = gameObject.GetComponent<PickUpController>();
+            InputManager.pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+            if (rayHit.transform.gameObject.CompareTag("Weapon") && isPickingUp)
             {
-                PickUp();
+                PickUp(rayHit.transform.gameObject);
             }
         }
         if (equipped && isDropping)
@@ -64,38 +59,31 @@ public class PickUpController : MonoBehaviour
             Drop();
         }
 
-
-        // Vector3 distanceToPlayer = player.position - transform.position;
-        // if (!equipped && distanceToPlayer.magnitude <= pickUpRange && Input.GetKeyDown(KeyCode.E) && !slotFull) ;
-
     }
 
-    private void PickUp()
+    private void PickUp(GameObject rayHittedGameObject)
     {
+        isPickingUp = false;
+        //Remove rigidbody and BoxCollider
+        Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
+        rayHittedGameObject.GetComponent<Collider>().enabled = false;
+
         // set that weapon as weapon swing and gun system
-
-        InputManager.gunSystem = gameObject.GetComponent<GunSystem>();
-        MouseLook.weaponSwing = gameObject.GetComponent<WeaponSwing>();
+        InputManager.gunSystem = rayHittedGameObject.GetComponent<GunSystem>();
+        MouseLook.weaponSwing = rayHittedGameObject.GetComponent<WeaponSwing>();
         GunSystem.weaponIsActive = true;
-        // var inputmanager = parent.GetComponent<InputManager>();
-        // var inputManager = GetComponentInParent<InputManager>();
-        // var mouseLook = GetComponentInParent<MouseLook>();
+        rayHittedGameObject.GetComponent<GunSystem>().enabled = true;
 
+        //set bools
         equipped = true;
         slotFull = true;
 
-        //Make weapon a child of the camera and move it to default position
-        transform.SetParent(defaultPosition);
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.Euler(Vector3.zero);
-        transform.localScale = Vector3.one;
+        //Make weapon a child and move it to default position
+        rayHittedGameObject.transform.SetParent(defaultPosition, false);
+        rayHittedGameObject.transform.localPosition = Vector3.zero;
+        rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        // rayHittedGameObject.transform.localScale = Vector3.one;
 
-        //Make Rigidbody kinematic and BoxCollider a trigger
-        rb.isKinematic = true;
-        coll.isTrigger = true;
-
-        //Enable script
-        gunSystem.enabled = true;
     }
 
     private void Drop()
@@ -107,11 +95,16 @@ public class PickUpController : MonoBehaviour
         transform.SetParent(null);
 
         //Make Rigidbody not kinematic and BoxCollider normal
+        // gameObject.AddComponent<Rigidbody>();
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = false;
-        coll.isTrigger = false;
-
+        gameObject.GetComponent<Collider>().isTrigger = false;
+        gameObject.GetComponent<Collider>().enabled = true;
+        InputManager.gunSystem = null;
+        MouseLook.weaponSwing = null;
+        GunSystem.weaponIsActive = false;
         //Gun carries momentum of player
-        rb.velocity = player.GetComponent<Rigidbody>().velocity;
+        // rb.velocity = gameObject.GetComponentInParent<>
 
         //AddForce
         rb.AddForce(fpsCam.forward * dropForwardForce, ForceMode.Impulse);
@@ -121,7 +114,7 @@ public class PickUpController : MonoBehaviour
         rb.AddTorque(new Vector3(random, random, random) * 10);
 
         //Disable script
-        gunSystem.enabled = false;
+        gameObject.GetComponent<GunSystem>().enabled = false;
     }
 }
 

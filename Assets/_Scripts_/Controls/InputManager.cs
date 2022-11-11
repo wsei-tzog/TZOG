@@ -33,7 +33,7 @@ public class InputManager : MonoBehaviour
         // interaction
         interaction.Shoot.performed += ctx => gunSystem.OnShootPressed();
         interaction.PickUp.performed += ctx => pickUpController.OnPickUpPressed();
-        interaction.PickUp.performed += ctx => pickUpController.OnDropPressed();
+        interaction.Drop.performed += ctx => pickUpController.OnDropPressed();
         interaction.Reload.performed += ctx => gunSystem.OnReloadPressed();
 
     }

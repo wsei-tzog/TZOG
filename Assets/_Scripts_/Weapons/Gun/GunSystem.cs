@@ -4,30 +4,32 @@ using UnityEngine;
 using TMPro;
 public class GunSystem : MonoBehaviour
 {
-    // Gun stats
+    #region  Gun stats
     public int damage;
     public float timeBetweenShooting, spread, range, reloadTime, timeBetweenShots;
     public int magazineSize, bulletsPerTap;
     public bool allowButtonHold;
     int bulletsLeft, bulletsShot;
+    #endregion
 
-    // bools
-    bool shooting, readyToShoot, reloading;
-    bool startShooting;
-    bool shootSeries;
-    bool reloadNow;
-    bool isLeftMouseHeld;
+    #region  bools
+    bool shooting, readyToShoot, reloading, startShooting, reloadNow, isLeftMouseHeld;
+    public bool allowPewPew;
     public static bool weaponIsActive;
+    #endregion
 
-    // reference
+    #region reference
     public Camera fpsCam;
     public Transform attackPoint;
     public RaycastHit rayHit;
     public LayerMask whatIsEnemy;
 
-    // Graphics
+    #endregion
+
+    #region  Graphics
     public GameObject muzzleFlash, bulletHole;
     public TextMeshProUGUI text;
+    #endregion
 
     public void ReceiveInput(bool _isLeftMouseHeld)
     {
@@ -44,17 +46,20 @@ public class GunSystem : MonoBehaviour
     {
         text.SetText(bulletsLeft + " / " + magazineSize);
 
-        if (!isLeftMouseHeld && weaponIsActive)
+
+        if (weaponIsActive && isLeftMouseHeld)
         {
-            if (startShooting)
+            if (!allowPewPew)
             {
-                Shoot();
+                if (startShooting)
+                {
+                    Shoot();
+                }
             }
-        }
-        else if (weaponIsActive)
-        {
-            PewPew();
-            isLeftMouseHeld = false;
+            else
+            {
+                PewPew();
+            }
         }
 
         if (reloadNow)
@@ -68,32 +73,37 @@ public class GunSystem : MonoBehaviour
     private void Shoot()
     {
         bulletsShot = bulletsPerTap;
-        if (readyToShoot && !reloading && bulletsLeft > 0)
+
+        if (!reloading && readyToShoot && bulletsLeft > 0)
         {
             readyToShoot = false;
-            //spread
-            float x = Random.Range(-spread, spread);
-            float y = Random.Range(-spread, spread);
-
-            //direction with spread
-            Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
-
-            //Raycast
-            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
+            Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
+            for (int i = 0; i < bulletsPerTap; i++)
             {
-                Debug.Log(rayHit.collider.name);
-                if (rayHit.collider.CompareTag("Enemy"))
+                //direction with spread
+                //spread
+                float x = Random.Range(-spread, spread);
+                float y = Random.Range(-spread, spread);
+
+                Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
+
+                //Raycast
+                if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
                 {
-                    rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);
+                    Debug.Log(rayHit.collider.name);
+                    if (rayHit.collider.CompareTag("Enemy"))
+                    {
+                        rayHit.collider.GetComponent<Enemy>().TakeDamage(damage * bulletsPerTap);
+                    }
                 }
+
+                //Graphics
+                Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
+
+                bulletsLeft--;
+                bulletsShot--;
             }
 
-            //Graphics
-            Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.05f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
-            Destroy((Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation)), 0.1f);
-
-            bulletsLeft--;
-            bulletsShot--;
             Invoke("ResetShoot", timeBetweenShooting);
             if (bulletsShot > 0 && bulletsLeft > 0)
                 Invoke("Shoot", timeBetweenShots);
@@ -105,37 +115,41 @@ public class GunSystem : MonoBehaviour
     {
         isLeftMouseHeld = false;
         bulletsShot = bulletsPerTap;
-        if (!reloading && bulletsLeft > 0 && readyToShoot)
+
+        if (!reloading && readyToShoot && bulletsLeft > 0)
         {
-            isLeftMouseHeld = false;
             readyToShoot = false;
-            //spread
-            float x = Random.Range(-spread * (2), spread * (2));
-            float y = Random.Range(-spread * (2), spread * (2));
-
-            //direction with spread
-            Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
-
-            //Raycast
-            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
+            Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
+            for (int i = 0; i < bulletsPerTap; i++)
             {
-                Debug.Log(rayHit.collider.name);
-                if (rayHit.collider.CompareTag("Enemy"))
+                //direction with spread
+                //spread
+                float x = Random.Range(-spread - 0.25f, spread + 0.25f);
+                float y = Random.Range(-spread - 0.25f, spread + 0.25f);
+
+                Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
+
+                //Raycast
+                if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
                 {
-                    rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);
+                    Debug.Log(rayHit.collider.name);
+                    if (rayHit.collider.CompareTag("Enemy"))
+                    {
+                        rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);
+                    }
                 }
+
+                //Graphics
+                Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
+
+
+                bulletsLeft--;
+                bulletsShot--;
             }
 
-            //Graphics
-            Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
-            Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
-
-
-            bulletsLeft--;
-            bulletsShot--;
             Invoke("ResetShoot", timeBetweenShooting);
-            if (bulletsShot > 0 && bulletsLeft > 0 && isLeftMouseHeld)
-                Invoke("Shoot", timeBetweenShots);
+            // if (bulletsShot > 0 && bulletsLeft > 0 && isLeftMouseHeld)
+            //     Invoke("PewPew", timeBetweenShots);
 
 
         }

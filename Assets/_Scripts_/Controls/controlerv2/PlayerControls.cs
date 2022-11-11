@@ -1,4 +1,4 @@
-// GENERATED AUTOMATICALLY FROM 'Assets/_Scripts_/_Movement/controlerv2/PlayerControls.inputactions'
+// GENERATED AUTOMATICALLY FROM 'Assets/_Scripts_/Controls/controlerv2/PlayerControls.inputactions'
 
 using System;
 using System.Collections;
@@ -188,6 +188,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""PickUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""a4f6c0dd-b37a-463c-8f29-48c2a2b60afd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -223,6 +231,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""ShootSeries"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""de47132d-63c8-47e0-b12f-0e337aafd3e8"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -241,6 +260,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions_Shoot = m_Interactions.FindAction("Shoot", throwIfNotFound: true);
         m_Interactions_Reload = m_Interactions.FindAction("Reload", throwIfNotFound: true);
         m_Interactions_ShootSeries = m_Interactions.FindAction("ShootSeries", throwIfNotFound: true);
+        m_Interactions_PickUp = m_Interactions.FindAction("PickUp", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -358,6 +378,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Interactions_Shoot;
     private readonly InputAction m_Interactions_Reload;
     private readonly InputAction m_Interactions_ShootSeries;
+    private readonly InputAction m_Interactions_PickUp;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -365,6 +386,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Interactions_Shoot;
         public InputAction @Reload => m_Wrapper.m_Interactions_Reload;
         public InputAction @ShootSeries => m_Wrapper.m_Interactions_ShootSeries;
+        public InputAction @PickUp => m_Wrapper.m_Interactions_PickUp;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -383,6 +405,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @ShootSeries.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShootSeries;
                 @ShootSeries.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShootSeries;
                 @ShootSeries.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShootSeries;
+                @PickUp.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPickUp;
+                @PickUp.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPickUp;
+                @PickUp.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPickUp;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -396,6 +421,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @ShootSeries.started += instance.OnShootSeries;
                 @ShootSeries.performed += instance.OnShootSeries;
                 @ShootSeries.canceled += instance.OnShootSeries;
+                @PickUp.started += instance.OnPickUp;
+                @PickUp.performed += instance.OnPickUp;
+                @PickUp.canceled += instance.OnPickUp;
             }
         }
     }
@@ -413,5 +441,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnShootSeries(InputAction.CallbackContext context);
+        void OnPickUp(InputAction.CallbackContext context);
     }
 }

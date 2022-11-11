@@ -15,6 +15,16 @@ public class PickUpController : MonoBehaviour
 
     public bool equipped;
     public static bool slotFull;
+    public bool isPickingUp;
+    public bool isDropping;
+    public void OnPickUpPressed()
+    {
+        isPickingUp = true;
+    }
+    public void OnDropPressed()
+    {
+        isDropping = true;
+    }
 
     private void Start()
     {
@@ -36,16 +46,20 @@ public class PickUpController : MonoBehaviour
 
     private void Update()
     {
+        // Vector3 distanceToPlayer = player.position - transform.position;
+        // if (!equipped && distanceToPlayer.magnitude <= pickUpRange && Input.GetKeyDown(KeyCode.E) && !slotFull)
         //Check if player is in range and "E" is pressed
         if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out rayHit, pickUpRange))
+        // if (!equipped && distanceToPlayer.magnitude <= pickUpRange && !slotFull)
         {
             Debug.Log(rayHit.collider.name);
-            if (rayHit.collider.CompareTag("Weapon") && Input.GetKeyDown(KeyCode.E) && !slotFull)
+            InputManager.pickUpController = gameObject.GetComponent<PickUpController>();
+            if (gameObject.CompareTag("Weapon") && isPickingUp)
             {
                 PickUp();
             }
         }
-        if (equipped && Input.GetKeyDown(KeyCode.Q))
+        if (equipped && isDropping)
         {
             Drop();
         }

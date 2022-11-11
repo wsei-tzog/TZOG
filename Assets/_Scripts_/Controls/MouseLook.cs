@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    [SerializeField] WeaponSwing weaponSwing;
+    public static WeaponSwing weaponSwing;
     [SerializeField] float sensitivityX = 5f;
     [SerializeField] float sensitivityY = 1f;
     float mouseX, mouseY;
@@ -23,9 +23,9 @@ public class MouseLook : MonoBehaviour
         xRotation -= mouseY / 2;
         xRotation = Mathf.Clamp(xRotation, -xCamlp, xCamlp);
 
-
         Vector3 targetRotation = transform.eulerAngles;
         targetRotation.x = xRotation;
         playerCamera.eulerAngles = targetRotation;
+
     }
 }

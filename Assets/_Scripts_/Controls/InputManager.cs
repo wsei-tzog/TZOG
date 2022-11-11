@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
 {
     [SerializeField] Movement movement;
     [SerializeField] MouseLook mouseLook;
-    [SerializeField] GunSystem gunSystem;
+    public static GunSystem gunSystem;
     // [SerializeField] WeaponSwing weaponSwing;
     PlayerControls controls;
     PlayerControls.GroundMovementActions groundMovement;
@@ -38,6 +38,16 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+
+        // foreach (GameObject t in transform)
+        // {
+        //     if (t.CompareTag("Weapon"))
+        //     {
+        //         var script = t.GetComponentInChildren<GunSystem>();
+        //         gunSystem = script;
+        //     }
+        // }
+
         movement.ReceiveInput(horizontalInput);
         mouseLook.ReceiveInput(mouseInput);
         if (interaction.ShootSeries.ReadValue<float>() > 0.1f)

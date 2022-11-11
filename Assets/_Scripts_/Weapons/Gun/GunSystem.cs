@@ -17,6 +17,7 @@ public class GunSystem : MonoBehaviour
     bool shootSeries;
     bool reloadNow;
     bool isLeftMouseHeld;
+    public static bool weaponIsActive;
 
     // reference
     public Camera fpsCam;
@@ -43,14 +44,14 @@ public class GunSystem : MonoBehaviour
     {
         text.SetText(bulletsLeft + " / " + magazineSize);
 
-        if (!isLeftMouseHeld)
+        if (!isLeftMouseHeld && weaponIsActive)
         {
             if (startShooting)
             {
                 Shoot();
             }
         }
-        else
+        else if (weaponIsActive)
         {
             PewPew();
             isLeftMouseHeld = false;
@@ -63,6 +64,7 @@ public class GunSystem : MonoBehaviour
 
     }
 
+    #region shooting
     private void Shoot()
     {
         bulletsShot = bulletsPerTap;
@@ -139,19 +141,15 @@ public class GunSystem : MonoBehaviour
         }
         startShooting = false;
     }
-
-
     public void OnShootPressed()
     {
         startShooting = true;
         readyToShoot = true;
     }
-
     public void ResetShoot()
     {
         readyToShoot = true;
     }
-
     public void OnReloadPressed()
     {
         reloadNow = true;
@@ -166,10 +164,11 @@ public class GunSystem : MonoBehaviour
 
         reloadNow = false;
     }
-
     private void ReloadingFinished()
     {
         bulletsLeft = magazineSize;
         reloading = false;
     }
+    #endregion
+
 }

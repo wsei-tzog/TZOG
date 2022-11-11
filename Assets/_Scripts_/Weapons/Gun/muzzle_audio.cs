@@ -5,11 +5,16 @@ using UnityEngine;
 public class muzzle_audio : MonoBehaviour
 {
     public AudioSource audioSource;
+    float volume;
     void Start()
     {
-        float volume = Random.Range(0, 1);
         audioSource.PlayOneShot(audioSource.clip, volume);
         Destroy(gameObject, 4f);
+    }
+
+    private void Update()
+    {
+        volume = Random.Range(0, 1);
     }
 
 

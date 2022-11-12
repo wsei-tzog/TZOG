@@ -7,14 +7,13 @@ public class PickUpController : MonoBehaviour
     #region reference
     public GunSystem gunSystem;
     public Transform defaultPosition;
-    public GameObject rayHit;
     public MouseLook mouseLook;
     #endregion
 
     #region variables
-    public float pickUpRange, dropForwardForce, dropUpwardForce;
+    public float dropForwardForce, dropUpwardForce;
     public static bool slotFull;
-    public static bool isPickingUp, equipped, isDropping;
+    public bool equipped;
     #endregion
 
     private void Start()
@@ -73,12 +72,15 @@ public class PickUpController : MonoBehaviour
         // isDropping = false;
         equipped = false;
         slotFull = false;
-
-        // Set parent to null
         transform.SetParent(null);
 
         // Disable script
         gameObject.GetComponent<GunSystem>().enabled = false;
+        InputManager.gunSystem = null;
+        InputManager.pickUpController = null;
+        MouseLook.weaponSwing = null;
+        GunSystem.turnOffCanvas = true;
+        GunSystem.weaponIsActive = false;
 
         // Make Rigidbody and BoxCollider
         gameObject.AddComponent<Rigidbody>();
@@ -88,18 +90,12 @@ public class PickUpController : MonoBehaviour
         transform.gameObject.GetComponent<Collider>().isTrigger = false;
         transform.gameObject.GetComponent<Collider>().enabled = true;
 
-        InputManager.gunSystem = null;
-        MouseLook.weaponSwing = null;
-        GunSystem.turnOffCanvas = true;
-        GunSystem.weaponIsActive = false;
-
         // AddForce
         rb.AddForce(mouseLook.playerCamera.forward * dropForwardForce, ForceMode.Impulse);
         rb.AddForce(mouseLook.playerCamera.up * dropUpwardForce, ForceMode.Impulse);
         // Add random rotation
         float random = Random.Range(-1f, 1f);
         rb.AddTorque(new Vector3(random, random, random) * 10);
-        InputManager.pickUpController = null;
     }
     #endregion
 

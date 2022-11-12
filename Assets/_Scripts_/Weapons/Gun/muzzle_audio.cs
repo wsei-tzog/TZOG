@@ -8,8 +8,8 @@ public class muzzle_audio : MonoBehaviour
     void Start()
     {
         float volume = Random.Range(0.5f, 1);
-        float pitch = Random.Range(0.8f, 1.5f);
-        float dopplerLevel = Random.Range(0, 5);
+        float pitch = Random.Range(1f, 1.3f);
+        float dopplerLevel = Random.Range(2, 5);
         audioSource.pitch = pitch;
         audioSource.dopplerLevel = dopplerLevel;
         audioSource.PlayOneShot(audioSource.clip, volume);

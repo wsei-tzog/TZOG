@@ -6,27 +6,17 @@ public class PickUpController : MonoBehaviour
 {
     #region reference
     public GunSystem gunSystem;
-    public Transform player, defaultPosition, fpsCam;
-    public RaycastHit rayHit;
+    public Transform defaultPosition;
+    public GameObject rayHit;
+    public MouseLook mouseLook;
     #endregion
 
     #region variables
     public float pickUpRange, dropForwardForce, dropUpwardForce;
-
     public static bool slotFull;
-    public bool equipped, isPickingUp, isDropping;
+    public static bool isPickingUp, equipped, isDropping;
     #endregion
 
-    #region input
-    public void OnPickUpPressed()
-    {
-        isPickingUp = true;
-    }
-    public void OnDropPressed()
-    {
-        isDropping = true;
-    }
-    #endregion
     private void Start()
     {
         //Setup
@@ -41,29 +31,25 @@ public class PickUpController : MonoBehaviour
         }
     }
 
-    private void Update()
+    #region input
+
+    public void OnDropPressed()
     {
-        //Check if player is in range and "E" is pressed || Q for drop
-        if (Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out rayHit, pickUpRange))
-        {
-            Debug.Log(rayHit.collider.name);
-            // InputManager.pickUpController = gameObject.GetComponent<PickUpController>();
-            InputManager.pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
-            if (rayHit.transform.gameObject.CompareTag("Weapon") && isPickingUp)
-            {
-                PickUp(rayHit.transform.gameObject);
-            }
-        }
-        if (equipped && isDropping)
+        if (equipped)
         {
             Drop();
         }
-
     }
+    #endregion
 
-    private void PickUp(GameObject rayHittedGameObject)
+    #region equip / drop
+    public void PickUp(GameObject rayHittedGameObject)
     {
-        isPickingUp = false;
+        //set bools
+        equipped = true;
+        slotFull = true;
+        MouseLook.isPickingUp = false;
+
         //Remove rigidbody and BoxCollider
         Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
         rayHittedGameObject.GetComponent<Collider>().enabled = false;
@@ -74,47 +60,47 @@ public class PickUpController : MonoBehaviour
         GunSystem.weaponIsActive = true;
         rayHittedGameObject.GetComponent<GunSystem>().enabled = true;
 
-        //set bools
-        equipped = true;
-        slotFull = true;
-
         //Make weapon a child and move it to default position
         rayHittedGameObject.transform.SetParent(defaultPosition, false);
         rayHittedGameObject.transform.localPosition = Vector3.zero;
         rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        // rayHittedGameObject.transform.localScale = Vector3.one;
-
+        rayHittedGameObject.transform.localScale = new Vector3(0.265f, 0.315f, 0.256f);
     }
 
     private void Drop()
     {
+        Debug.Log("dropinn");
+        // isDropping = false;
         equipped = false;
         slotFull = false;
 
-        //Set parent to null
+        // Set parent to null
         transform.SetParent(null);
 
-        //Make Rigidbody not kinematic and BoxCollider normal
-        // gameObject.AddComponent<Rigidbody>();
+        // Disable script
+        gameObject.GetComponent<GunSystem>().enabled = false;
+
+        // Make Rigidbody and BoxCollider
+        gameObject.AddComponent<Rigidbody>();
+        gameObject.AddComponent<Rigidbody>();
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = false;
-        gameObject.GetComponent<Collider>().isTrigger = false;
-        gameObject.GetComponent<Collider>().enabled = true;
+        transform.gameObject.GetComponent<Collider>().isTrigger = false;
+        transform.gameObject.GetComponent<Collider>().enabled = true;
+
         InputManager.gunSystem = null;
         MouseLook.weaponSwing = null;
+        GunSystem.turnOffCanvas = true;
         GunSystem.weaponIsActive = false;
-        //Gun carries momentum of player
-        // rb.velocity = gameObject.GetComponentInParent<>
 
-        //AddForce
-        rb.AddForce(fpsCam.forward * dropForwardForce, ForceMode.Impulse);
-        rb.AddForce(fpsCam.up * dropUpwardForce, ForceMode.Impulse);
-        //Add random rotation
+        // AddForce
+        rb.AddForce(mouseLook.playerCamera.forward * dropForwardForce, ForceMode.Impulse);
+        rb.AddForce(mouseLook.playerCamera.up * dropUpwardForce, ForceMode.Impulse);
+        // Add random rotation
         float random = Random.Range(-1f, 1f);
         rb.AddTorque(new Vector3(random, random, random) * 10);
-
-        //Disable script
-        gameObject.GetComponent<GunSystem>().enabled = false;
+        InputManager.pickUpController = null;
     }
-}
+    #endregion
 
+}

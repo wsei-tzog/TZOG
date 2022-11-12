@@ -51,7 +51,6 @@ public class Movement : MonoBehaviour
 
         #endregion
         #region jump
-
         if (jump)
         {
             if (isGrounded)

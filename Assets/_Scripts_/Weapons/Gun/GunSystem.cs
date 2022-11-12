@@ -15,7 +15,7 @@ public class GunSystem : MonoBehaviour
     #region  bools
     bool shooting, readyToShoot, reloading, startShooting, reloadNow, isLeftMouseHeld;
     public bool allowPewPew;
-    public static bool weaponIsActive;
+    public static bool weaponIsActive, turnOffCanvas;
     #endregion
 
     #region reference
@@ -45,7 +45,10 @@ public class GunSystem : MonoBehaviour
     private void Update()
     {
         text.SetText(bulletsLeft + " / " + magazineSize);
-
+        if (turnOffCanvas)
+        {
+            text.enabled = false;
+        }
 
         if (weaponIsActive && isLeftMouseHeld)
         {
@@ -90,7 +93,6 @@ public class GunSystem : MonoBehaviour
                 //Raycast
                 if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
                 {
-                    Debug.Log(rayHit.collider.name);
                     if (rayHit.collider.CompareTag("Enemy"))
                     {
                         rayHit.collider.GetComponent<Enemy>().TakeDamage(damage * bulletsPerTap);
@@ -132,7 +134,6 @@ public class GunSystem : MonoBehaviour
                 //Raycast
                 if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, whatIsEnemy))
                 {
-                    Debug.Log(rayHit.collider.name);
                     if (rayHit.collider.CompareTag("Enemy"))
                     {
                         rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);

@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 6176466916713111209}
   - component: {fileID: 6923622596397841809}
   - component: {fileID: 956250826135198484}
-  - component: {fileID: 6084136376030964533}
   m_Layer: 0
   m_Name: shotgun
   m_TagString: Weapon
@@ -63,7 +62,7 @@ Transform:
   m_GameObject: {fileID: 3126885950835175810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 0.265, y: 0.315, z: 0.256}
+  m_LocalScale: {x: 0.4, y: 0.315, z: 0.256}
   m_Children:
   - {fileID: 1058261734178976519}
   m_Father: {fileID: 0}
@@ -132,7 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   timeBetweenShooting: 1.5
-  spread: 0.3
+  spread: 0.2
   range: 50
   reloadTime: 3
   timeBetweenShots: 1
@@ -145,7 +144,7 @@ MonoBehaviour:
   whatIsEnemy:
     serializedVersion: 2
     m_Bits: 4294967295
-  muzzleFlash: {fileID: 5808326520354011648, guid: 19ec27c1ab0a8e24aa8e4672f1dcb03d, type: 3}
+  muzzleFlash: {fileID: 5808326520354011648, guid: 7a06d7defefa3634890d78a91cd97475, type: 3}
   bulletHole: {fileID: 6963562663894467095, guid: 20f5b59db528b04439b04bf3acb3cbfd, type: 3}
   text: {fileID: 0}
 --- !u!114 &3883823666392832435
@@ -209,16 +208,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.29956257, y: 1.138567, z: 6.0916166}
   m_Center: {x: 0, y: 0.22193727, z: -0.40894532}
---- !u!65 &6084136376030964533
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3126885950835175810}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.29956257, y: 1.138567, z: 6.0916166}
-  m_Center: {x: -0.008700721, y: 0.22193727, z: -0.40894532}

@@ -60,10 +60,12 @@ public class PickUpController : MonoBehaviour
         rayHittedGameObject.GetComponent<GunSystem>().enabled = true;
 
         //Make weapon a child and move it to default position
+        Vector3 scale = rayHittedGameObject.transform.localScale;
         rayHittedGameObject.transform.SetParent(defaultPosition, false);
         rayHittedGameObject.transform.localPosition = Vector3.zero;
         rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
-        rayHittedGameObject.transform.localScale = new Vector3(0.265f, 0.315f, 0.256f);
+        rayHittedGameObject.transform.localScale = scale;
+
     }
 
     private void Drop()

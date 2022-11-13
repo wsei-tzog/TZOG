@@ -6,7 +6,7 @@ public class GunSystem : MonoBehaviour
 {
     #region  Gun stats
     public int damage;
-    public float timeBetweenShooting, spread, range, reloadTime, timeBetweenShots;
+    public float timeBetweenShooting, spread, aimSpread, spreadHolder, range, reloadTime, timeBetweenShots;
     public int magazineSize, bulletsPerTap;
     public bool allowButtonHold;
     int bulletsLeft, bulletsShot;
@@ -14,7 +14,7 @@ public class GunSystem : MonoBehaviour
 
     #region  bools
     bool shooting, readyToShoot, reloading, startShooting, reloadNow, isLeftMouseHeld;
-    public bool allowPewPew, isAiming;
+    public bool allowPewPew, isAiming, wasAiming;
     public static bool weaponIsActive, turnOffCanvas;
     public float aimAnimationSpeed;
     #endregion
@@ -47,6 +47,7 @@ public class GunSystem : MonoBehaviour
     {
         bulletsLeft = magazineSize;
         readyToShoot = true;
+        spreadHolder = spread;
     }
 
     private void Update()
@@ -83,27 +84,43 @@ public class GunSystem : MonoBehaviour
 
         if (isAiming)
         {
-            // Vector3 weaponPosition = transform.localPosition;
-            // Vector3.Lerp(weaponPosition, aimPosition.transform.localPosition, aimAnimationSpeed * Time.deltaTime);
-            Vector3 scale = transform.localScale;
-            gameObject.transform.SetParent(aimPosition.transform, false);
-            gameObject.transform.localPosition = Vector3.zero;
-            gameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            gameObject.transform.localScale = scale;
+            wasAiming = true;
+            Aim();
         }
-        // else
-        // {
-        //     Vector3 weaponPosition = transform.localPosition;
-        //     transform.position = Vector3.Lerp(weaponPosition, defaultPosition.transform.localPosition, aimAnimationSpeed * Time.deltaTime);
-        // }
+        // else if (wasAiming && !isAiming)
+        else if (!isAiming)
+        {
+            OutAim();
+            // wasAiming = false;
+        }
     }
 
     #region shooting
+    private void OutAim()
+    {
+        spread = spreadHolder;
+        GameObject self = gameObject;
+        Vector3 weaponPosition = self.transform.position;
+        Vector3 scale = self.transform.localScale;
+        self.transform.SetParent(defaultPosition.transform, false);
+        self.transform.localScale = scale;
+
+        // self.transform.position = Vector3.Lerp(weaponPosition, defaultPosition.transform.position, aimAnimationSpeed * Time.deltaTime);
+        Vector3.Lerp(weaponPosition, defaultPosition.transform.position, aimAnimationSpeed * Time.deltaTime);
+    }
     private void Aim()
     {
-        Vector3 weaponPosition = transform.position;
-        weaponPosition = Vector3.Lerp(weaponPosition, aimPosition.transform.localPosition, aimAnimationSpeed * Time.deltaTime);
+        spread = aimSpread;
+        GameObject self = gameObject;
+        Vector3 weaponPosition = self.transform.position;
+        Vector3 scale = self.transform.localScale;
+        self.transform.SetParent(aimPosition.transform, false);
+        self.transform.localScale = scale;
 
+        Vector3.Lerp(weaponPosition, aimPosition.transform.position, aimAnimationSpeed * Time.deltaTime);
+
+        // gameObject.transform.localPosition = Vector3.zero;
+        // gameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
     }
     private void Shoot()
     {
@@ -158,8 +175,8 @@ public class GunSystem : MonoBehaviour
             {
                 //direction with spread
                 //spread
-                float x = Random.Range(-spread - 0.25f, spread + 0.25f);
-                float y = Random.Range(-spread - 0.25f, spread + 0.25f);
+                float x = Random.Range(-spread * 1.25f, spread * 1.25f);
+                float y = Random.Range(-spread * 1.25f, spread * 1.25f);
 
                 Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
 

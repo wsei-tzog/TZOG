@@ -109,6 +109,8 @@ MonoBehaviour:
   bulletsPerTap: 1
   allowButtonHold: 1
   allowPewPew: 1
+  isAiming: 0
+  aimAnimationSpeed: 0
   fpsCam: {fileID: 0}
   attackPoint: {fileID: 4991352695023968164}
   whatIsEnemy:
@@ -116,6 +118,10 @@ MonoBehaviour:
     m_Bits: 4294967295
   muzzleFlash: {fileID: 5808326520354011648, guid: 19ec27c1ab0a8e24aa8e4672f1dcb03d, type: 3}
   bulletHole: {fileID: 6963562663894467095, guid: 20f5b59db528b04439b04bf3acb3cbfd, type: 3}
+  defaultPosition: {fileID: 0}
+  aimPosition: {fileID: 0}
+  audioSource: {fileID: 0}
+  clip: {fileID: 0}
   text: {fileID: 0}
 --- !u!114 &5769505644784845228
 MonoBehaviour:
@@ -124,7 +130,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3312887450860520332}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dfcf2887fa911484b907a2dcdab7fa6f, type: 3}
   m_Name: 

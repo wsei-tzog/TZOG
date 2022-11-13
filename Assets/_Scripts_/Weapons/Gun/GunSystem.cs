@@ -14,8 +14,9 @@ public class GunSystem : MonoBehaviour
 
     #region  bools
     bool shooting, readyToShoot, reloading, startShooting, reloadNow, isLeftMouseHeld;
-    public bool allowPewPew;
+    public bool allowPewPew, isAiming;
     public static bool weaponIsActive, turnOffCanvas;
+    public float aimAnimationSpeed;
     #endregion
 
     #region reference
@@ -26,14 +27,20 @@ public class GunSystem : MonoBehaviour
 
     #endregion
 
-    #region  Graphics
-    public GameObject muzzleFlash, bulletHole;
+    #region polish
+    public GameObject muzzleFlash, bulletHole, defaultPosition, aimPosition;
+    public AudioSource audioSource;
+    public AudioClip clip;
     public TextMeshProUGUI text;
     #endregion
 
     public void ReceiveInput(bool _isLeftMouseHeld)
     {
         isLeftMouseHeld = _isLeftMouseHeld;
+    }
+    public void ReceiveAimInput(bool _isAiming)
+    {
+        isAiming = _isAiming;
     }
 
     private void Start()
@@ -48,6 +55,10 @@ public class GunSystem : MonoBehaviour
         if (turnOffCanvas)
         {
             text.enabled = false;
+        }
+        else if (!turnOffCanvas)
+        {
+            text.enabled = true;
         }
 
         if (weaponIsActive && isLeftMouseHeld)
@@ -70,9 +81,30 @@ public class GunSystem : MonoBehaviour
             Reload();
         }
 
+        if (isAiming)
+        {
+            // Vector3 weaponPosition = transform.localPosition;
+            // Vector3.Lerp(weaponPosition, aimPosition.transform.localPosition, aimAnimationSpeed * Time.deltaTime);
+            Vector3 scale = transform.localScale;
+            gameObject.transform.SetParent(aimPosition.transform, false);
+            gameObject.transform.localPosition = Vector3.zero;
+            gameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            gameObject.transform.localScale = scale;
+        }
+        // else
+        // {
+        //     Vector3 weaponPosition = transform.localPosition;
+        //     transform.position = Vector3.Lerp(weaponPosition, defaultPosition.transform.localPosition, aimAnimationSpeed * Time.deltaTime);
+        // }
     }
 
     #region shooting
+    private void Aim()
+    {
+        Vector3 weaponPosition = transform.position;
+        weaponPosition = Vector3.Lerp(weaponPosition, aimPosition.transform.localPosition, aimAnimationSpeed * Time.deltaTime);
+
+    }
     private void Shoot()
     {
         bulletsShot = bulletsPerTap;
@@ -173,6 +205,7 @@ public class GunSystem : MonoBehaviour
     {
         if (bulletsLeft < magazineSize && !reloading)
         {
+            audioSource.Play();
             reloading = true;
             Invoke("ReloadingFinished", reloadTime);
         }

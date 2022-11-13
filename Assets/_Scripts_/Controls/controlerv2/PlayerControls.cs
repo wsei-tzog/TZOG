@@ -204,6 +204,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Aim"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""00d456b4-a3f6-4093-89f1-8cefd59147c3"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -261,6 +269,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Drop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""74608ea6-ea56-44d3-b492-7ee222bb54bd"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aim"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -281,6 +300,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions_ShootSeries = m_Interactions.FindAction("ShootSeries", throwIfNotFound: true);
         m_Interactions_PickUp = m_Interactions.FindAction("PickUp", throwIfNotFound: true);
         m_Interactions_Drop = m_Interactions.FindAction("Drop", throwIfNotFound: true);
+        m_Interactions_Aim = m_Interactions.FindAction("Aim", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -400,6 +420,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Interactions_ShootSeries;
     private readonly InputAction m_Interactions_PickUp;
     private readonly InputAction m_Interactions_Drop;
+    private readonly InputAction m_Interactions_Aim;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -409,6 +430,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @ShootSeries => m_Wrapper.m_Interactions_ShootSeries;
         public InputAction @PickUp => m_Wrapper.m_Interactions_PickUp;
         public InputAction @Drop => m_Wrapper.m_Interactions_Drop;
+        public InputAction @Aim => m_Wrapper.m_Interactions_Aim;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -433,6 +455,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Drop.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnDrop;
                 @Drop.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnDrop;
                 @Drop.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnDrop;
+                @Aim.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnAim;
+                @Aim.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnAim;
+                @Aim.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnAim;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -452,6 +477,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Drop.started += instance.OnDrop;
                 @Drop.performed += instance.OnDrop;
                 @Drop.canceled += instance.OnDrop;
+                @Aim.started += instance.OnAim;
+                @Aim.performed += instance.OnAim;
+                @Aim.canceled += instance.OnAim;
             }
         }
     }
@@ -471,5 +499,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnShootSeries(InputAction.CallbackContext context);
         void OnPickUp(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
+        void OnAim(InputAction.CallbackContext context);
     }
 }

@@ -18,6 +18,7 @@ public class MouseLook : MonoBehaviour
     public float xCamlp = 85f;
     float xRotation = 0;
     public static bool isPickingUp;
+    public bool slotFull;
     #endregion
 
     public void ReceiveInput(Vector2 mouseInput)
@@ -46,17 +47,28 @@ public class MouseLook : MonoBehaviour
         playerCamera.eulerAngles = targetRotation;
         #endregion
 
+
         #region raycast
         Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 50);
         {
-            if (rayHit.transform.gameObject.CompareTag("Weapon") && isPickingUp)
+            if (isPickingUp)
             {
-                // for pickup
-                pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
-                pickUpController.PickUp(rayHit.transform.gameObject);
-                // for drop
-                InputManager.pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+                if (rayHit.transform.gameObject.CompareTag("Weapon") && !slotFull)
+                {
+                    isPickingUp = false;
+                    pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+                    pickUpController.PickUp(rayHit.transform.gameObject);
+                    // }
+                    // for drop
+                    InputManager.pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+                }
+                else
+                {
+                    isPickingUp = false;
+                    Debug.Log("Cannot pickup that weapon!");
+                }
             }
+
         }
         #endregion
     }

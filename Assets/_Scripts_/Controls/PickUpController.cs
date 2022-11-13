@@ -12,7 +12,6 @@ public class PickUpController : MonoBehaviour
 
     #region variables
     public float dropForwardForce, dropUpwardForce;
-    public static bool slotFull;
     public bool equipped;
     #endregion
 
@@ -22,11 +21,12 @@ public class PickUpController : MonoBehaviour
         if (!equipped)
         {
             gunSystem.enabled = false;
+            mouseLook.slotFull = false;
         }
         if (equipped)
         {
             gunSystem.enabled = true;
-            slotFull = true;
+            mouseLook.slotFull = true;
         }
     }
 
@@ -46,8 +46,8 @@ public class PickUpController : MonoBehaviour
     {
         //set bools
         equipped = true;
-        slotFull = true;
-        MouseLook.isPickingUp = false;
+        mouseLook.slotFull = true;
+        // MouseLook.isPickingUp = false;
 
         //Remove rigidbody and BoxCollider
         Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
@@ -57,7 +57,9 @@ public class PickUpController : MonoBehaviour
         InputManager.gunSystem = rayHittedGameObject.GetComponent<GunSystem>();
         MouseLook.weaponSwing = rayHittedGameObject.GetComponent<WeaponSwing>();
         GunSystem.weaponIsActive = true;
+        GunSystem.turnOffCanvas = false;
         rayHittedGameObject.GetComponent<GunSystem>().enabled = true;
+        rayHittedGameObject.GetComponent<WeaponSwing>().enabled = true;
 
         //Make weapon a child and move it to default position
         Vector3 scale = rayHittedGameObject.transform.localScale;
@@ -72,12 +74,15 @@ public class PickUpController : MonoBehaviour
     {
         Debug.Log("dropinn");
         // isDropping = false;
+        Vector3 scale = transform.localScale;
         equipped = false;
-        slotFull = false;
+        mouseLook.slotFull = false;
         transform.SetParent(null);
+        transform.localScale = scale;
 
         // Disable script
         gameObject.GetComponent<GunSystem>().enabled = false;
+        gameObject.GetComponent<WeaponSwing>().enabled = false;
         InputManager.gunSystem = null;
         InputManager.pickUpController = null;
         MouseLook.weaponSwing = null;
@@ -85,7 +90,6 @@ public class PickUpController : MonoBehaviour
         GunSystem.weaponIsActive = false;
 
         // Make Rigidbody and BoxCollider
-        gameObject.AddComponent<Rigidbody>();
         gameObject.AddComponent<Rigidbody>();
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = false;

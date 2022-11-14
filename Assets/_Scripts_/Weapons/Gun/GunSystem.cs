@@ -34,6 +34,25 @@ public class GunSystem : MonoBehaviour
     public TextMeshProUGUI text;
     #endregion
 
+    #region recoil
+
+    [Header("Recoil")]
+    Transform positionAfterRecoil;
+    Quaternion rotationAfterRecoil;
+
+    public float positionReturnSpeed = 10f;
+    public float rotationReturnSpeed = 15f;
+
+    // public Vector3 RecoilKickRotation = new Vector3();
+    public Vector3 RecoilKickBackAim = new Vector3();
+    public Vector3 RecoilKickBack = new Vector3();
+
+    // Vector3 rotationRecoil;
+    Vector3 positionalRecoil;
+
+
+    #endregion
+
     public void ReceiveInput(bool _isLeftMouseHeld)
     {
         isLeftMouseHeld = _isLeftMouseHeld;
@@ -93,6 +112,27 @@ public class GunSystem : MonoBehaviour
             OutAim();
             // wasAiming = false;
         }
+
+        //recoil
+        if (isAiming)
+        {
+            positionAfterRecoil = aimPosition.transform;
+            rotationAfterRecoil = aimPosition.transform.rotation;
+        }
+        else if (!isAiming)
+        {
+            positionAfterRecoil = defaultPosition.transform;
+            rotationAfterRecoil = defaultPosition.transform.rotation;
+
+        }
+        transform.position = Vector3.Lerp(transform.position, positionAfterRecoil.transform.position, positionReturnSpeed * Time.deltaTime);
+        // transform.rotation = Quaternion.Slerp(transform.rotation, rotationAfterRecoil, rotationReturnSpeed * Time.deltaTime);
+
+        // rotationalRecoil = Vector3.Lerp(rotationalRecoil, Vector3.zero, rotationalReturnSpeed * Time.deltaTime);
+
+
+        // Rot = Vector3.Slerp(Rot, rotationalRecoil, rotationalRecoilSpeed * Time.deltaTime);
+        // rotationPoint.localRotation = Quaternion.Euler(Rot);
     }
 
     #region shooting
@@ -130,6 +170,23 @@ public class GunSystem : MonoBehaviour
         {
             readyToShoot = false;
             Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
+            //recoil
+            if (isAiming)
+            {
+                positionalRecoil = new Vector3(RecoilKickBackAim.x, RecoilKickBackAim.y, RecoilKickBackAim.z);
+                // rotationRecoil = new Vector3((transform.rotation.x + RecoilKickRotation.x), (transform.rotation.y + RecoilKickRotation.y), (transform.rotation.z + RecoilKickRotation.z));
+                transform.position += positionalRecoil;
+                // transform.rotation = Quaternion.Euler(rotationRecoil);
+            }
+            else
+            {
+                positionalRecoil = new Vector3(RecoilKickBack.x, RecoilKickBack.y, RecoilKickBack.z);
+                // rotationRecoil = new Vector3((transform.rotation.x + RecoilKickRotation.x), (transform.rotation.y + RecoilKickRotation.y), (transform.rotation.z + RecoilKickRotation.z));
+                transform.position += positionalRecoil;
+                // transform.rotation = Quaternion.Euler(rotationRecoil);
+            }
+
+            // shoot
             for (int i = 0; i < bulletsPerTap; i++)
             {
                 //direction with spread
@@ -171,6 +228,23 @@ public class GunSystem : MonoBehaviour
         {
             readyToShoot = false;
             Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
+
+            if (isAiming)
+            {
+                positionalRecoil = new Vector3(RecoilKickBackAim.x, RecoilKickBackAim.y, RecoilKickBackAim.z);
+                // rotationRecoil = new Vector3((transform.rotation.x + RecoilKickRotation.x), (transform.rotation.y + RecoilKickRotation.y), (transform.rotation.z + RecoilKickRotation.z));
+                transform.position += positionalRecoil;
+                // transform.rotation = Quaternion.Euler(rotationRecoil);
+            }
+            else
+            {
+                positionalRecoil = new Vector3(RecoilKickBack.x, RecoilKickBack.y, RecoilKickBack.z);
+                // rotationRecoil = new Vector3((transform.rotation.x + RecoilKickRotation.x), (transform.rotation.y + RecoilKickRotation.y), (transform.rotation.z + RecoilKickRotation.z));
+                transform.position += positionalRecoil;
+                // transform.rotation = Quaternion.Euler(rotationRecoil);
+            }
+
+
             for (int i = 0; i < bulletsPerTap; i++)
             {
                 //direction with spread
@@ -234,6 +308,9 @@ public class GunSystem : MonoBehaviour
         bulletsLeft = magazineSize;
         reloading = false;
     }
+    #endregion
+
+    #region recoil
     #endregion
 
 }

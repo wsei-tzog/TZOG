@@ -1462,16 +1462,28 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1623831080}
     - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
+      propertyPath: RecoilKickBack.y
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
+      propertyPath: RecoilKickBack.z
+      value: -0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
+      propertyPath: RecoilRotation.w
+      value: 1.9106855e-15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
       propertyPath: RecoilRotation.x
-      value: 15
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
       propertyPath: RecoilRotation.y
-      value: 0
+      value: -0.00000004371139
       objectReference: {fileID: 0}
     - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
       propertyPath: RecoilRotation.z
-      value: 0
+      value: -0.00000004371139
       objectReference: {fileID: 0}
     - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
       propertyPath: RecoilKickBackAim.x
@@ -1488,6 +1500,22 @@ PrefabInstance:
     - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
       propertyPath: positionReturnSpeed
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
+      propertyPath: RecoilKickRotation.w
+      value: -0.49999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
+      propertyPath: RecoilKickRotation.x
+      value: -0.49999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
+      propertyPath: RecoilKickRotation.y
+      value: 0.49999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
+      propertyPath: RecoilKickRotation.z
+      value: 0.49999997
       objectReference: {fileID: 0}
     - target: {fileID: 4437624421694682617, guid: a4349a725fca8634ba80d25a430a5b56, type: 3}
       propertyPath: positionalReturnSpeed
@@ -8428,16 +8456,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1623831080}
     - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
+      propertyPath: RecoilKickBack.y
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
+      propertyPath: RecoilRotation.w
+      value: 1.9106855e-15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
       propertyPath: RecoilRotation.x
-      value: 15
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
       propertyPath: RecoilRotation.y
-      value: 0
+      value: -0.00000004371139
       objectReference: {fileID: 0}
     - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
       propertyPath: RecoilRotation.z
-      value: 0
+      value: -0.00000004371139
       objectReference: {fileID: 0}
     - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
       propertyPath: timeBetweenShots
@@ -8458,6 +8494,22 @@ PrefabInstance:
     - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
       propertyPath: positionReturnSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
+      propertyPath: RecoilKickRotation.w
+      value: 0.49999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
+      propertyPath: RecoilKickRotation.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
+      propertyPath: RecoilKickRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540613415669285512, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
+      propertyPath: RecoilKickRotation.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3312887450860520332, guid: ad7c38a268ba5da4098a1799ab1b1061, type: 3}
       propertyPath: m_Name

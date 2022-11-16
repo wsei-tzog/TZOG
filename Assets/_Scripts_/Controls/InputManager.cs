@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] Movement movement;
     [SerializeField] MouseLook mouseLook;
     public static GunSystem gunSystem;
+    public MinimapController minimapController;
     public static PickUpController pickUpController;
     // [SerializeField] WeaponSwing weaponSwing;
     PlayerControls controls;
@@ -37,6 +38,7 @@ public class InputManager : MonoBehaviour
         interaction.PickUp.performed += _ => mouseLook.OnPickUpPressed();
         interaction.Drop.performed += _ => pickUpController.OnDropPressed();
 
+        interaction.Map.performed += _ => minimapController.OnMapPressed();
     }
 
     private void Update()

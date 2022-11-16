@@ -51,10 +51,13 @@ public class MouseLook : MonoBehaviour
         #region raycast
         Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 50);
         {
+            // if  rayHit.transform.gameObject.tag = clue
+            // gameObject ==  StartCoroutine.shader
             if (isPickingUp)
             {
                 if (rayHit.transform.gameObject.CompareTag("Weapon") && !slotFull)
                 {
+                    Debug.Log(rayHit.transform.gameObject.name);
                     isPickingUp = false;
                     pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
                     pickUpController.PickUp(rayHit.transform.gameObject);

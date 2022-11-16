@@ -24,7 +24,7 @@ public class Movement : MonoBehaviour
     #endregion
     #region polish
     [SerializeField] WeaponSwing weaponSwing;
-    private bool isRunning = false;
+    // private bool isRunning = false;
     private Animator animator;
     Vector3 horizontalVelocity;
     #endregion

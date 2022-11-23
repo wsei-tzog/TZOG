@@ -87,6 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movement: {fileID: 8398750904686972635}
   mouseLook: {fileID: 8398750904686972634}
+  minimapController: {fileID: 0}
 --- !u!114 &8398750904686972635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100,12 +101,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 8398750904686972633}
-  speed: 4
+  speed: 15
   gravity: -14
   jumpHeight: 2
   groundMask:
     serializedVersion: 2
     m_Bits: 8
+  weaponSwing: {fileID: 0}
 --- !u!114 &8398750904686972634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,10 +120,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a0418d55390e2489bd7eb121aef7a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCamera: {fileID: 8669203481466352460}
   sensitivityX: 12
   sensitivityY: 0.5
-  playerCamera: {fileID: 8669203481466352460}
   xCamlp: 75
+  slotFull: 0
 --- !u!1 &8669203481466352457
 GameObject:
   m_ObjectHideFlags: 0

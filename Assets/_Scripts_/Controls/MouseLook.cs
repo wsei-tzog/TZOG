@@ -49,8 +49,12 @@ public class MouseLook : MonoBehaviour
 
 
         #region raycast
-        Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 50);
+        Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 80);
         {
+            if (rayHit.transform.gameObject.CompareTag("Clue") || rayHit.transform.gameObject.CompareTag("PickAble"))
+            {
+                rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 1f);
+            }
             // if  rayHit.transform.gameObject.tag = clue
             // gameObject ==  StartCoroutine.shader
             if (isPickingUp)
@@ -72,11 +76,20 @@ public class MouseLook : MonoBehaviour
                     Debug.Log("Cannot pickup that weapon!");
                 }
                 #endregion
-                else if (rayHit.transform.gameObject.CompareTag("PickAble"))
+                if (rayHit.transform.gameObject.CompareTag("PickAble"))
                 {
-
-                    Destroy(rayHit.transform.gameObject);
+                    Debug.Log(rayHit.transform.gameObject.name);
+                    isPickingUp = false;
+                    pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+                    pickUpController.PickUp(rayHit.transform.gameObject);
+                    InputManager.pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
                 }
+
+                // else if (rayHit.transform.gameObject.CompareTag("PickAble"))
+                // {
+                //     // PickItUp(rayHit.transform.gameObject);
+                //     Destroy(rayHit.transform.gameObject);
+                // }
 
 
             }

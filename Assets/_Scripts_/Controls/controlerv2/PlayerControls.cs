@@ -220,6 +220,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Torch"",
+                    ""type"": ""Button"",
+                    ""id"": ""56732684-d14c-48aa-8fac-05bf75aab1fe"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -299,6 +307,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7fdf6ebb-2680-49b3-bf9f-cd6ee67fa8d5"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Torch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -321,6 +340,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions_Drop = m_Interactions.FindAction("Drop", throwIfNotFound: true);
         m_Interactions_Aim = m_Interactions.FindAction("Aim", throwIfNotFound: true);
         m_Interactions_Map = m_Interactions.FindAction("Map", throwIfNotFound: true);
+        m_Interactions_Torch = m_Interactions.FindAction("Torch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -442,6 +462,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Interactions_Drop;
     private readonly InputAction m_Interactions_Aim;
     private readonly InputAction m_Interactions_Map;
+    private readonly InputAction m_Interactions_Torch;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -453,6 +474,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Drop => m_Wrapper.m_Interactions_Drop;
         public InputAction @Aim => m_Wrapper.m_Interactions_Aim;
         public InputAction @Map => m_Wrapper.m_Interactions_Map;
+        public InputAction @Torch => m_Wrapper.m_Interactions_Torch;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -483,6 +505,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Map.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMap;
                 @Map.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMap;
                 @Map.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMap;
+                @Torch.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorch;
+                @Torch.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorch;
+                @Torch.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorch;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -508,6 +533,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Map.started += instance.OnMap;
                 @Map.performed += instance.OnMap;
                 @Map.canceled += instance.OnMap;
+                @Torch.started += instance.OnTorch;
+                @Torch.performed += instance.OnTorch;
+                @Torch.canceled += instance.OnTorch;
             }
         }
     }
@@ -529,5 +557,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnDrop(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
+        void OnTorch(InputAction.CallbackContext context);
     }
 }

@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Enemy
   - Weapon
+  - Clue
+  - PickAble
   layers:
   - Default
   - TransparentFX

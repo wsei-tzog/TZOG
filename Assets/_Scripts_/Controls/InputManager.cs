@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
     public static GunSystem gunSystem;
     public MinimapController minimapController;
     public static PickUpController pickUpController;
+    public static Torch torch;
     // [SerializeField] WeaponSwing weaponSwing;
     PlayerControls controls;
     PlayerControls.GroundMovementActions groundMovement;
@@ -37,6 +38,7 @@ public class InputManager : MonoBehaviour
 
         interaction.PickUp.performed += _ => mouseLook.OnPickUpPressed();
         interaction.Drop.performed += _ => pickUpController.OnDropPressed();
+        interaction.Torch.performed += _ => torch.OnTorchPressed();
 
         interaction.Map.performed += _ => minimapController.OnMapPressed();
     }

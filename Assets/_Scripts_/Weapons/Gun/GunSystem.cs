@@ -85,30 +85,42 @@ public class GunSystem : MonoBehaviour
         {
             if (!allowPewPew)
             {
+                Debug.Log("gun system 88");
+
                 if (startShooting)
                 {
+                    Debug.Log("gun system 92");
+
                     Shoot();
                 }
             }
             else
             {
+                Debug.Log("gun system 99");
+
                 PewPew();
             }
         }
 
         if (reloadNow)
         {
+            Debug.Log("gun system 107");
+
             Reload();
         }
 
         if (isAiming)
         {
+            Debug.Log("gun system 114");
+
             wasAiming = true;
             Aim();
         }
         // else if (wasAiming && !isAiming)
         else if (!isAiming)
         {
+            Debug.Log("gun system 122");
+
             OutAim();
             // wasAiming = false;
         }
@@ -164,6 +176,8 @@ public class GunSystem : MonoBehaviour
     }
     private void Shoot()
     {
+        Debug.Log("gun system 179");
+
         bulletsShot = bulletsPerTap;
 
         if (!reloading && readyToShoot && bulletsLeft > 0)
@@ -221,6 +235,8 @@ public class GunSystem : MonoBehaviour
     }
     public void PewPew()
     {
+        Debug.Log("gun system 238");
+
         isLeftMouseHeld = false;
         bulletsShot = bulletsPerTap;
 

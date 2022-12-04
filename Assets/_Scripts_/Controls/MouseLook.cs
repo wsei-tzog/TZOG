@@ -66,10 +66,9 @@ public class MouseLook : MonoBehaviour
                     isPickingUp = false;
 
                     pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+
                     pickUpController.PickUp(rayHit.transform.gameObject);
-                    // }
-                    // for drop
-                    InputManager.pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+                    InputManager.pickUpController = pickUpController;
                 }
 
                 else if (rayHit.transform.gameObject.CompareTag("Weapon") && slotFull)

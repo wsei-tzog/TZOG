@@ -6,14 +6,12 @@ public class Torch : MonoBehaviour
 {
     public bool torchOn, torchEquipped;
 
-    #region polish
     public AudioSource audioSource;
     public AudioClip clip;
     public GameObject torchLight;
-    #endregion
 
-    #region input
-    public void OnTorchPressed()
+
+    public void OnTorchSwitchPressed()
     {
         if (torchEquipped && !torchOn)
         {
@@ -24,12 +22,13 @@ public class Torch : MonoBehaviour
             turnOff();
         }
     }
-    #endregion
+
+
 
     public void turnOn()
     {
         gameObject.SetActive(true);
-        torchLight.SetActive(true);
+        // torchLight.SetActive(true);
         torchOn = true;
     }
     public void turnOff()

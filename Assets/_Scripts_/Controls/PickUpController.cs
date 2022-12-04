@@ -23,6 +23,7 @@ public class PickUpController : MonoBehaviour
         {
             gunSystem.enabled = false;
             mouseLook.slotFull = false;
+            torch.torchEquipped = false;
         }
         if (equipped)
         {
@@ -45,27 +46,23 @@ public class PickUpController : MonoBehaviour
     #region equip / drop
 
 
-    public void PickUpTorch(GameObject rayHittedGameObject)
+    public void PickUpStuff(GameObject rayHittedGameObject)
     {
-        //set bools
-        if ((rayHittedGameObject.name == "Torch") && (torch.torchEquipped = false))
-        {
-            // set this torch in input
-            InputManager.torch = rayHittedGameObject.GetComponent<Torch>();
-            torch.torchEquipped = true;
+        // set this torch in input
+        InputManager.torch = rayHittedGameObject.GetComponent<Torch>();
+        torch.torchEquipped = true;
 
-            //Remove rigidbody and BoxCollider
-            Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
-            rayHittedGameObject.GetComponent<Collider>().enabled = false;
+        //Remove rigidbody and BoxCollider
+        Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
+        rayHittedGameObject.GetComponent<Collider>().enabled = false;
 
-            //Make weapon a child and move it to default position
-            Vector3 torchScale = rayHittedGameObject.transform.localScale;
-            rayHittedGameObject.transform.SetParent(defaultPosition, false);
-            rayHittedGameObject.transform.localPosition = Vector3.zero;
-            rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            rayHittedGameObject.transform.localScale = torchScale;
-            // show L for light
-        }
+        //Make weapon a child and move it to default position
+        Vector3 torchScale = rayHittedGameObject.transform.localScale;
+        rayHittedGameObject.transform.SetParent(defaultPosition, false);
+        rayHittedGameObject.transform.localPosition = Vector3.zero;
+        rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        rayHittedGameObject.transform.localScale = torchScale;
+        // show L for light
     }
     public void PickUp(GameObject rayHittedGameObject)
     {

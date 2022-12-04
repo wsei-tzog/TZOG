@@ -55,6 +55,7 @@ public class MouseLook : MonoBehaviour
             // gameObject ==  StartCoroutine.shader
             if (isPickingUp)
             {
+                #region weapon
                 if (rayHit.transform.gameObject.CompareTag("Weapon") && !slotFull)
                 {
                     Debug.Log(rayHit.transform.gameObject.name);
@@ -65,11 +66,19 @@ public class MouseLook : MonoBehaviour
                     // for drop
                     InputManager.pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
                 }
-                else
+                else if (rayHit.transform.gameObject.CompareTag("Weapon") && slotFull)
                 {
                     isPickingUp = false;
                     Debug.Log("Cannot pickup that weapon!");
                 }
+                #endregion
+                else if (rayHit.transform.gameObject.CompareTag("PickAble"))
+                {
+
+                    Destroy(rayHit.transform.gameObject);
+                }
+
+
             }
 
         }

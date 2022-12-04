@@ -63,7 +63,7 @@ Transform:
   m_GameObject: {fileID: 3312887450860520332}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.6029999, y: 51.814, z: 5.471}
-  m_LocalScale: {x: 0.265, y: 0.315, z: 0.256}
+  m_LocalScale: {x: 0.16351, y: 0.261616, z: 0.16351}
   m_Children:
   - {fileID: 4991352695023968164}
   - {fileID: 5434239792283007063}
@@ -146,6 +146,7 @@ MonoBehaviour:
   allowPewPew: 1
   isAiming: 0
   wasAiming: 0
+  turnOffCanvas: 0
   aimAnimationSpeed: 3
   fpsCam: {fileID: 0}
   attackPoint: {fileID: 4991352695023968164}
@@ -175,8 +176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfcf2887fa911484b907a2dcdab7fa6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensity: 1
-  smooth: 1
+  intensity: 2
+  smooth: 2
 --- !u!114 &3357706203452896122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -193,8 +194,8 @@ MonoBehaviour:
   torch: {fileID: 0}
   defaultPosition: {fileID: 0}
   mouseLook: {fileID: 0}
-  dropForwardForce: 10
-  dropUpwardForce: 10
+  dropForwardForce: 3
+  dropUpwardForce: 3
   equipped: 0
 --- !u!54 &3312887450860520322
 Rigidbody:

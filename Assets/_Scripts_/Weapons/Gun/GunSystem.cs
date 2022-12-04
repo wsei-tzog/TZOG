@@ -15,7 +15,8 @@ public class GunSystem : MonoBehaviour
     #region  bools
     bool shooting, readyToShoot, reloading, startShooting, reloadNow, isLeftMouseHeld;
     public bool allowPewPew, isAiming, wasAiming;
-    public static bool weaponIsActive, turnOffCanvas;
+    public static bool weaponIsActive;
+    public bool turnOffCanvas;
     public float aimAnimationSpeed;
     #endregion
 
@@ -52,6 +53,18 @@ public class GunSystem : MonoBehaviour
 
 
     #endregion
+    public void UIBullets()
+    {
+        if (turnOffCanvas)
+        {
+            text.gameObject.SetActive(false);
+
+        }
+        else if (!turnOffCanvas)
+        {
+            text.gameObject.SetActive(true);
+        }
+    }
 
     public void ReceiveInput(bool _isLeftMouseHeld)
     {
@@ -72,55 +85,37 @@ public class GunSystem : MonoBehaviour
     private void Update()
     {
         text.SetText(bulletsLeft + " / " + magazineSize);
-        if (turnOffCanvas)
-        {
-            text.enabled = false;
-        }
-        else if (!turnOffCanvas)
-        {
-            text.enabled = true;
-        }
+
 
         if (weaponIsActive && isLeftMouseHeld)
         {
             if (!allowPewPew)
             {
-                Debug.Log("gun system 88");
 
                 if (startShooting)
                 {
-                    Debug.Log("gun system 92");
-
                     Shoot();
                 }
             }
             else
             {
-                Debug.Log("gun system 99");
-
                 PewPew();
             }
         }
 
         if (reloadNow)
         {
-            Debug.Log("gun system 107");
-
             Reload();
         }
 
         if (isAiming)
         {
-            Debug.Log("gun system 114");
-
             wasAiming = true;
             Aim();
         }
         // else if (wasAiming && !isAiming)
         else if (!isAiming)
         {
-            Debug.Log("gun system 122");
-
             OutAim();
             // wasAiming = false;
         }
@@ -176,8 +171,6 @@ public class GunSystem : MonoBehaviour
     }
     private void Shoot()
     {
-        Debug.Log("gun system 179");
-
         bulletsShot = bulletsPerTap;
 
         if (!reloading && readyToShoot && bulletsLeft > 0)
@@ -215,12 +208,11 @@ public class GunSystem : MonoBehaviour
                 {
                     if (rayHit.collider.CompareTag("Enemy"))
                     {
-                        rayHit.collider.GetComponent<Enemy>().TakeDamage(damage * bulletsPerTap);
+                        rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);
                     }
+                    //Graphics
+                    Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
                 }
-
-                //Graphics
-                Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
 
                 bulletsLeft--;
                 bulletsShot--;
@@ -235,8 +227,6 @@ public class GunSystem : MonoBehaviour
     }
     public void PewPew()
     {
-        Debug.Log("gun system 238");
-
         isLeftMouseHeld = false;
         bulletsShot = bulletsPerTap;
 

@@ -80,7 +80,9 @@ public class PickUpController : MonoBehaviour
         InputManager.gunSystem = rayHittedGameObject.GetComponent<GunSystem>();
         MouseLook.weaponSwing = rayHittedGameObject.GetComponent<WeaponSwing>();
         GunSystem.weaponIsActive = true;
-        GunSystem.turnOffCanvas = false;
+        gunSystem.turnOffCanvas = false;
+        gunSystem.UIBullets();
+
         rayHittedGameObject.GetComponent<GunSystem>().enabled = true;
         rayHittedGameObject.GetComponent<WeaponSwing>().enabled = true;
 
@@ -110,8 +112,9 @@ public class PickUpController : MonoBehaviour
         InputManager.gunSystem = null;
         InputManager.pickUpController = null;
         MouseLook.weaponSwing = null;
-        GunSystem.turnOffCanvas = true;
         GunSystem.weaponIsActive = false;
+        gunSystem.turnOffCanvas = true;
+        gunSystem.UIBullets();
 
         // Make Rigidbody and BoxCollider
         gameObject.AddComponent<Rigidbody>();

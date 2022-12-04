@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Torch : MonoBehaviour
 {
-    public static bool torchOn, torchEquipped;
+    public bool torchOn, torchEquipped;
 
     #region polish
     public AudioSource audioSource;
@@ -13,7 +13,6 @@ public class Torch : MonoBehaviour
     #endregion
 
     #region input
-
     public void OnTorchPressed()
     {
         if (torchEquipped && !torchOn)
@@ -29,10 +28,14 @@ public class Torch : MonoBehaviour
 
     public void turnOn()
     {
+        gameObject.SetActive(true);
         torchLight.SetActive(true);
+        torchOn = true;
     }
     public void turnOff()
     {
-        torchLight.SetActive(false);
+        gameObject.SetActive(false);
+        //torchLight.SetActive(false);
+        torchOn = false;
     }
 }

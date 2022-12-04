@@ -209,7 +209,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Torch",
+                    "name": "TorchSwitch",
                     "type": "Button",
                     "id": "56732684-d14c-48aa-8fac-05bf75aab1fe",
                     "expectedControlType": "Button",
@@ -302,7 +302,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Torch",
+                    "action": "TorchSwitch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

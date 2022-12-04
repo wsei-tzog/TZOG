@@ -62,6 +62,7 @@ public class MouseLook : MonoBehaviour
                 #region weapon
                 if (rayHit.transform.gameObject.CompareTag("Weapon") && !slotFull)
                 {
+                    rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
                     Debug.Log(rayHit.transform.gameObject.name);
                     isPickingUp = false;
                     pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
@@ -78,11 +79,17 @@ public class MouseLook : MonoBehaviour
                 #endregion
                 if (rayHit.transform.gameObject.CompareTag("PickAble"))
                 {
+                    rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
                     Debug.Log(rayHit.transform.gameObject.name);
                     isPickingUp = false;
                     pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
-                    pickUpController.PickUp(rayHit.transform.gameObject);
+                    pickUpController.PickUpTorch(rayHit.transform.gameObject);
                     InputManager.pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+                }
+                else
+                {
+                    isPickingUp = false;
+
                 }
 
                 // else if (rayHit.transform.gameObject.CompareTag("PickAble"))

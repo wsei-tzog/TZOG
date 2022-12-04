@@ -6,6 +6,7 @@ public class PickUpController : MonoBehaviour
 {
     #region reference
     public GunSystem gunSystem;
+    public Torch torch;
     public Transform defaultPosition;
     public MouseLook mouseLook;
     #endregion
@@ -42,44 +43,57 @@ public class PickUpController : MonoBehaviour
     #endregion
 
     #region equip / drop
-    public void PickUp(GameObject rayHittedGameObject)
+
+
+    public void PickUpTorch(GameObject rayHittedGameObject)
     {
         //set bools
-        if (rayHittedGameObject.name == "Torch")
+        if ((rayHittedGameObject.name == "Torch") && (torch.torchEquipped = false))
         {
-            Torch.torchEquipped = true;
-            Vector3 torchScale = rayHittedGameObject.transform.localScale;
-            rayHittedGameObject.transform.SetParent(defaultPosition, false);
-            rayHittedGameObject.transform.localPosition = Vector3.zero;
-            rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            rayHittedGameObject.transform.localScale = torchScale;
-        }
-        else
-        {
-            equipped = true;
-            mouseLook.slotFull = true;
-            // MouseLook.isPickingUp = false;
+            // set this torch in input
+            InputManager.torch = rayHittedGameObject.GetComponent<Torch>();
+            torch.torchEquipped = true;
 
             //Remove rigidbody and BoxCollider
             Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
             rayHittedGameObject.GetComponent<Collider>().enabled = false;
 
-            // set that weapon as weapon swing and gun system
-            InputManager.gunSystem = rayHittedGameObject.GetComponent<GunSystem>();
-            MouseLook.weaponSwing = rayHittedGameObject.GetComponent<WeaponSwing>();
-            GunSystem.weaponIsActive = true;
-            GunSystem.turnOffCanvas = false;
-            rayHittedGameObject.GetComponent<GunSystem>().enabled = true;
-            rayHittedGameObject.GetComponent<WeaponSwing>().enabled = true;
-
             //Make weapon a child and move it to default position
-            Vector3 scale = rayHittedGameObject.transform.localScale;
+            Vector3 torchScale = rayHittedGameObject.transform.localScale;
             rayHittedGameObject.transform.SetParent(defaultPosition, false);
             rayHittedGameObject.transform.localPosition = Vector3.zero;
             rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            rayHittedGameObject.transform.localScale = scale;
-
+            rayHittedGameObject.transform.localScale = torchScale;
+            // show L for light
         }
+    }
+    public void PickUp(GameObject rayHittedGameObject)
+    {
+
+
+        equipped = true;
+        mouseLook.slotFull = true;
+        // MouseLook.isPickingUp = false;
+
+        //Remove rigidbody and BoxCollider
+        Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
+        rayHittedGameObject.GetComponent<Collider>().enabled = false;
+
+        // set that weapon as weapon swing and gun system
+        InputManager.gunSystem = rayHittedGameObject.GetComponent<GunSystem>();
+        MouseLook.weaponSwing = rayHittedGameObject.GetComponent<WeaponSwing>();
+        GunSystem.weaponIsActive = true;
+        GunSystem.turnOffCanvas = false;
+        rayHittedGameObject.GetComponent<GunSystem>().enabled = true;
+        rayHittedGameObject.GetComponent<WeaponSwing>().enabled = true;
+
+        //Make weapon a child and move it to default position
+        Vector3 scale = rayHittedGameObject.transform.localScale;
+        rayHittedGameObject.transform.SetParent(defaultPosition, false);
+        rayHittedGameObject.transform.localPosition = Vector3.zero;
+        rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        rayHittedGameObject.transform.localScale = scale;
+
 
     }
 

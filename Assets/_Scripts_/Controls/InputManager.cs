@@ -38,7 +38,7 @@ public class InputManager : MonoBehaviour
 
         interaction.PickUp.performed += _ => mouseLook.OnPickUpPressed();
         interaction.Drop.performed += _ => pickUpController.OnDropPressed();
-        interaction.Torch.performed += _ => torch.OnTorchPressed();
+        interaction.TorchSwitch.performed += _ => torch.OnTorchPressed();
 
         interaction.Map.performed += _ => minimapController.OnMapPressed();
     }

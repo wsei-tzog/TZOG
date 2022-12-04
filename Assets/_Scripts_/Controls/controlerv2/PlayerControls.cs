@@ -222,7 +222,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Torch"",
+                    ""name"": ""TorchSwitch"",
                     ""type"": ""Button"",
                     ""id"": ""56732684-d14c-48aa-8fac-05bf75aab1fe"",
                     ""expectedControlType"": ""Button"",
@@ -315,7 +315,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Torch"",
+                    ""action"": ""TorchSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -340,7 +340,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions_Drop = m_Interactions.FindAction("Drop", throwIfNotFound: true);
         m_Interactions_Aim = m_Interactions.FindAction("Aim", throwIfNotFound: true);
         m_Interactions_Map = m_Interactions.FindAction("Map", throwIfNotFound: true);
-        m_Interactions_Torch = m_Interactions.FindAction("Torch", throwIfNotFound: true);
+        m_Interactions_TorchSwitch = m_Interactions.FindAction("TorchSwitch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -462,7 +462,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Interactions_Drop;
     private readonly InputAction m_Interactions_Aim;
     private readonly InputAction m_Interactions_Map;
-    private readonly InputAction m_Interactions_Torch;
+    private readonly InputAction m_Interactions_TorchSwitch;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -474,7 +474,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Drop => m_Wrapper.m_Interactions_Drop;
         public InputAction @Aim => m_Wrapper.m_Interactions_Aim;
         public InputAction @Map => m_Wrapper.m_Interactions_Map;
-        public InputAction @Torch => m_Wrapper.m_Interactions_Torch;
+        public InputAction @TorchSwitch => m_Wrapper.m_Interactions_TorchSwitch;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -505,9 +505,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Map.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMap;
                 @Map.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMap;
                 @Map.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMap;
-                @Torch.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorch;
-                @Torch.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorch;
-                @Torch.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorch;
+                @TorchSwitch.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorchSwitch;
+                @TorchSwitch.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorchSwitch;
+                @TorchSwitch.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorchSwitch;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -533,9 +533,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Map.started += instance.OnMap;
                 @Map.performed += instance.OnMap;
                 @Map.canceled += instance.OnMap;
-                @Torch.started += instance.OnTorch;
-                @Torch.performed += instance.OnTorch;
-                @Torch.canceled += instance.OnTorch;
+                @TorchSwitch.started += instance.OnTorchSwitch;
+                @TorchSwitch.performed += instance.OnTorchSwitch;
+                @TorchSwitch.canceled += instance.OnTorchSwitch;
             }
         }
     }
@@ -557,6 +557,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnDrop(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
-        void OnTorch(InputAction.CallbackContext context);
+        void OnTorchSwitch(InputAction.CallbackContext context);
     }
 }

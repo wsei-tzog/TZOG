@@ -13,6 +13,10 @@ GameObject:
   - component: {fileID: 27927853531431107}
   - component: {fileID: 1504291956182500672}
   - component: {fileID: 8577197654053021509}
+  - component: {fileID: 2102079037}
+  - component: {fileID: 2102079038}
+  - component: {fileID: 99223988}
+  - component: {fileID: 99223989}
   m_Layer: 0
   m_Name: Torch
   m_TagString: PickAble
@@ -95,8 +99,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.08, y: 0.08, z: 0.4166235}
-  m_Center: {x: 0, y: -0.000000011175871, z: 0.08592905}
+  m_Size: {x: 0.31519958, y: 0.08, z: 0.5537713}
+  m_Center: {x: -0.007354364, y: -0.000000022619895, z: 0.11353526}
 --- !u!54 &8577197654053021509
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -111,8 +115,80 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 126
+  m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2102079037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110766685619141112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b3c54bc5ed2304599769bab54c1c66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunSystem: {fileID: 0}
+  torch: {fileID: 2102079038}
+  defaultPosition: {fileID: 0}
+  mouseLook: {fileID: 0}
+  dropForwardForce: 2
+  dropUpwardForce: 2
+  equipped: 0
+--- !u!114 &2102079038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110766685619141112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a394a76e4f4a4c4e929d9f8b9da0f1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  torchOn: 0
+  torchEquipped: 0
+  audioSource: {fileID: 0}
+  clip: {fileID: 0}
+  torchLight: {fileID: 8562984308237724972}
+--- !u!114 &99223988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110766685619141112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a394a76e4f4a4c4e929d9f8b9da0f1e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  torchOn: 0
+  torchEquipped: 0
+  audioSource: {fileID: 0}
+  clip: {fileID: 0}
+  torchLight: {fileID: 8562984308237724972}
+--- !u!114 &99223989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 110766685619141112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b3c54bc5ed2304599769bab54c1c66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunSystem: {fileID: 0}
+  torch: {fileID: 99223988}
+  defaultPosition: {fileID: 0}
+  mouseLook: {fileID: 0}
+  dropForwardForce: 2
+  dropUpwardForce: 2
+  equipped: 0
 --- !u!1 &8562984308237724972
 GameObject:
   m_ObjectHideFlags: 0

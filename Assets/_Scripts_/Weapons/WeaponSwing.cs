@@ -7,6 +7,7 @@ public class WeaponSwing : MonoBehaviour
 {
     public float intensity;
     public float smooth;
+    public bool isAiming;
     bool _running;
     private Quaternion origin_rotation;
     float mouseX, mouseY;
@@ -15,7 +16,7 @@ public class WeaponSwing : MonoBehaviour
         mouseX = mouseInput.x;
         mouseY = mouseInput.y;
     }
-    public void ReceiveRunningBool(bool running)
+    public void ReceiveAimingBool(bool running)
     {
         _running = running;
     }
@@ -27,8 +28,11 @@ public class WeaponSwing : MonoBehaviour
 
     private void Update()
     {
-        UpdateSway();
-        UpdateRunningSway();
+        if (isAiming)
+        {
+            UpdateSway();
+            UpdateRunningSway();
+        }
     }
 
 

@@ -54,7 +54,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1072484650667514304}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.44, z: -1.51}
+  m_LocalPosition: {x: 0, y: 0.44, z: -1.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2319141155842878264}
@@ -93,7 +93,7 @@ Transform:
   m_GameObject: {fileID: 3126885950835175810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 0.16351, y: 0.261616, z: 0.16351}
+  m_LocalScale: {x: 0.28769803, y: 0.261616, z: 0.16351}
   m_Children:
   - {fileID: 1058261734178976519}
   - {fileID: 3100267698332881930}
@@ -207,7 +207,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   intensity: 2
-  smooth: 2
+  smooth: 5
+  isAiming: 0
 --- !u!114 &6176466916713111209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,6 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunSystem: {fileID: 4437624421694682617}
   torch: {fileID: 0}
+  lF: {fileID: 0}
   defaultPosition: {fileID: 0}
   mouseLook: {fileID: 0}
   dropForwardForce: 5
@@ -239,7 +241,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -376,7 +378,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6442432428808341715}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.57, z: -2.2}
+  m_LocalPosition: {x: 0, y: 0.57, z: -1.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2319141155842878264}

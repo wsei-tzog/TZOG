@@ -5,6 +5,7 @@ using UnityEngine;
 public class EventController : MonoBehaviour
 {
     public static event System.Action<int> OnEnemyDied = delegate { };
+    public static event System.Action<int> OnItemFound = delegate { };
     public static event System.Action<Quest> OnQuestProgressChanged = delegate { };
     public static event System.Action<Quest> OnQuestCompleted = delegate { };
 
@@ -12,6 +13,10 @@ public class EventController : MonoBehaviour
     public static void EnemyDied(int enemyId)
     {
         OnEnemyDied(enemyId);
+    }
+    public static void ItemFound(int itemId)
+    {
+        OnItemFound(itemId);
     }
     public static void QuestProgressChanged(Quest quest)
     {

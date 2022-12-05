@@ -69,9 +69,11 @@ public class InputManager : MonoBehaviour
         if (interaction.Aim.ReadValue<float>() > 0.1f)
         {
             gunSystem.ReceiveAimInput(true);
+            mouseLook.ReceiveAimingBool(true);
         }
         else
         {
+            mouseLook.ReceiveAimingBool(false);
             gunSystem.ReceiveAimInput(false);
         }
 

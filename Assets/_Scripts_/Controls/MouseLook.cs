@@ -9,6 +9,7 @@ public class MouseLook : MonoBehaviour
     public static WeaponSwing weaponSwing;
     public static PickUpController pickUpController;
     public Transform playerCamera;
+    public letterFound lF;
     #endregion
 
     #region vars
@@ -21,15 +22,29 @@ public class MouseLook : MonoBehaviour
     public bool slotFull;
     #endregion
 
+
+    public void ReceiveAimingBool(bool _isAiming)
+    {
+        weaponSwing.isAiming = _isAiming;
+    }
     public void ReceiveInput(Vector2 mouseInput)
     {
         mouseX = mouseInput.x * sensitivityX;
         mouseY = mouseInput.y * sensitivityY;
         weaponSwing.ReceiveInput(mouseInput);
+
+
+
     }
     public void OnPickUpPressed()
     {
         isPickingUp = true;
+
+        // call disabling methods on UI on mouse movement
+        if (lF.letterUI.enabled)
+        {
+            lF.hideLetter();
+        }
     }
     private void Awake()
     {
@@ -46,6 +61,7 @@ public class MouseLook : MonoBehaviour
         targetRotation.x = xRotation;
         playerCamera.eulerAngles = targetRotation;
         #endregion
+
 
 
         #region raycast
@@ -92,7 +108,6 @@ public class MouseLook : MonoBehaviour
                 else
                 {
                     isPickingUp = false;
-
                 }
 
             }

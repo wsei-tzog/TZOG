@@ -8,6 +8,7 @@ public class PickUpController : MonoBehaviour
     public GunSystem gunSystem;
     public Torch torch;
     public letterFound lF;
+    public photoFound pQ3;
     public Transform defaultPosition;
     public MouseLook mouseLook;
     #endregion
@@ -53,6 +54,10 @@ public class PickUpController : MonoBehaviour
         if (rayHittedGameObject.name == "letter")
         {
             lF.showLetter();
+        }
+        else if (rayHittedGameObject.name == "photoQ3")
+        {
+            pQ3.showpQ3();
         }
         else
         {

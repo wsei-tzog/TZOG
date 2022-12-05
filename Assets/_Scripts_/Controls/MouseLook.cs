@@ -10,6 +10,7 @@ public class MouseLook : MonoBehaviour
     public static PickUpController pickUpController;
     public Transform playerCamera;
     public letterFound lF;
+    public photoFound pQ3;
     #endregion
 
     #region vars
@@ -44,6 +45,11 @@ public class MouseLook : MonoBehaviour
         if (lF.letterUI.enabled)
         {
             lF.hideLetter();
+        }
+
+        if (pQ3.photoUI.enabled)
+        {
+            pQ3.hidepQ3();
         }
     }
     private void Awake()

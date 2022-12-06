@@ -57,6 +57,7 @@ public class PickUpController : MonoBehaviour
         }
         else if (rayHittedGameObject.name == "photoQ3")
         {
+            Debug.Log("Show pq3");
             pQ3.showpQ3();
         }
         else

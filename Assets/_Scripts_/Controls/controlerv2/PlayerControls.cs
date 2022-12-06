@@ -228,6 +228,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Esc"",
+                    ""type"": ""Button"",
+                    ""id"": ""863bcedc-c0b3-46b8-b2ec-03a14646f11f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -318,6 +326,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""TorchSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc4dfa34-2e97-42fd-b44e-0f5fe1b11ec9"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Esc"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -341,6 +360,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions_Aim = m_Interactions.FindAction("Aim", throwIfNotFound: true);
         m_Interactions_Map = m_Interactions.FindAction("Map", throwIfNotFound: true);
         m_Interactions_TorchSwitch = m_Interactions.FindAction("TorchSwitch", throwIfNotFound: true);
+        m_Interactions_Esc = m_Interactions.FindAction("Esc", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -463,6 +483,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Interactions_Aim;
     private readonly InputAction m_Interactions_Map;
     private readonly InputAction m_Interactions_TorchSwitch;
+    private readonly InputAction m_Interactions_Esc;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -475,6 +496,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Aim => m_Wrapper.m_Interactions_Aim;
         public InputAction @Map => m_Wrapper.m_Interactions_Map;
         public InputAction @TorchSwitch => m_Wrapper.m_Interactions_TorchSwitch;
+        public InputAction @Esc => m_Wrapper.m_Interactions_Esc;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -508,6 +530,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @TorchSwitch.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorchSwitch;
                 @TorchSwitch.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorchSwitch;
                 @TorchSwitch.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnTorchSwitch;
+                @Esc.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnEsc;
+                @Esc.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnEsc;
+                @Esc.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnEsc;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -536,6 +561,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @TorchSwitch.started += instance.OnTorchSwitch;
                 @TorchSwitch.performed += instance.OnTorchSwitch;
                 @TorchSwitch.canceled += instance.OnTorchSwitch;
+                @Esc.started += instance.OnEsc;
+                @Esc.performed += instance.OnEsc;
+                @Esc.canceled += instance.OnEsc;
             }
         }
     }
@@ -558,5 +586,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);
         void OnTorchSwitch(InputAction.CallbackContext context);
+        void OnEsc(InputAction.CallbackContext context);
     }
 }

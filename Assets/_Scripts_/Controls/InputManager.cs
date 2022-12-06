@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] MouseLook mouseLook;
     public static GunSystem gunSystem;
     public MinimapController minimapController;
+    public EscController escController;
     public static PickUpController pickUpController;
     public static Torch torch;
     // [SerializeField] WeaponSwing weaponSwing;
@@ -20,6 +21,9 @@ public class InputManager : MonoBehaviour
     Vector2 mouseInput;
     private void Awake()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         controls = new PlayerControls();
         groundMovement = controls.GroundMovement;
         interaction = controls.Interactions;
@@ -41,6 +45,7 @@ public class InputManager : MonoBehaviour
         interaction.TorchSwitch.performed += _ => torch.OnTorchSwitchPressed();
 
         interaction.Map.performed += _ => minimapController.OnMapPressed();
+        interaction.Esc.performed += _ => escController.OnEscPressed();
     }
 
     private void Update()

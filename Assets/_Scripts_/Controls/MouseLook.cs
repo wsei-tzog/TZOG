@@ -42,12 +42,13 @@ public class MouseLook : MonoBehaviour
         isPickingUp = true;
 
         // call disabling methods on UI on mouse movement
-        if (lF.letterUI.enabled)
+        if (lF.letterUI.enabled == true)
         {
+            Debug.Log("true enabled");
             lF.hideLetter();
         }
 
-        if (pQ3.photoUI.enabled)
+        if (pQ3.photoUI.enabled == true)
         {
             pQ3.hidepQ3();
         }

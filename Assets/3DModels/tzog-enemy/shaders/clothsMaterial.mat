@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: clothsMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 37c3a546d713263418004acaecb4c28f, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 21e02468b8b99bf44904c423ebbd2a11, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -21,6 +21,10 @@ Material:
     m_TexEnvs:
     - Texture2D_0c8b0f32019941cdb5bfc3075ae21fde:
         m_Texture: {fileID: 2800000, guid: a7fcb2cc63635174cb9bb65b0dcf87da, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_16940f47392d4703abb3915f26fb34dd:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_927b2e63a24d4cd1a1bb90e36dd144d4:
@@ -46,5 +50,5 @@ Material:
     m_Floats:
     - Vector1_34924efea37343fe88b5a36cf60d2024: -1.41
     m_Colors:
-    - Color_5a688f676b19454fb53bcc422838b517: {r: 0.27450982, g: 0.21176471, b: 0.05882353, a: 0}
+    - Color_5a688f676b19454fb53bcc422838b517: {r: 0.034313727, g: 0.026470589, b: 0.007352941, a: 0}
   m_BuildTextureStacks: []

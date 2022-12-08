@@ -21,8 +21,8 @@ public class InputManager : MonoBehaviour
     Vector2 mouseInput;
     private void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        // Cursor.lockState = CursorLockMode.Locked;
+        // Cursor.visible = false;
 
         controls = new PlayerControls();
         groundMovement = controls.GroundMovement;

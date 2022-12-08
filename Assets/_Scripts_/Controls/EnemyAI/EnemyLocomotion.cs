@@ -17,6 +17,7 @@ public class EnemyLocomotion : MonoBehaviour
 
 
     public float detectDistance;
+    public float attackDistance;
     public float movementSpeed;
     public float rotationSpeed;
 
@@ -30,29 +31,48 @@ public class EnemyLocomotion : MonoBehaviour
 
     private void Update()
     {
-        if (!detectedPlayer)
+        float distanceToPlayer = Vector3.Distance(mTransform.position, playerTransform.position);
+
+        if (detectedPlayer)
         {
-            PlayerDetecion();
+            MoveToPlayer(distanceToPlayer);
         }
         else
         {
-            MoveToPlayer();
+            PlayerDetecion(distanceToPlayer);
         }
     }
 
 
-    public void PlayerDetecion()
+    public void PlayerDetecion(float distanceToPlayer)
     {
-        float distanceToPlayer = Vector3.Distance(mTransform.position, playerTransform.position);
         if (distanceToPlayer < detectDistance)
         {
             detectedPlayer = true;
         }
+
+
     }
 
-    public void MoveToPlayer()
+    public void MoveToPlayer(float distanceToPlayer)
     {
+        // lost player
+        if (distanceToPlayer > detectDistance)
+        {
+            detectedPlayer = false;
+            animator.SetFloat("walk", 0, 0.4f, Time.deltaTime);
+        }
+
+        // go to player
         agent.SetDestination(playerTransform.position);
+        animator.SetFloat("walk", 1, 0.4f, Time.deltaTime);
+
+        // attack player
+        if (distanceToPlayer > attackDistance)
+        {
+            animator.SetFloat("attack", 1, 0.4f, Time.deltaTime);
+        }
+
     }
 
 

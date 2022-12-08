@@ -29,7 +29,7 @@ public class GunSystem : MonoBehaviour
     #endregion
 
     #region polish
-    public GameObject muzzleFlash, bulletHole, defaultPosition, aimPosition;
+    public GameObject muzzleFlash, bulletHole, enemyHole, defaultPosition, aimPosition;
     public AudioSource audioSource;
     public AudioClip clip;
     public TextMeshProUGUI text;
@@ -209,9 +209,15 @@ public class GunSystem : MonoBehaviour
                     if (rayHit.collider.CompareTag("Enemy"))
                     {
                         rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);
+                        //Graphics
+                        Destroy((Instantiate(enemyHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
+
                     }
-                    //Graphics
-                    Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
+                    else
+                    {
+                        //Graphics
+                        Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
+                    }
                 }
 
                 bulletsLeft--;
@@ -266,11 +272,18 @@ public class GunSystem : MonoBehaviour
                     if (rayHit.collider.CompareTag("Enemy"))
                     {
                         rayHit.collider.GetComponent<Enemy>().TakeDamage(damage);
+                        //Graphics
+                        Destroy((Instantiate(enemyHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
+
+                    }
+                    else
+                    {
+                        //Graphics
+                        Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
                     }
                 }
 
-                //Graphics
-                Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
+
 
 
                 bulletsLeft--;

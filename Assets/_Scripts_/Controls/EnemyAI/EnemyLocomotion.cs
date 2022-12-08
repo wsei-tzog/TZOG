@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyLocomotion : MonoBehaviour
 {
 
-    public bool detectedPlayer;
+    public bool detectedPlayer, Alive;
     public bool isMoving;
 
 
@@ -23,6 +23,7 @@ public class EnemyLocomotion : MonoBehaviour
 
     private void Start()
     {
+        Alive = true;
         mTransform = this.transform;
         agent.speed = movementSpeed;
         agent.angularSpeed = rotationSpeed;
@@ -33,14 +34,22 @@ public class EnemyLocomotion : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(mTransform.position, playerTransform.position);
 
-        if (detectedPlayer)
+        if (Alive)
         {
-            MoveToPlayer(distanceToPlayer);
+            if (detectedPlayer)
+            {
+                MoveToPlayer(distanceToPlayer);
+            }
+            else
+            {
+                PlayerDetecion(distanceToPlayer);
+            }
         }
         else
         {
-            PlayerDetecion(distanceToPlayer);
+            Die();
         }
+
     }
 
 
@@ -50,7 +59,11 @@ public class EnemyLocomotion : MonoBehaviour
         {
             detectedPlayer = true;
         }
-
+        else
+        {
+            detectedPlayer = false;
+            animator.SetFloat("locomotion", 0, 0.4f, Time.deltaTime);
+        }
 
     }
 
@@ -60,22 +73,40 @@ public class EnemyLocomotion : MonoBehaviour
         if (distanceToPlayer > detectDistance)
         {
             detectedPlayer = false;
-            animator.SetFloat("walk", 0, 0.4f, Time.deltaTime);
+            animator.SetFloat("locomotion", 0, 0.4f, Time.deltaTime);
+            Debug.Log("player lost");
         }
 
-        // go to player
-        agent.SetDestination(playerTransform.position);
-        animator.SetFloat("walk", 1, 0.4f, Time.deltaTime);
-
-        // attack player
-        if (distanceToPlayer > attackDistance)
+        if (distanceToPlayer < attackDistance)
         {
-            animator.SetFloat("attack", 1, 0.4f, Time.deltaTime);
+            // attack player
+            animator.SetFloat("locomotion", 1, 0.4f, Time.deltaTime);
+            Debug.Log("attacking");
         }
+        else
+        {
+            // go to player
+            agent.SetDestination(playerTransform.position);
+            animator.SetFloat("locomotion", 0.5f, 0.4f, Time.deltaTime);
+            Debug.Log("going to");
+        }
+
 
     }
 
+    public void Die()
+    {
+        Debug.Log("Die function");
+        animator.SetFloat("locomotion", 0);
+        animator.SetBool("Die", true);
+        Destroy(this.gameObject, 5);
+    }
 
+    public void enemyAlive(bool _Alive)
+    {
+        Debug.Log("Alive call");
+        Alive = _Alive;
+    }
 
 
 

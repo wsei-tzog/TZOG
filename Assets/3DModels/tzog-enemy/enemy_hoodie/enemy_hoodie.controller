@@ -148,8 +148,8 @@ AnimatorState:
   m_Transitions: []
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
-  m_IKOnFeet: 0
-  m_WriteDefaultValues: 1
+  m_IKOnFeet: 1
+  m_WriteDefaultValues: 0
   m_Mirror: 0
   m_SpeedParameterActive: 0
   m_MirrorParameterActive: 0
@@ -157,10 +157,10 @@ AnimatorState:
   m_TimeParameterActive: 0
   m_Motion: {fileID: -6833744253926329536}
   m_Tag: 
-  m_SpeedParameter: 
+  m_SpeedParameter: locomotion
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: locomotion
 --- !u!206 &9132625839609321368
 BlendTree:
   m_ObjectHideFlags: 1

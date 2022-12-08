@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public int Health;
+    public int Damage;
+    EnemyLocomotion enemyLocomotion;
     void Start()
     {
-
+        enemyLocomotion = this.GetComponent<EnemyLocomotion>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (Health < 0)
+        {
+            Debug.Log("Health lower than 0");
+            enemyLocomotion.enemyAlive(false);
+        }
     }
 
     public void TakeDamage(int damage)
     {
-        Debug.Log("Damage taken" + damage);
+        Health -= damage;
     }
 }

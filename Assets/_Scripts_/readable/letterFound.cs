@@ -8,6 +8,7 @@ public class letterFound : MonoBehaviour
     public lightOut lOut;
     public bool letterFounded;
     public Image letterUI;
+    public GameObject enemies_q1;
     private void Awake()
     {
         letterFounded = false;
@@ -29,6 +30,10 @@ public class letterFound : MonoBehaviour
             letterUI.enabled = false;
 
         if (letterFounded)
+        {
             lOut.onAllLightOff();
+            enemies_q1.SetActive(true);
+        }
+
     }
 }

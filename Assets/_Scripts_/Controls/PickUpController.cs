@@ -34,7 +34,7 @@ public class PickUpController : MonoBehaviour
         }
     }
 
-    #region input
+    #region equip / drop
 
     public void OnDropPressed()
     {
@@ -43,10 +43,6 @@ public class PickUpController : MonoBehaviour
             Drop();
         }
     }
-    #endregion
-
-    #region equip / drop
-
 
     public void PickUpStuff(GameObject rayHittedGameObject)
     {
@@ -85,7 +81,7 @@ public class PickUpController : MonoBehaviour
 
 
         equipped = true;
-        mouseLook.slotFull = true;
+        // mouseLook.slotFull = true;
         // MouseLook.isPickingUp = false;
 
         //Remove rigidbody and BoxCollider

@@ -97,9 +97,8 @@ public class EnemyLocomotion : MonoBehaviour
     public void Die()
     {
         Debug.Log("Die function");
-        animator.SetFloat("locomotion", 0);
         animator.SetBool("Die", true);
-        Destroy(this.gameObject, 5);
+        Destroy(this.gameObject, 2.5f);
     }
 
     public void enemyAlive(bool _Alive)

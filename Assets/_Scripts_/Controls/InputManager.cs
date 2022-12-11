@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] MouseLook mouseLook;
     public static GunSystem gunSystem;
     public MinimapController minimapController;
+    public QuestController questController;
     public EscController escController;
     public static PickUpController pickUpController;
     public static Torch torch;
@@ -30,7 +31,7 @@ public class InputManager : MonoBehaviour
         // movement
         groundMovement.HorizontalMovement.performed += ctx => horizontalInput = ctx.ReadValue<Vector2>();
         groundMovement.Jump.performed += _ => movement.OnJumpPressed();
-        // groundMovement.Sprint.performed += _ => movement.sprint = true;
+
 
         // mouse
         groundMovement.MouseX.performed += ctx => mouseInput.x = ctx.ReadValue<float>();
@@ -45,6 +46,7 @@ public class InputManager : MonoBehaviour
         interaction.TorchSwitch.performed += _ => torch.OnTorchSwitchPressed();
 
         interaction.Map.performed += _ => minimapController.OnMapPressed();
+        interaction.Mission.performed += _ => questController.OnMissionPressed();
         interaction.Esc.performed += _ => escController.OnEscPressed();
     }
 
@@ -62,6 +64,15 @@ public class InputManager : MonoBehaviour
 
         movement.ReceiveInput(horizontalInput);
         mouseLook.ReceiveInput(mouseInput);
+        if (groundMovement.Sprint.ReadValue<float>() > 0.1f)
+        {
+            movement.speed = movement.sprintSpeed;
+        }
+        else
+        {
+            movement.speed = movement.normalSpeed;
+        }
+
         if (interaction.ShootSeries.ReadValue<float>() > 0.1f)
         {
             gunSystem.ReceiveInput(true);

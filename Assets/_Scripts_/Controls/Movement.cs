@@ -7,7 +7,9 @@ public class Movement : MonoBehaviour
     #region move
     Vector2 horizontalInput;
     [SerializeField] CharacterController controller;
-    [SerializeField] float speed = 5f;
+    public float speed;
+    public float sprintSpeed = 5f;
+    public float normalSpeed = 5f;
     public void ReceiveInput(Vector2 _horizontalInput)
     {
         horizontalInput = _horizontalInput;

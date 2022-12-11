@@ -80,6 +80,8 @@ public class GunSystem : MonoBehaviour
         bulletsLeft = magazineSize;
         readyToShoot = true;
         spreadHolder = spread;
+        if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
+            renderer.material.SetFloat("_startClue", 1f);
     }
 
     private void Update()

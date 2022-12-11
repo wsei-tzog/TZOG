@@ -54,7 +54,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": ""Sprint"",
                     ""type"": ""PassThrough"",
                     ""id"": ""19102227-f5af-4db3-8ac9-127a377cc869"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -236,6 +236,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Mission"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf727efe-caf6-4fc8-94aa-f372988ebd0f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -337,6 +345,44 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Esc"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f6352cd-8de4-4aef-b5a5-735ed3630b45"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mission"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""UI"",
+            ""id"": ""f957a060-be1b-492d-a682-f2d9bef60e01"",
+            ""actions"": [
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""11beef37-9c65-4a1f-b4ac-02d5f69e3dd6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""08d01464-f3e4-4cfd-813e-5181e5cbc81d"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -361,6 +407,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions_Map = m_Interactions.FindAction("Map", throwIfNotFound: true);
         m_Interactions_TorchSwitch = m_Interactions.FindAction("TorchSwitch", throwIfNotFound: true);
         m_Interactions_Esc = m_Interactions.FindAction("Esc", throwIfNotFound: true);
+        m_Interactions_Mission = m_Interactions.FindAction("Mission", throwIfNotFound: true);
+        // UI
+        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
+        m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -484,6 +534,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Interactions_Map;
     private readonly InputAction m_Interactions_TorchSwitch;
     private readonly InputAction m_Interactions_Esc;
+    private readonly InputAction m_Interactions_Mission;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -497,6 +548,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Map => m_Wrapper.m_Interactions_Map;
         public InputAction @TorchSwitch => m_Wrapper.m_Interactions_TorchSwitch;
         public InputAction @Esc => m_Wrapper.m_Interactions_Esc;
+        public InputAction @Mission => m_Wrapper.m_Interactions_Mission;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -533,6 +585,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Esc.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnEsc;
                 @Esc.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnEsc;
                 @Esc.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnEsc;
+                @Mission.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMission;
+                @Mission.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMission;
+                @Mission.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMission;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -564,10 +619,46 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Esc.started += instance.OnEsc;
                 @Esc.performed += instance.OnEsc;
                 @Esc.canceled += instance.OnEsc;
+                @Mission.started += instance.OnMission;
+                @Mission.performed += instance.OnMission;
+                @Mission.canceled += instance.OnMission;
             }
         }
     }
     public InteractionsActions @Interactions => new InteractionsActions(this);
+
+    // UI
+    private readonly InputActionMap m_UI;
+    private IUIActions m_UIActionsCallbackInterface;
+    private readonly InputAction m_UI_Click;
+    public struct UIActions
+    {
+        private @PlayerControls m_Wrapper;
+        public UIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Click => m_Wrapper.m_UI_Click;
+        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActions instance)
+        {
+            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            {
+                @Click.started -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                @Click.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+                @Click.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnClick;
+            }
+            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
+            }
+        }
+    }
+    public UIActions @UI => new UIActions(this);
     public interface IGroundMovementActions
     {
         void OnHorizontalMovement(InputAction.CallbackContext context);
@@ -587,5 +678,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMap(InputAction.CallbackContext context);
         void OnTorchSwitch(InputAction.CallbackContext context);
         void OnEsc(InputAction.CallbackContext context);
+        void OnMission(InputAction.CallbackContext context);
+    }
+    public interface IUIActions
+    {
+        void OnClick(InputAction.CallbackContext context);
     }
 }

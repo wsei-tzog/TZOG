@@ -41,7 +41,7 @@
                     "name": "Sprint",
                     "type": "PassThrough",
                     "id": "19102227-f5af-4db3-8ac9-127a377cc869",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
                 }
@@ -223,6 +223,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Mission",
+                    "type": "Button",
+                    "id": "bf727efe-caf6-4fc8-94aa-f372988ebd0f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -322,6 +330,44 @@
                     "processors": "",
                     "groups": "",
                     "action": "Esc",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5f6352cd-8de4-4aef-b5a5-735ed3630b45",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Mission",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "f957a060-be1b-492d-a682-f2d9bef60e01",
+            "actions": [
+                {
+                    "name": "Click",
+                    "type": "Button",
+                    "id": "11beef37-9c65-4a1f-b4ac-02d5f69e3dd6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "08d01464-f3e4-4cfd-813e-5181e5cbc81d",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

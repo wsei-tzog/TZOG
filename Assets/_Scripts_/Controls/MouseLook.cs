@@ -8,6 +8,7 @@ public class MouseLook : MonoBehaviour
     public RaycastHit rayHit;
     public static WeaponSwing weaponSwing;
     public static PickUpController pickUpController;
+    public QuestController questController;
     public Transform playerCamera;
     public letterFound lF;
     public photoFound pQ3;
@@ -47,21 +48,18 @@ public class MouseLook : MonoBehaviour
         {
             Debug.Log("true enabled");
             lF.hideLetter();
+            isPickingUp = false;
         }
         else if (pQ3.photoUI.enabled == true)
         {
             pQ3.hidepQ3();
+            isPickingUp = false;
         }
         else
         {
             #region raycast
             Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 80);
             {
-                // this can be done at the object lvl, based on collider
-                if (rayHit.transform.gameObject.CompareTag("Clue") || rayHit.transform.gameObject.CompareTag("PickAble"))
-                {
-                    rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 1f);
-                }
 
                 if (isPickingUp)
                 {
@@ -80,14 +78,20 @@ public class MouseLook : MonoBehaviour
                     {
                         Debug.Log("Cannot pickup that weapon!");
                     }
-                    else if (rayHit.transform.gameObject.CompareTag("PickAble"))
+                    else if (rayHit.transform.gameObject.CompareTag("Quest"))
+                    {
+                        rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
+                        pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+                        pickUpController.PickUpStuff(rayHit.transform.gameObject);
+
+                        // questController.takeNewMission(rayHit.transform.gameObject.name);
+                    }
+                    else if (rayHit.transform.gameObject.CompareTag("Torch"))
                     {
                         rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
 
                         pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
-                        pickUpController.PickUpStuff(rayHit.transform.gameObject);
-
-                        // InputManager.pickUpController = pickUpController;
+                        pickUpController.PickUpTorch(rayHit.transform.gameObject);
 
                     }
                     isPickingUp = false;

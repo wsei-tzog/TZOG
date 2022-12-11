@@ -5,13 +5,17 @@ using UnityEngine.UI;
 
 public class letterFound : MonoBehaviour
 {
+    public QuestController questController;
     public lightOut lOut;
     public bool letterFounded;
+    bool presentMission;
     public Image letterUI;
     public GameObject enemies_q1;
     private void Awake()
     {
         letterFounded = false;
+        this.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 1f);
+        presentMission = true;
     }
     public void hideLetter()
     {
@@ -19,6 +23,13 @@ public class letterFound : MonoBehaviour
     }
     public void showLetter()
     {
+
+        if (presentMission)
+        {
+            questController.actuallMission = letterUI;
+            presentMission = false;
+        }
+
 
         if ((!letterUI.enabled))
         {

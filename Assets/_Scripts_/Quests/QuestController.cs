@@ -14,11 +14,11 @@ public class QuestController : MonoBehaviour
     public Image missionZero;
     void Awake()
     {
-        ShowControls.enabled = true;
+        // ShowControls.enabled = true;
         missionZero.enabled = true;
-
-        escController.OnTabPressed();
         actuallMission = missionZero;
+
+        // escController.OnTabPressed();
     }
 
     // public void takeNewMission(string actuallMission)

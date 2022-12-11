@@ -6,6 +6,7 @@ public class PickUpController : MonoBehaviour
 {
     #region reference
     public GunSystem gunSystem;
+    public GameObject actuallMission;
     public Torch torch;
     public letterFound lF;
     public photoFound pQ3;
@@ -20,12 +21,13 @@ public class PickUpController : MonoBehaviour
 
     private void Start()
     {
+        if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
+            renderer.material.SetFloat("_startClue", 1f);
         //Setup
         if (!equipped)
         {
             gunSystem.enabled = false;
             mouseLook.slotFull = false;
-            torch.torchEquipped = false;
         }
         if (equipped)
         {
@@ -34,7 +36,9 @@ public class PickUpController : MonoBehaviour
         }
     }
 
-    #region input
+
+
+    #region equip / drop
 
     public void OnDropPressed()
     {
@@ -43,40 +47,39 @@ public class PickUpController : MonoBehaviour
             Drop();
         }
     }
-    #endregion
 
-    #region equip / drop
+    public void PickUpTorch(GameObject rayHittedGameObject)
+    {
+        // set this torch in input
+        InputManager.torch = rayHittedGameObject.GetComponent<Torch>();
+        torch.torchEquipped = true;
 
+        //Remove rigidbody and BoxCollider
+        Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
+        rayHittedGameObject.GetComponent<Collider>().enabled = false;
+        rayHittedGameObject.GetComponentInChildren<Light>().enabled = true;
+
+        //Make weapon a child and move it to default position
+        Vector3 torchScale = rayHittedGameObject.transform.localScale;
+        rayHittedGameObject.transform.SetParent(defaultPosition, false);
+        rayHittedGameObject.transform.localPosition = Vector3.zero;
+        rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        rayHittedGameObject.transform.localScale = torchScale;
+        // show L for light
+    }
 
     public void PickUpStuff(GameObject rayHittedGameObject)
     {
 
         if (rayHittedGameObject.name == "letter")
         {
+            Debug.Log("Show letter");
             lF.showLetter();
         }
         else if (rayHittedGameObject.name == "photoQ3")
         {
+            Debug.Log("Show pq3");
             pQ3.showpQ3();
-        }
-        else
-        {
-            // set this torch in input
-            InputManager.torch = rayHittedGameObject.GetComponent<Torch>();
-            torch.torchEquipped = true;
-
-            //Remove rigidbody and BoxCollider
-            Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
-            rayHittedGameObject.GetComponent<Collider>().enabled = false;
-            rayHittedGameObject.GetComponentInChildren<Light>().enabled = true;
-
-            //Make weapon a child and move it to default position
-            Vector3 torchScale = rayHittedGameObject.transform.localScale;
-            rayHittedGameObject.transform.SetParent(defaultPosition, false);
-            rayHittedGameObject.transform.localPosition = Vector3.zero;
-            rayHittedGameObject.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            rayHittedGameObject.transform.localScale = torchScale;
-            // show L for light
         }
     }
     public void PickUp(GameObject rayHittedGameObject)
@@ -84,8 +87,10 @@ public class PickUpController : MonoBehaviour
 
 
         equipped = true;
-        mouseLook.slotFull = true;
+        // mouseLook.slotFull = true;
         // MouseLook.isPickingUp = false;
+        rayHittedGameObject.GetComponent<Collider>().enabled = false;
+        rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
 
         //Remove rigidbody and BoxCollider
         Destroy(rayHittedGameObject.GetComponent<Rigidbody>());

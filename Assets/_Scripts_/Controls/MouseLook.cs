@@ -8,6 +8,7 @@ public class MouseLook : MonoBehaviour
     public RaycastHit rayHit;
     public static WeaponSwing weaponSwing;
     public static PickUpController pickUpController;
+    public QuestController questController;
     public Transform playerCamera;
     public letterFound lF;
     public photoFound pQ3;
@@ -42,14 +43,62 @@ public class MouseLook : MonoBehaviour
         isPickingUp = true;
 
         // call disabling methods on UI on mouse movement
-        if (lF.letterUI.enabled)
+        // if (any canvas enabled => all canvas hide)
+        if (lF.letterUI.enabled == true)
         {
+            Debug.Log("true enabled");
             lF.hideLetter();
+            isPickingUp = false;
         }
-
-        if (pQ3.photoUI.enabled)
+        else if (pQ3.photoUI.enabled == true)
         {
             pQ3.hidepQ3();
+            isPickingUp = false;
+        }
+        else
+        {
+            #region raycast
+            Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 80);
+            {
+
+                if (isPickingUp)
+                {
+                    if (rayHit.transform.gameObject.CompareTag("Weapon") && !slotFull)
+                    {
+                        // turn off shader
+                        rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
+
+                        slotFull = true;
+                        pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+
+                        pickUpController.PickUp(rayHit.transform.gameObject);
+                        InputManager.pickUpController = pickUpController;
+                    }
+                    else if (rayHit.transform.gameObject.CompareTag("Weapon") && slotFull)
+                    {
+                        Debug.Log("Cannot pickup that weapon!");
+                    }
+                    else if (rayHit.transform.gameObject.CompareTag("Quest"))
+                    {
+                        rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
+                        pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+                        pickUpController.PickUpStuff(rayHit.transform.gameObject);
+
+                        // questController.takeNewMission(rayHit.transform.gameObject.name);
+                    }
+                    else if (rayHit.transform.gameObject.CompareTag("Torch"))
+                    {
+                        rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
+
+                        pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
+                        pickUpController.PickUpTorch(rayHit.transform.gameObject);
+
+                    }
+                    isPickingUp = false;
+                }
+
+            }
+            #endregion
         }
     }
     private void Awake()
@@ -66,59 +115,6 @@ public class MouseLook : MonoBehaviour
         Vector3 targetRotation = transform.eulerAngles;
         targetRotation.x = xRotation;
         playerCamera.eulerAngles = targetRotation;
-        #endregion
-
-
-
-        #region raycast
-        Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 80);
-        {
-            if (rayHit.transform.gameObject.CompareTag("Clue") || rayHit.transform.gameObject.CompareTag("PickAble"))
-            {
-                rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 1f);
-            }
-
-
-            if (isPickingUp)
-            {
-                if (rayHit.transform.gameObject.CompareTag("Weapon") && !slotFull)
-                {
-                    rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
-                    Debug.Log(rayHit.transform.gameObject.name + " Weapon");
-                    isPickingUp = false;
-
-                    pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
-
-                    pickUpController.PickUp(rayHit.transform.gameObject);
-                    InputManager.pickUpController = pickUpController;
-                }
-
-                else if (rayHit.transform.gameObject.CompareTag("Weapon") && slotFull)
-                {
-                    isPickingUp = false;
-                    Debug.Log("Cannot pickup that weapon!");
-                }
-
-                else if (rayHit.transform.gameObject.CompareTag("PickAble"))
-                {
-                    rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
-                    Debug.Log(rayHit.transform.gameObject.name + " Pickable");
-                    isPickingUp = false;
-
-                    pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
-                    pickUpController.PickUpStuff(rayHit.transform.gameObject);
-
-                    // InputManager.pickUpController = pickUpController;
-
-                }
-                else
-                {
-                    isPickingUp = false;
-                }
-
-            }
-
-        }
         #endregion
     }
 }

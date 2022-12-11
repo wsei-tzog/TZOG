@@ -11,9 +11,12 @@ GameObject:
   - component: {fileID: 1590301237081120368}
   - component: {fileID: 2431443632190558677}
   - component: {fileID: 457905155359794463}
+  - component: {fileID: 822511179}
+  - component: {fileID: 822511174}
+  - component: {fileID: 822511178}
   m_Layer: 0
   m_Name: MapSigned
-  m_TagString: Untagged
+  m_TagString: PickAble
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2115058088974599370}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -59,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 02cfa232ca207d34684b3cb65571194c, type: 2}
+  - {fileID: 2100000, guid: c4cc4432bf46c524db21c8ccaf0bf2db, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,3 +84,52 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &822511179
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115058088974599370}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8437527290546026635, guid: a6367f5e9ffb48647a41b73fd2c6cca4, type: 3}
+--- !u!114 &822511174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115058088974599370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5f1fa2f6259f340b1422c22c136f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  photoFounded: 0
+  photoUI: {fileID: 0}
+--- !u!114 &822511178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2115058088974599370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20b3c54bc5ed2304599769bab54c1c66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunSystem: {fileID: 0}
+  torch: {fileID: 0}
+  lF: {fileID: 0}
+  pQ3: {fileID: 822511174}
+  defaultPosition: {fileID: 0}
+  mouseLook: {fileID: 0}
+  dropForwardForce: 0
+  dropUpwardForce: 0
+  equipped: 0

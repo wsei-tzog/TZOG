@@ -52,18 +52,10 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-
-        // foreach (GameObject t in transform)
-        // {
-        //     if (t.CompareTag("Weapon"))
-        //     {
-        //         var script = t.GetComponentInChildren<GunSystem>();
-        //         gunSystem = script;
-        //     }
-        // }
-
+        // mouse
         movement.ReceiveInput(horizontalInput);
         mouseLook.ReceiveInput(mouseInput);
+        // sprint
         if (groundMovement.Sprint.ReadValue<float>() > 0.1f)
         {
             movement.speed = movement.sprintSpeed;
@@ -72,7 +64,7 @@ public class InputManager : MonoBehaviour
         {
             movement.speed = movement.normalSpeed;
         }
-
+        // shooting
         if (interaction.ShootSeries.ReadValue<float>() > 0.1f)
         {
             gunSystem.ReceiveInput(true);
@@ -81,7 +73,7 @@ public class InputManager : MonoBehaviour
         {
             gunSystem.ReceiveInput(false);
         }
-
+        // aiming
         if (interaction.Aim.ReadValue<float>() > 0.1f)
         {
             gunSystem.ReceiveAimInput(true);

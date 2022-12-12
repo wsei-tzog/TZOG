@@ -235,7 +235,7 @@ public class GunSystem : MonoBehaviour
     }
     public void PewPew()
     {
-        isLeftMouseHeld = false;
+        // isLeftMouseHeld = false;
         bulletsShot = bulletsPerTap;
 
         if (!reloading && readyToShoot && bulletsLeft > 0)
@@ -277,6 +277,13 @@ public class GunSystem : MonoBehaviour
                         //Graphics
                         Destroy((Instantiate(enemyHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
 
+                    }
+                    else if (rayHit.collider.CompareTag("destructibleEnv"))
+                    {
+                        Debug.Log("destrucible");
+                        rayHit.collider.GetComponent<destroyEnv>().destroyObject(damage);
+                        //Graphics
+                        Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
                     }
                     else
                     {

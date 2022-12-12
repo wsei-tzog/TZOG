@@ -23,7 +23,7 @@ public class PickUpController : MonoBehaviour
     private void Start()
     {
         if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
-            renderer.material.SetFloat("_startClue", 1f);
+            renderer.material.SetFloat("startClue", 1f);
         //Setup
         if (!equipped)
         {
@@ -51,6 +51,7 @@ public class PickUpController : MonoBehaviour
 
     public void PickUpTorch(GameObject rayHittedGameObject)
     {
+        rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("startClue", 0f);
         // set this torch in input
         InputManager.torch = rayHittedGameObject.GetComponent<Torch>();
         torch.torchEquipped = true;
@@ -71,6 +72,7 @@ public class PickUpController : MonoBehaviour
 
     public void PickUpStuff(GameObject rayHittedGameObject)
     {
+        rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("startClue", 0f);
 
         if (rayHittedGameObject.name == "letter")
         {

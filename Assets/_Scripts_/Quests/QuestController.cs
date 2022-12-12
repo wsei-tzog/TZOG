@@ -18,7 +18,7 @@ public class QuestController : MonoBehaviour
         missionZero.enabled = true;
         actuallMission = missionZero;
 
-        escController.OnTabPressed();
+        // escController.OnTabPressed();
     }
 
     // public void takeNewMission(string actuallMission)

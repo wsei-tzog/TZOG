@@ -9,6 +9,8 @@ TagManager:
   - Clue
   - Quest
   - Torch
+  - PickAble
+  - destructibleEnv
   layers:
   - Default
   - TransparentFX

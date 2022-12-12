@@ -9,16 +9,16 @@ public class QuestController : MonoBehaviour
     // public string actuallMission;
     public EscController escController;
     public GameObject UI;
-    public Image ShowControls;
+    public Image controls;
     public Image actuallMission;
     public Image missionZero;
     void Awake()
     {
-        // ShowControls.enabled = true;
+        controls.enabled = true;
         missionZero.enabled = true;
         actuallMission = missionZero;
 
-        // escController.OnTabPressed();
+        escController.OnTabPressed();
     }
 
     // public void takeNewMission(string actuallMission)
@@ -35,12 +35,12 @@ public class QuestController : MonoBehaviour
         if (actuallMission.enabled)
         {
             actuallMission.enabled = false;
-            ShowControls.enabled = false;
+            controls.enabled = false;
         }
         else
         {
             actuallMission.enabled = true;
-            ShowControls.enabled = true;
+            controls.enabled = true;
         }
     }
 }

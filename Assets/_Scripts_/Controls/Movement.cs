@@ -8,8 +8,8 @@ public class Movement : MonoBehaviour
     Vector2 horizontalInput;
     [SerializeField] CharacterController controller;
     public float speed;
-    public float sprintSpeed = 5f;
-    public float normalSpeed = 5f;
+    public float sprintSpeed;
+    public float normalSpeed;
     public void ReceiveInput(Vector2 _horizontalInput)
     {
         horizontalInput = _horizontalInput;
@@ -33,6 +33,7 @@ public class Movement : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
+        speed = normalSpeed;
     }
 
     void Update()
@@ -53,15 +54,15 @@ public class Movement : MonoBehaviour
 
         #endregion
         #region jump
-        if (jump)
-        {
-            if (isGrounded)
-            {
-                verticalVelocity.y = 0;
-                verticalVelocity.y = Mathf.Sqrt(-2f * jumpHeight * gravity);
-            }
-            jump = false;
-        }
+        // if (jump)
+        // {
+        //     if (isGrounded)
+        //     {
+        //         verticalVelocity.y = 0;
+        //         verticalVelocity.y = Mathf.Sqrt(-2f * jumpHeight * gravity);
+        //     }
+        //     jump = false;
+        // }
         #endregion
 
     }
@@ -79,7 +80,13 @@ public class Movement : MonoBehaviour
 
     public void OnJumpPressed()
     {
-        jump = true;
+        if (isGrounded)
+        {
+            verticalVelocity.y = 0;
+            verticalVelocity.y = Mathf.Sqrt(-2f * jumpHeight * gravity);
+        }
+        jump = false;
+        // jump = true;
     }
     // public void OnSprintPressed()
     // {

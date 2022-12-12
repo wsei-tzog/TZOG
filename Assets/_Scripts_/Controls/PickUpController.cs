@@ -9,7 +9,8 @@ public class PickUpController : MonoBehaviour
     public GameObject actuallMission;
     public Torch torch;
     public letterFound lF;
-    public photoFound pQ3;
+    public photoFound pQ2;
+    public q3Found pQ3;
     public Transform defaultPosition;
     public MouseLook mouseLook;
     #endregion
@@ -73,13 +74,15 @@ public class PickUpController : MonoBehaviour
 
         if (rayHittedGameObject.name == "letter")
         {
-            Debug.Log("Show letter");
             lF.showLetter();
+        }
+        else if (rayHittedGameObject.name == "photoQ2")
+        {
+            pQ2.showpQ2();
         }
         else if (rayHittedGameObject.name == "photoQ3")
         {
-            Debug.Log("Show pq3");
-            pQ3.showpQ3();
+            pQ3.showq3();
         }
     }
     public void PickUp(GameObject rayHittedGameObject)
@@ -90,7 +93,7 @@ public class PickUpController : MonoBehaviour
         // mouseLook.slotFull = true;
         // MouseLook.isPickingUp = false;
         rayHittedGameObject.GetComponent<Collider>().enabled = false;
-        rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
+        rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("startClue", 0f);
 
         //Remove rigidbody and BoxCollider
         Destroy(rayHittedGameObject.GetComponent<Rigidbody>());
@@ -140,6 +143,7 @@ public class PickUpController : MonoBehaviour
         gameObject.AddComponent<Rigidbody>();
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = false;
+        transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
         transform.gameObject.GetComponent<Collider>().isTrigger = false;
         transform.gameObject.GetComponent<Collider>().enabled = true;
 

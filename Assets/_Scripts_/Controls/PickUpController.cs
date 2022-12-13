@@ -28,12 +28,12 @@ public class PickUpController : MonoBehaviour
         if (!equipped)
         {
             gunSystem.enabled = false;
-            mouseLook.slotFull = false;
+            MouseLook.slotFull = false;
         }
         if (equipped)
         {
             gunSystem.enabled = true;
-            mouseLook.slotFull = true;
+            MouseLook.slotFull = true;
         }
     }
 
@@ -92,7 +92,7 @@ public class PickUpController : MonoBehaviour
 
 
         equipped = true;
-        // mouseLook.slotFull = true;
+        MouseLook.slotFull = true;
         // MouseLook.isPickingUp = false;
         rayHittedGameObject.GetComponent<Collider>().enabled = false;
         rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("startClue", 0f);
@@ -127,7 +127,7 @@ public class PickUpController : MonoBehaviour
         // isDropping = false;
         Vector3 scale = transform.localScale;
         equipped = false;
-        mouseLook.slotFull = false;
+        MouseLook.slotFull = false;
         transform.SetParent(null);
         transform.localScale = scale;
 

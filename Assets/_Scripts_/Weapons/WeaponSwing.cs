@@ -28,11 +28,11 @@ public class WeaponSwing : MonoBehaviour
 
     private void Update()
     {
-        if (isAiming)
-        {
-            UpdateSway();
-            UpdateRunningSway();
-        }
+        // if (isAiming)
+        // {
+        //     UpdateSway();
+        //     UpdateRunningSway();
+        // }
     }
 
 

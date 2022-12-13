@@ -31,7 +31,7 @@ public class destroyEnv : MonoBehaviour
             var factor = timePassed / duration;
             // optional add ease-in and -out
             // factor = Mathf.SmoothStep(0, 1, factor);
-            factor = 1f - Mathf.Cos(factor * Mathf.PI * 0.5f);
+            factor = 1f - Mathf.Cos(factor * Mathf.PI * 0.7f);
 
             transformToRotate.localRotation = Quaternion.Lerp(startRotation, targetRotation, factor);
             // or

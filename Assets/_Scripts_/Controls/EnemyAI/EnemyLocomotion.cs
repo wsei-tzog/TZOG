@@ -19,16 +19,15 @@ public class EnemyLocomotion : MonoBehaviour
     public float detectDistance;
     public float attackDistance;
     public float movementSpeed;
-    public float rotationSpeed;
+    public int Health;
+    public int Damage;
 
     private void Start()
     {
+
         Alive = true;
         mTransform = this.transform;
-        agent.speed = movementSpeed;
-        agent.angularSpeed = rotationSpeed;
     }
-
 
     private void Update()
     {
@@ -39,19 +38,15 @@ public class EnemyLocomotion : MonoBehaviour
             if (detectedPlayer)
             {
                 MoveToPlayer(distanceToPlayer);
+
             }
             else
             {
                 PlayerDetecion(distanceToPlayer);
             }
         }
-        else
-        {
-            Die();
-        }
 
     }
-
 
     public void PlayerDetecion(float distanceToPlayer)
     {
@@ -73,19 +68,27 @@ public class EnemyLocomotion : MonoBehaviour
         if (distanceToPlayer > detectDistance)
         {
             detectedPlayer = false;
-            animator.SetFloat("locomotion", 0, 0.4f, Time.deltaTime);
-        }
+            animator.SetFloat("locomotion", 0f, 0.4f, Time.deltaTime);
+            animator.SetBool("Attack", false);
 
-        if (distanceToPlayer < attackDistance)
-        {
-            // attack player
-            animator.SetFloat("locomotion", 1, 0.4f, Time.deltaTime);
         }
         else
         {
-            // go to player
-            agent.SetDestination(playerTransform.position);
-            animator.SetFloat("locomotion", 0.5f, 0.4f, Time.deltaTime);
+            if (distanceToPlayer < attackDistance)
+            {
+                agent.isStopped = true;
+                animator.SetFloat("locomotion", 0f);
+
+                animator.SetBool("Attack", true);
+                Debug.Log("attack dist " + attackDistance);
+            }
+            else
+            {
+                agent.isStopped = false;
+                agent.SetDestination(playerTransform.position);
+                animator.SetBool("Attack", false);
+                animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
+            }
         }
 
 
@@ -94,16 +97,18 @@ public class EnemyLocomotion : MonoBehaviour
     public void Die()
     {
         Alive = false;
+        agent.isStopped = true;
         animator.SetBool("Die", true);
         Destroy(this.gameObject, 1.8f);
     }
 
-    public void enemyAlive(bool _Alive)
+    public void TakeDamage(int damage)
     {
-        Alive = _Alive;
+        Health -= damage;
+        if (Health < 0)
+        {
+            Debug.Log("Health lower than 0");
+            Die();
+        }
     }
-
-
-
-
 }

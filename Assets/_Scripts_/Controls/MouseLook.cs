@@ -8,10 +8,12 @@ public class MouseLook : MonoBehaviour
     public RaycastHit rayHit;
     public static WeaponSwing weaponSwing;
     public static PickUpController pickUpController;
+    public static bool slotFull;
     public QuestController questController;
     public Transform playerCamera;
     public letterFound lF;
     public photoFound pQ2;
+    public q3Found pQ3;
     #endregion
 
     #region vars
@@ -21,7 +23,6 @@ public class MouseLook : MonoBehaviour
     public float xCamlp = 85f;
     float xRotation = 0;
     public static bool isPickingUp;
-    public bool slotFull;
     #endregion
 
 
@@ -42,8 +43,6 @@ public class MouseLook : MonoBehaviour
     {
         isPickingUp = true;
 
-        // call disabling methods on UI on mouse movement
-        // if (any canvas enabled => all canvas hide)
         if (lF.letterUI.enabled == true)
         {
             Debug.Log("true enabled");
@@ -53,6 +52,11 @@ public class MouseLook : MonoBehaviour
         else if (pQ2.photoUI.enabled == true)
         {
             pQ2.hidepQ2();
+            isPickingUp = false;
+        }
+        else if (pQ3.q3UI.enabled == true)
+        {
+            pQ3.hideq3();
             isPickingUp = false;
         }
         else

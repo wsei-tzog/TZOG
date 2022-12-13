@@ -28,6 +28,7 @@ public class Torch : MonoBehaviour
     public void turnOn()
     {
         gameObject.SetActive(true);
+        audioSource.Play();
         // torchLight.SetActive(true);
         torchOn = true;
     }

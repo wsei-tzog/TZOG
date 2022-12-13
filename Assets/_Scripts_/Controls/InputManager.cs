@@ -6,8 +6,8 @@ using UnityEngine.InputSystem.Utilities;
 
 public class InputManager : MonoBehaviour
 {
-    [SerializeField] Movement movement;
-    [SerializeField] MouseLook mouseLook;
+    public Movement movement;
+    public MouseLook mouseLook;
     public static GunSystem gunSystem;
     public MinimapController minimapController;
     public QuestController questController;
@@ -58,12 +58,15 @@ public class InputManager : MonoBehaviour
         // sprint
         if (groundMovement.Sprint.ReadValue<float>() > 0.1f)
         {
-            movement.speed = movement.sprintSpeed;
+            Debug.Log("sprint true");
+            movement.OnSprintPressed(true);
         }
         else
         {
-            movement.speed = movement.normalSpeed;
+            Debug.Log("sprint false");
+            movement.OnSprintPressed(false);
         }
+
         // shooting
         if (interaction.ShootSeries.ReadValue<float>() > 0.1f)
         {

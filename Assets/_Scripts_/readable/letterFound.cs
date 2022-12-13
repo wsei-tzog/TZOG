@@ -11,6 +11,7 @@ public class letterFound : MonoBehaviour
     bool presentMission;
     public Image letterUI;
     public GameObject enemies_q1;
+    public GameObject q2;
     private void Awake()
     {
         letterFounded = false;
@@ -27,6 +28,7 @@ public class letterFound : MonoBehaviour
         if (presentMission)
         {
             questController.actuallMission = letterUI;
+            q2.SetActive(true);
             presentMission = false;
         }
 

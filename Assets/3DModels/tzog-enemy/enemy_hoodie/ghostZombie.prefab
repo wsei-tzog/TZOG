@@ -78,7 +78,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: d87d574737b9ea44fb7ec3330decdfb8, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -132,7 +132,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8779053761428234655
 Transform:
   m_ObjectHideFlags: 0
@@ -518,6 +518,8 @@ GameObject:
   - component: {fileID: 2146788146236716310}
   - component: {fileID: 2146788146236716305}
   - component: {fileID: 3705831200624684805}
+  - component: {fileID: 1490371590}
+  - component: {fileID: 1133134931}
   m_Layer: 0
   m_Name: ghostZombie
   m_TagString: Enemy
@@ -534,7 +536,7 @@ Transform:
   m_GameObject: {fileID: 2146788146236716307}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.5496, y: -0.953, z: -0.27289}
-  m_LocalScale: {x: 0.994134, y: 0.994134, z: 0.994134}
+  m_LocalScale: {x: 0.99413407, y: 0.99413407, z: 0.99413407}
   m_Children:
   - {fileID: 2428795101240260737}
   - {fileID: 6555319325187101239}
@@ -552,7 +554,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 81a263e62fe59994eab2bea77454559e, type: 3}
   m_Controller: {fileID: 9100000, guid: d87d574737b9ea44fb7ec3330decdfb8, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -595,13 +597,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectedPlayer: 0
+  Alive: 0
   isMoving: 0
   animator: {fileID: 2146788146236716304}
   agent: {fileID: 2146788146236716310}
   playerTransform: {fileID: 0}
-  detectDistance: 25
-  attackDistance: 3
-  movementSpeed: 5
+  detectDistance: 10
+  attackDistance: 4
+  movementSpeed: 3
   rotationSpeed: 200
 --- !u!114 &3705831200624684805
 MonoBehaviour:
@@ -617,6 +620,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 10
   Damage: 10
+--- !u!136 &1490371590
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146788146236716307}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.15795475
+  m_Height: 1.433723
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.90932304, z: 0.020060915}
+--- !u!136 &1133134931
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2146788146236716307}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.15795475
+  m_Height: 1.433723
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.90932304, z: 0.020060915}
 --- !u!1 &2395901867638039772
 GameObject:
   m_ObjectHideFlags: 0
@@ -1248,7 +1279,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2428795101240260737}
   - component: {fileID: 6437959819168248549}
-  - component: {fileID: 7889621821311329087}
   m_Layer: 0
   m_Name: Ch45
   m_TagString: Enemy
@@ -1263,13 +1293,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4754772596001659613}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.67144835, y: 0.006384579, z: 0.014192398, w: 0.740888}
+  m_LocalPosition: {x: 0.032, y: 0.207, z: 0.027}
+  m_LocalScale: {x: 0.6135, y: 0.6135, z: 0.6135}
   m_Children: []
   m_Father: {fileID: 1621644262775271337}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -84.336, y: -5.581, z: 7.25}
 --- !u!137 &6437959819168248549
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -1278,7 +1308,7 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4754772596001659613}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -1387,20 +1417,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.015752435, y: -0.13916433, z: 0.031211227}
     m_Extent: {x: 0.4636556, y: 0.95326626, z: 0.42041746}
   m_DirtyAABB: 0
---- !u!136 &7889621821311329087
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4754772596001659613}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.09
-  m_Height: 0.78
-  m_Direction: 1
-  m_Center: {x: -0.009356451, y: 1.25, z: 0.043679357}
 --- !u!1 &5064326522385674269
 GameObject:
   m_ObjectHideFlags: 0

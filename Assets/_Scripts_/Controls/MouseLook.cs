@@ -11,7 +11,7 @@ public class MouseLook : MonoBehaviour
     public QuestController questController;
     public Transform playerCamera;
     public letterFound lF;
-    public photoFound pQ3;
+    public photoFound pQ2;
     #endregion
 
     #region vars
@@ -50,9 +50,9 @@ public class MouseLook : MonoBehaviour
             lF.hideLetter();
             isPickingUp = false;
         }
-        else if (pQ3.photoUI.enabled == true)
+        else if (pQ2.photoUI.enabled == true)
         {
-            pQ3.hidepQ3();
+            pQ2.hidepQ2();
             isPickingUp = false;
         }
         else

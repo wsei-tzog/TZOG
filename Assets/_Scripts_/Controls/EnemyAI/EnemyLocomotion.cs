@@ -74,21 +74,18 @@ public class EnemyLocomotion : MonoBehaviour
         {
             detectedPlayer = false;
             animator.SetFloat("locomotion", 0, 0.4f, Time.deltaTime);
-            Debug.Log("player lost");
         }
 
         if (distanceToPlayer < attackDistance)
         {
             // attack player
             animator.SetFloat("locomotion", 1, 0.4f, Time.deltaTime);
-            Debug.Log("attacking");
         }
         else
         {
             // go to player
             agent.SetDestination(playerTransform.position);
             animator.SetFloat("locomotion", 0.5f, 0.4f, Time.deltaTime);
-            Debug.Log("going to");
         }
 
 
@@ -96,14 +93,13 @@ public class EnemyLocomotion : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("Die function");
+        Alive = false;
         animator.SetBool("Die", true);
         Destroy(this.gameObject, 1.8f);
     }
 
     public void enemyAlive(bool _Alive)
     {
-        Debug.Log("Alive call");
         Alive = _Alive;
     }
 

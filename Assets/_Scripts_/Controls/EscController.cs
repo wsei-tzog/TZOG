@@ -8,13 +8,24 @@ public class EscController : MonoBehaviour
     public GameObject inGameMenu;
     public List<MonoBehaviour> Scripts;
 
-    public void OnTabPressed()
+
+    private void Awake()
     {
+        inGameMenu.SetActive(false);
         foreach (var s in Scripts)
         {
             s.enabled = true;
         }
     }
+
+    // public void OnTabPressed()
+    // {
+    //     foreach (var s in Scripts)
+    //     {
+    //         s.enabled = true;
+    //     }
+    // }
+
     public void OnEscPressed()
     {
 

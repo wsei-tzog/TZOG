@@ -15,12 +15,9 @@ public class MinimapController : MonoBehaviour
     }
     void Start()
     {
-        minimap.SetActive(true);
+        minimap.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
+
 
 }

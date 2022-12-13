@@ -6,17 +6,22 @@ using UnityEngine.SceneManagement;
 public class MainMenuScript : MonoBehaviour
 {
 
+    public EscController escController;
     public void PlayGame()
     {
         SceneManager.LoadScene("master");
     }
-
-    public void QuitGame()
+    public void Resume()
     {
-        Application.Quit();
+        escController.OnEscPressed();
     }
     public void MainMenu()
     {
         SceneManager.LoadScene("MainMenu");
     }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
 }

@@ -9,6 +9,7 @@ public class photoFound : MonoBehaviour
     public bool photoFounded;
     bool presentMission;
     public GameObject enemies;
+    public GameObject q3;
     public Image photoUI;
     private void Awake()
     {
@@ -18,15 +19,16 @@ public class photoFound : MonoBehaviour
         presentMission = true;
 
     }
-    public void hidepQ3()
+    public void hidepQ2()
     {
         photoUI.enabled = false;
     }
-    public void showpQ3()
+    public void showpQ2()
     {
         if (presentMission)
         {
             questController.actuallMission = photoUI;
+            q3.SetActive(true);
             presentMission = false;
         }
 

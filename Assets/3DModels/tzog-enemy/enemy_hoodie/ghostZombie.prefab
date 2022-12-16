@@ -517,9 +517,7 @@ GameObject:
   - component: {fileID: 2146788146236716304}
   - component: {fileID: 2146788146236716310}
   - component: {fileID: 2146788146236716305}
-  - component: {fileID: 3705831200624684805}
   - component: {fileID: 1490371590}
-  - component: {fileID: 1133134931}
   m_Layer: 0
   m_Name: ghostZombie
   m_TagString: Enemy
@@ -572,17 +570,17 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 3
+  m_Acceleration: 5
   avoidancePriority: 50
-  m_AngularSpeed: 200
-  m_StoppingDistance: 0
+  m_AngularSpeed: 720
+  m_StoppingDistance: 1.9
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 5
   m_ObstacleAvoidanceType: 4
 --- !u!114 &2146788146236716305
 MonoBehaviour:
@@ -603,38 +601,11 @@ MonoBehaviour:
   agent: {fileID: 2146788146236716310}
   playerTransform: {fileID: 0}
   detectDistance: 10
-  attackDistance: 4
+  attackDistance: 2
   movementSpeed: 3
-  rotationSpeed: 200
---- !u!114 &3705831200624684805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146788146236716307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53ad0d52427066448905da27a1474b55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Health: 10
-  Damage: 10
+  Health: 1
+  Damage: 1
 --- !u!136 &1490371590
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2146788146236716307}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.15795475
-  m_Height: 1.433723
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.90932304, z: 0.020060915}
---- !u!136 &1133134931
 CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

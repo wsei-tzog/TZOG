@@ -20,6 +20,7 @@ public class InputManager : MonoBehaviour
     PlayerControls.InteractionsActions interaction;
     Vector2 horizontalInput;
     Vector2 mouseInput;
+
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -41,7 +42,7 @@ public class InputManager : MonoBehaviour
         interaction.Shoot.performed += ctx => gunSystem.OnShootPressed();
         interaction.Reload.performed += ctx => gunSystem.OnReloadPressed();
 
-        interaction.PickUp.performed += _ => mouseLook.OnPickUpPressed();
+        interaction.Interact.performed += _ => mouseLook.OnPickUpPressed();
         interaction.Drop.performed += _ => pickUpController.OnDropPressed();
         interaction.TorchSwitch.performed += _ => torch.OnTorchSwitchPressed();
 

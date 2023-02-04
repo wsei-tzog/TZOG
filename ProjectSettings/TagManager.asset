@@ -11,6 +11,7 @@ TagManager:
   - Torch
   - PickAble
   - destructibleEnv
+  - Interactable
   layers:
   - Default
   - TransparentFX

@@ -34,7 +34,7 @@ public class MouseLook : MonoBehaviour
     {
         mouseX = mouseInput.x * sensitivityX;
         mouseY = mouseInput.y * sensitivityY;
-        weaponSwing.ReceiveInput(mouseInput);
+        // weaponSwing.ReceiveInput(mouseInput);
 
 
 
@@ -96,6 +96,16 @@ public class MouseLook : MonoBehaviour
 
                         pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
                         pickUpController.PickUpTorch(rayHit.transform.gameObject);
+
+                    }
+                    else if (rayHit.transform.gameObject.CompareTag("Interactable"))
+                    {
+                        Debug.Log("Interacting with it");
+                        var interactable = rayHit.transform.gameObject.GetComponent<Interactable>();
+                        if (interactable != null)
+                        {
+                            interactable.Interact();
+                        }
 
                     }
                     isPickingUp = false;

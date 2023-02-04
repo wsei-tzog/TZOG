@@ -43,4 +43,8 @@ public class QuestController : MonoBehaviour
             controls.enabled = true;
         }
     }
+
+    public List<int> keys = new List<int>();
+
+
 }

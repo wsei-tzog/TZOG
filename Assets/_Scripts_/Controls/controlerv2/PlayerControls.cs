@@ -190,7 +190,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""PickUp"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""a4f6c0dd-b37a-463c-8f29-48c2a2b60afd"",
                     ""expectedControlType"": ""Button"",
@@ -287,7 +287,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""PickUp"",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -401,7 +401,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions_Shoot = m_Interactions.FindAction("Shoot", throwIfNotFound: true);
         m_Interactions_Reload = m_Interactions.FindAction("Reload", throwIfNotFound: true);
         m_Interactions_ShootSeries = m_Interactions.FindAction("ShootSeries", throwIfNotFound: true);
-        m_Interactions_PickUp = m_Interactions.FindAction("PickUp", throwIfNotFound: true);
+        m_Interactions_Interact = m_Interactions.FindAction("Interact", throwIfNotFound: true);
         m_Interactions_Drop = m_Interactions.FindAction("Drop", throwIfNotFound: true);
         m_Interactions_Aim = m_Interactions.FindAction("Aim", throwIfNotFound: true);
         m_Interactions_Map = m_Interactions.FindAction("Map", throwIfNotFound: true);
@@ -528,7 +528,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Interactions_Shoot;
     private readonly InputAction m_Interactions_Reload;
     private readonly InputAction m_Interactions_ShootSeries;
-    private readonly InputAction m_Interactions_PickUp;
+    private readonly InputAction m_Interactions_Interact;
     private readonly InputAction m_Interactions_Drop;
     private readonly InputAction m_Interactions_Aim;
     private readonly InputAction m_Interactions_Map;
@@ -542,7 +542,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Shoot => m_Wrapper.m_Interactions_Shoot;
         public InputAction @Reload => m_Wrapper.m_Interactions_Reload;
         public InputAction @ShootSeries => m_Wrapper.m_Interactions_ShootSeries;
-        public InputAction @PickUp => m_Wrapper.m_Interactions_PickUp;
+        public InputAction @Interact => m_Wrapper.m_Interactions_Interact;
         public InputAction @Drop => m_Wrapper.m_Interactions_Drop;
         public InputAction @Aim => m_Wrapper.m_Interactions_Aim;
         public InputAction @Map => m_Wrapper.m_Interactions_Map;
@@ -567,9 +567,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @ShootSeries.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShootSeries;
                 @ShootSeries.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShootSeries;
                 @ShootSeries.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShootSeries;
-                @PickUp.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPickUp;
-                @PickUp.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPickUp;
-                @PickUp.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnPickUp;
+                @Interact.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnInteract;
                 @Drop.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnDrop;
                 @Drop.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnDrop;
                 @Drop.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnDrop;
@@ -601,9 +601,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @ShootSeries.started += instance.OnShootSeries;
                 @ShootSeries.performed += instance.OnShootSeries;
                 @ShootSeries.canceled += instance.OnShootSeries;
-                @PickUp.started += instance.OnPickUp;
-                @PickUp.performed += instance.OnPickUp;
-                @PickUp.canceled += instance.OnPickUp;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
                 @Drop.started += instance.OnDrop;
                 @Drop.performed += instance.OnDrop;
                 @Drop.canceled += instance.OnDrop;
@@ -672,7 +672,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnShootSeries(InputAction.CallbackContext context);
-        void OnPickUp(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
         void OnDrop(InputAction.CallbackContext context);
         void OnAim(InputAction.CallbackContext context);
         void OnMap(InputAction.CallbackContext context);

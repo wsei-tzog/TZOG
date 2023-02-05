@@ -62,7 +62,7 @@ public class MouseLook : MonoBehaviour
         else
         {
             #region raycast
-            Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 80);
+            Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 10);
             {
 
                 if (isPickingUp)

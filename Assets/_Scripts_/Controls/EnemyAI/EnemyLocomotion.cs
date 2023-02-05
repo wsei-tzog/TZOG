@@ -89,7 +89,7 @@ public class EnemyLocomotion : MonoBehaviour
     {
         currentPoint = 0;
         transform.position = patrolPoints[currentPoint].position;
-        col = GetComponent<SphereCollider>();
+        // col = GetComponent<SphereCollider>();
 
 
         // Get reference to Animator and NavMeshAgent components
@@ -113,24 +113,26 @@ public class EnemyLocomotion : MonoBehaviour
         {
             if (distanceToTarget < detectionRange && IsInFieldOfView())
             {
+                MoveToPlayer(distanceToPlayer);
                 // Set the enemy's destination to the player's position
-                navMeshAgent.SetDestination(target.position);
+                // navMeshAgent.SetDestination(target.position);
 
                 // If the player is within the attack range
-                if (distanceToTarget < attackRange)
-                {
-                    // Attack the player
-                    Attack();
-                }
+                // if (distanceToTarget < attackRange)
+                // {
+                // Attack the player
+                // Attack();
+                // }
                 // If the player is outside the attack range
-                else
-                {
-                    // Set the enemy's animation state to "walking"
-                    animator.SetBool("IsWalking", true);
-                }
+                // else
+                // {
+                // Set the enemy's animation state to "walking"
+                //     animator.SetBool("IsWalking", true);
+                // }
             }
             // If the player is outside the lose sight range
-            else if (distanceToTarget > loseSightRange)
+            // else if (distanceToTarget > loseSightRange) 
+            else if (distanceToTarget > detectDistance)
             {
                 // Reset the enemy's destination
                 navMeshAgent.SetDestination(transform.position);
@@ -140,15 +142,15 @@ public class EnemyLocomotion : MonoBehaviour
             }
 
 
-            if (detectedPlayer)
-            {
-                MoveToPlayer(distanceToPlayer);
+            // if (detectedPlayer)
+            // {
+            //     MoveToPlayer(distanceToPlayer);
 
-            }
-            else
-            {
-                PlayerDetecion(distanceToPlayer);
-            }
+            // }
+            // else
+            // {
+            //     PlayerDetecion(distanceToPlayer);
+            // }
         }
 
     }
@@ -206,32 +208,32 @@ public class EnemyLocomotion : MonoBehaviour
 
     public void MoveToPlayer(float distanceToPlayer)
     {
-        // lost player
-        if (distanceToPlayer > detectDistance)
-        {
-            detectedPlayer = false;
-            animator.SetFloat("locomotion", 0f, 0.4f, Time.deltaTime);
-            animator.SetBool("Attack", false);
+        // // lost player
+        // if (distanceToPlayer > detectDistance)
+        // {
+        //     detectedPlayer = false;
+        //     animator.SetFloat("locomotion", 0f, 0.4f, Time.deltaTime);
+        //     animator.SetBool("Attack", false);
 
+        // }
+        // else
+        // {
+        if (distanceToPlayer < attackDistance)
+        {
+            agent.isStopped = true;
+            animator.SetFloat("locomotion", 0f);
+
+            animator.SetBool("Attack", true);
+            Debug.Log("attack dist " + attackDistance);
         }
         else
         {
-            if (distanceToPlayer < attackDistance)
-            {
-                agent.isStopped = true;
-                animator.SetFloat("locomotion", 0f);
-
-                animator.SetBool("Attack", true);
-                Debug.Log("attack dist " + attackDistance);
-            }
-            else
-            {
-                agent.isStopped = false;
-                agent.SetDestination(playerTransform.position);
-                animator.SetBool("Attack", false);
-                animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
-            }
+            agent.isStopped = false;
+            agent.SetDestination(playerTransform.position);
+            animator.SetBool("Attack", false);
+            animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
         }
+        // }
 
 
     }

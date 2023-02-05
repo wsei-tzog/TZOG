@@ -9,9 +9,11 @@ public class Interactable : MonoBehaviour
 
     [Header("Door settings")]
     public bool isItDoor;
+    public bool doorOpened;
     public int lockID;
     // public Quaternion targetRotation;
     public float duration;
+    public Quaternion closeRotation;
     // public List<Transform> wings = new List<Transform>();
     // public Quaternion openRotation1Wing;
     // public Quaternion openRotation2Wings;
@@ -27,7 +29,7 @@ public class Interactable : MonoBehaviour
     public List<DoorInfo> doorList;
 
 
-    [Header("Door settings")]
+    [Header("Key settings")]
     public bool isItKey;
 
 
@@ -41,10 +43,28 @@ public class Interactable : MonoBehaviour
 
         if (isItDoor)
         {
-            TryOpen();
+            if (!doorOpened)
+            {
+                TryOpen();
+            }
+            else
+            {
+                TryClose();
+            }
         }
     }
 
+
+    private void TryClose()
+    {
+        foreach (var door in doorList)
+        {
+            StartCoroutine(RotateOverTime(door.wing, closeRotation, duration, door.boxCollider));
+            doorOpened = false;
+            Debug.Log("Closing");
+        }
+        Debug.Log("Is it closed?");
+    }
 
     private void TryOpen()
     {
@@ -54,6 +74,7 @@ public class Interactable : MonoBehaviour
             {
                 StartCoroutine(RotateOverTime(door.wing, door.openRotation, duration, door.boxCollider));
             }
+            doorOpened = true;
         }
         else
         {
@@ -77,7 +98,7 @@ public class Interactable : MonoBehaviour
 
     private IEnumerator RotateOverTime(Transform transformToRotate, Quaternion targetRotation, float duration, BoxCollider boxCollider)
     {
-        this.GetComponent<Collider>().enabled = false;
+        // this.GetComponent<Collider>().enabled = false;
 
         var startRotation = transformToRotate.localRotation;
 

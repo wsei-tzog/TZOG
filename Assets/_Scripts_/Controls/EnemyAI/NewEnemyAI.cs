@@ -72,12 +72,13 @@ public class NewEnemyAI : MonoBehaviour
             else
             {
                 // Set the enemy's animation state to "walking"
-                animator.SetBool("IsWalking", true);
+                animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
             }
         }
         // If the player is outside the lose sight range
         else if (distanceToTarget > loseSightRange)
         {
+            animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
             // Check if the enemy has reached its current patrol point
             if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
             {
@@ -109,6 +110,8 @@ public class NewEnemyAI : MonoBehaviour
         {
             // Apply damage to the player
             // target.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
+            animator.SetFloat("locomotion", 0f);
+            animator.SetBool("Attack", true);
             Debug.Log("Attacking");
             // Reset the attack timer
             attackTimer = 0f;

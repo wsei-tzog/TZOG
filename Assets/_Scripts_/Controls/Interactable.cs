@@ -28,7 +28,6 @@ public class Interactable : MonoBehaviour
 
 
     [Header("Door settings")]
-    public int keyID;
     public bool isItKey;
 
 

@@ -78,19 +78,27 @@ public class NewEnemyAI : MonoBehaviour
         // If the player is outside the lose sight range
         else if (distanceToTarget > loseSightRange)
         {
-            animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
-            // Check if the enemy has reached its current patrol point
-            if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+            if (patrolPoints.Count != 0)
             {
-                // Increment the current patrol point index
-                currentPatrolPointIndex = (currentPatrolPointIndex + 1) % patrolPoints.Count;
 
-                // Set the enemy's destination to the next patrol point
-                navMeshAgent.SetDestination(patrolPoints[currentPatrolPointIndex].position);
+                // Check if the enemy has reached its current patrol point
+                if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+                {
+                    Debug.Log("Somee patrol points, walking " + this.name);
+                    animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
+                    // Increment the current patrol point index
+                    currentPatrolPointIndex = (currentPatrolPointIndex + 1) % patrolPoints.Count;
+
+                    // Set the enemy's destination to the next patrol point
+                    navMeshAgent.SetDestination(patrolPoints[currentPatrolPointIndex].position);
+                }
+            }
+            else
+            {
+                Debug.Log("No patrol points, idle " + this.name);
+                animator.SetFloat("locomotion", 0f, 0.4f, Time.deltaTime);
             }
 
-            // // Set the enemy's animation state to "idle"
-            // animator.SetBool("IsWalking", false);
         }
     }
 

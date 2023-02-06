@@ -248,7 +248,7 @@ public class GunSystem : MonoBehaviour
                 {
                     if (rayHit.collider.CompareTag("Enemy"))
                     {
-                        rayHit.collider.GetComponent<EnemyLocomotion>().TakeDamage(damage);
+                        rayHit.collider.GetComponent<NewEnemyAI>().TakeDamage(damage);
                         //Graphics
                         Destroy((Instantiate(enemyHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
 

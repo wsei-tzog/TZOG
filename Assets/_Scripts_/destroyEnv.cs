@@ -8,15 +8,36 @@ public class destroyEnv : MonoBehaviour
     public float duration;
     public Quaternion targetRotation;
 
+    public GameObject notDestroyed;
+    public GameObject destroyed;
+    public GameObject cargo;
+
+    private void Start()
+    {
+        notDestroyed.SetActive(true);
+        destroyed.SetActive(false);
+        if (null != cargo)
+            cargo.SetActive(false);
+    }
+
     public void destroyObject(int damange)
     {
         healt -= damange;
 
         if (healt <= 0)
         {
+            switchModel();
             // RotateOverTime(this.transform, Quaternion.Euler(270, 0, 0), 3);
-            StartCoroutine(RotateOverTime(this.transform, targetRotation, duration));
+            // StartCoroutine(RotateOverTime(this.transform, targetRotation, duration));
         }
+    }
+
+    public void switchModel()
+    {
+        notDestroyed.SetActive(false);
+        destroyed.SetActive(true);
+        if (null != cargo)
+            cargo.SetActive(true);
     }
 
     private IEnumerator RotateOverTime(Transform transformToRotate, Quaternion targetRotation, float duration)

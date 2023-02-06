@@ -98,7 +98,7 @@ public class MouseLook : MonoBehaviour
                         pickUpController.PickUpTorch(rayHit.transform.gameObject);
 
                     }
-                    else if (rayHit.transform.gameObject.CompareTag("Interactable"))
+                    else
                     {
                         Debug.Log("Interacting with it");
                         var interactable = rayHit.transform.gameObject.GetComponent<Interactable>();

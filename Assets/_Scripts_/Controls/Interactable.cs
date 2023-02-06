@@ -9,11 +9,11 @@ public class Interactable : MonoBehaviour
 
     [Header("Door settings")]
     public bool isItDoor;
-    public bool doorOpened;
+    bool doorOpened;
     public int lockID;
     // public Quaternion targetRotation;
-    public float duration;
-    public Quaternion closeRotation;
+    float duration = 1.5f;
+    // public Quaternion closeRotation;
     // public List<Transform> wings = new List<Transform>();
     // public Quaternion openRotation1Wing;
     // public Quaternion openRotation2Wings;
@@ -59,7 +59,7 @@ public class Interactable : MonoBehaviour
     {
         foreach (var door in doorList)
         {
-            StartCoroutine(RotateOverTime(door.wing, closeRotation, duration, door.boxCollider));
+            StartCoroutine(RotateOverTime(door.wing, Quaternion.identity, duration, door.boxCollider));
             doorOpened = false;
             Debug.Log("Closing");
         }

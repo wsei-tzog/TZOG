@@ -55,20 +55,6 @@ public class EnemyLocomotion : MonoBehaviour
     public Vector3 personalLastSighting;
     private SphereCollider col;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public bool detectedPlayer, Alive;
     public bool isMoving;
 

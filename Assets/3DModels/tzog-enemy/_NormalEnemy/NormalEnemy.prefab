@@ -1989,7 +1989,7 @@ GameObject:
   - component: {fileID: 8027340972082943901}
   m_Layer: 0
   m_Name: NormalEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2088,6 +2088,8 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
+  Alive: 0
+  Health: 10
 --- !u!1 &8334915745844409092
 GameObject:
   m_ObjectHideFlags: 0

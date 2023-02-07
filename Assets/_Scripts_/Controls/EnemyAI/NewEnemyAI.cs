@@ -142,7 +142,7 @@ public class NewEnemyAI : MonoBehaviour
         Alive = false;
         navMeshAgent.isStopped = true;
         animator.SetBool("Die", true);
-        Destroy(this.gameObject, 1.8f);
+        Destroy(this.gameObject, 5f);
     }
 
     public void TakeDamage(int damage)

@@ -61,7 +61,7 @@ public class MouseLook : MonoBehaviour
         else
         {
             #region raycast
-            Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 10);
+            Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out rayHit, 3);
             {
 
                 if (isPickingUp)
@@ -96,6 +96,10 @@ public class MouseLook : MonoBehaviour
                         pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
                         pickUpController.PickUpTorch(rayHit.transform.gameObject);
 
+                    }
+                    else if (rayHit.transform.gameObject.CompareTag("Enemy"))
+                    {
+                        rayHit.collider.GetComponent<NewEnemyAI>().Stun();
                     }
                     else
                     {

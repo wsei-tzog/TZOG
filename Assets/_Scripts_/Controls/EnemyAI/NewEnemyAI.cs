@@ -46,6 +46,7 @@ public class NewEnemyAI : MonoBehaviour
     private int currentPatrolPointIndex = 0;
 
     public bool Alive;
+    public bool Alerted;
     public int Health;
 
     private void Start()
@@ -54,17 +55,20 @@ public class NewEnemyAI : MonoBehaviour
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         Alive = true;
+        Alerted = false;
     }
 
     private void Update()
     {
-        // Calculate distance to target
-        float distanceToTarget = Vector3.Distance(transform.position, target.position);
         if (Alive)
         {
+            // Calculate distance to target
+            float distanceToTarget = Vector3.Distance(transform.position, target.position);
+
             // If the player is within the detection range and within the enemy's field of view
             if (distanceToTarget < detectionRange && IsInFieldOfView())
             {
+                Alerted = true;
                 // Set the enemy's destination to the player's position
                 navMeshAgent.SetDestination(target.position);
 
@@ -86,6 +90,7 @@ public class NewEnemyAI : MonoBehaviour
             // If the player is outside the lose sight range
             else if (distanceToTarget > loseSightRange)
             {
+                Alerted = false;
                 navMeshAgent.speed = moveSpeed;
 
                 if (patrolPoints.Count != 0)
@@ -136,7 +141,15 @@ public class NewEnemyAI : MonoBehaviour
         return angleToTarget < fieldOfViewAngle * 0.5f;
     }
 
-
+    public void Stun()
+    {
+        if (!animator.GetBool("Attack") && !Alerted)
+        {
+            Alive = false;
+            navMeshAgent.isStopped = true;
+            animator.SetBool("Die", true);
+        }
+    }
     private void Attack()
     {
         // If the attack timer has reached the attack rate

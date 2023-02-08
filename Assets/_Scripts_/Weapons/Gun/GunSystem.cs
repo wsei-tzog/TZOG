@@ -9,58 +9,55 @@ public class GunSystem : MonoBehaviour
     // poprawić automatyczne strzelanie
     // weapon swing & bob
 
-    #region  Gun stats
-    public int damage;
-    public float timeBetweenShooting, spread, aimSpread, spreadHolder, range, reloadTime, timeBetweenShots;
-    public int magazineSize, bulletsPerTap;
-    public bool allowButtonHold;
+    [Header("Gun stats")]
+    public int damage, magazineSize, bulletsPerTap;
+    public float timeBetweenShooting, spread, aimSpread, spreadHolder, range, reloadTime, timeBetweenShots, aimAnimationSpeed, pushForce;
+    public bool allowButtonHold, turnOffCanvas;
     int bulletsLeft, bulletsShot;
-    #endregion
-
-    #region  bools
     bool shooting, readyToShoot, reloading, startShooting, reloadNow, isLeftMouseHeld;
-    public bool allowPewPew, isAiming, wasAiming;
+    public bool isAiming, wasAiming;
     public static bool weaponIsActive;
-    public bool turnOffCanvas;
-    public float aimAnimationSpeed;
-    #endregion
 
-    #region reference
+    [Header("Reference")]
+
     public Camera fpsCam;
     public Transform attackPoint;
     public RaycastHit rayHit;
     public LayerMask hittable;
 
-    #endregion
 
-    #region polish
+    [Header("Polish")]
+
     public GameObject muzzleFlash, bulletHole, enemyHole, defaultPosition, aimPosition;
     public AudioSource audioSource;
     public AudioClip clip;
     public TextMeshProUGUI text;
     public Transform targetTransform;
-    public float pushForce = 10f;
 
-    #endregion
 
-    #region recoil
 
     [Header("Recoil")]
-    Transform positionAfterRecoil;
-    Quaternion rotationAfterRecoil;
 
-    public float positionReturnSpeed = 10f;
-    public float rotationReturnSpeed = 15f;
+    // public float recoilAmount = 25f;
+    // public float aimRecoilAmount = 15f;
+    public float recoilAmout;
+    public float aimRecoilAmout;
+    public float counter;
+    public float returnSpeed;
 
-    // public Vector3 RecoilKickRotation = new Vector3();
-    public Vector3 RecoilKickBackAim = new Vector3();
-    public Vector3 RecoilKickBack = new Vector3();
+    // Transform positionAfterRecoil;
+    // Quaternion rotationAfterRecoil;
 
-    // Vector3 rotationRecoil;
-    Vector3 positionalRecoil;
+    // public float positionReturnSpeed = 10f;
+    // public float rotationReturnSpeed = 15f;
 
+    // // public Vector3 RecoilKickRotation = new Vector3();
+    // public Vector3 RecoilKickBackAim = new Vector3();
+    // public Vector3 RecoilKickBack = new Vector3();
 
-    #endregion
+    // // Vector3 rotationRecoil;
+    // Vector3 positionalRecoil;
+
     public void UIBullets()
     {
         if (turnOffCanvas)
@@ -96,33 +93,33 @@ public class GunSystem : MonoBehaviour
             wasAiming = true;
             Aim();
         }
-        // else if (wasAiming && !isAiming)
         else if (!isAiming)
         {
             OutAim();
-            // wasAiming = false;
         }
 
 
-        if (isAiming)
-        {
-            positionAfterRecoil = aimPosition.transform;
-            rotationAfterRecoil = aimPosition.transform.rotation;
-        }
-        else if (!isAiming)
-        {
-            positionAfterRecoil = defaultPosition.transform;
-            rotationAfterRecoil = defaultPosition.transform.rotation;
-        }
+        // if (isAiming)
+        // {
+        //     positionAfterRecoil = aimPosition.transform;
+        //     rotationAfterRecoil = aimPosition.transform.rotation;
+        // }
+        // else if (!isAiming)
+        // {
+        //     positionAfterRecoil = defaultPosition.transform;
+        //     rotationAfterRecoil = defaultPosition.transform.rotation;
+        // }
 
 
     }
 
-    private void Start()
+    private void Awake()
     {
         bulletsLeft = magazineSize;
         readyToShoot = true;
+
         spreadHolder = spread;
+
         if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
             renderer.material.SetFloat("_startClue", 1f);
     }
@@ -133,27 +130,29 @@ public class GunSystem : MonoBehaviour
         if (weaponIsActive)
             MouseLook.slotFull = true;
 
-        transform.position = Vector3.Lerp(transform.position, positionAfterRecoil.transform.position, positionReturnSpeed * Time.deltaTime);
+        // float recoil = Mathf.Sin(counter) * aimRecoilAmount;
+
+        // transform.position = Vector3.Lerp(transform.position, positionAfterRecoil.transform.position, positionReturnSpeed * Time.deltaTime);
     }
 
-    #region shooting
 
     private void OutAim()
     {
         spread = spreadHolder;
         GameObject self = gameObject;
+
         Vector3 weaponPosition = self.transform.position;
         Vector3 scale = self.transform.localScale;
         self.transform.SetParent(defaultPosition.transform, false);
         self.transform.localScale = scale;
 
-        // self.transform.position = Vector3.Lerp(weaponPosition, defaultPosition.transform.position, aimAnimationSpeed * Time.deltaTime);
         Vector3.Lerp(weaponPosition, defaultPosition.transform.position, aimAnimationSpeed * Time.deltaTime);
     }
     private void Aim()
     {
         spread = aimSpread;
         GameObject self = gameObject;
+
         Vector3 weaponPosition = self.transform.position;
         Vector3 scale = self.transform.localScale;
         self.transform.SetParent(aimPosition.transform, false);
@@ -169,25 +168,21 @@ public class GunSystem : MonoBehaviour
         {
             readyToShoot = false;
             Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
-
-            //recoil
+            AlarmEnemies();
             if (isAiming)
             {
-                positionalRecoil = new Vector3(RecoilKickBackAim.x, RecoilKickBackAim.y, RecoilKickBackAim.z);
-
-                transform.position += positionalRecoil;
+                transform.rotation = Quaternion.Euler(aimRecoilAmout, 0, 0);
             }
             else
             {
-                positionalRecoil = new Vector3(RecoilKickBack.x, RecoilKickBack.y, RecoilKickBack.z);
-
-                transform.position += positionalRecoil;
+                transform.rotation = Quaternion.Euler(recoilAmout, 0, 0);
             }
+
+            StartCoroutine(Return());
 
             // shoot
             for (int i = 0; i < bulletsPerTap; i++)
             {
-                //direction with spread
                 //spread
                 float x = Random.Range(-spread, spread);
                 float y = Random.Range(-spread, spread);
@@ -200,8 +195,8 @@ public class GunSystem : MonoBehaviour
                     if (rayHit.collider.CompareTag("Enemy"))
                     {
                         rayHit.collider.GetComponent<NewEnemyAI>().TakeDamage(damage);
-
                         targetTransform = rayHit.collider.GetComponent<Transform>();
+
                         Vector3 forceDirection = targetTransform.position - transform.position;
                         targetTransform.position += direction.normalized * pushForce * Time.deltaTime;
 
@@ -239,25 +234,57 @@ public class GunSystem : MonoBehaviour
     }
 
 
+    private IEnumerator Return()
+    {
+        Quaternion presentRotation = transform.rotation;
+
+        var timePassed = 0f;
+        while (timePassed < returnSpeed)
+        {
+            var factor = timePassed / returnSpeed;
+            // optional add ease-in and -out
+            // factor = Mathf.SmoothStep(0, 1, factor);
+            factor = 1f - Mathf.Cos(factor * Mathf.PI * 0.7f);
+
+            transform.localRotation = Quaternion.Lerp(presentRotation, Quaternion.identity, factor);
+            // or
+            //transformToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, factor);
+
+            // increae by the time passed since last frame
+            timePassed += Time.deltaTime;
+
+            // important! This tells Unity to interrupt here, render this frame
+            // and continue from here in the next frame
+            yield return null;
+        }
+
+
+        // to be sure to end with exact values set the target rotation fix when done
+        transform.localRotation = Quaternion.identity;
+
+    }
+
+    public void AlarmEnemies()
+    {
+
+
+    }
     public void OnShootPressed()
     {
         startShooting = true;
         readyToShoot = true;
     }
 
-
     public void ResetShoot()
     {
         readyToShoot = true;
     }
-
 
     public void OnReloadPressed()
     {
         reloadNow = true;
         Reload();
     }
-
 
     private void Reload()
     {
@@ -270,14 +297,11 @@ public class GunSystem : MonoBehaviour
 
         reloadNow = false;
     }
+
     private void ReloadingFinished()
     {
         bulletsLeft = magazineSize;
         reloading = false;
     }
-    #endregion
-
-    #region recoil
-    #endregion
 
 }

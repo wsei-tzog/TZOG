@@ -32,7 +32,11 @@ public class Interactable : MonoBehaviour
     [Header("Key settings")]
     public bool isItKey;
 
-
+    private void Start()
+    {
+        if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
+            renderer.material.SetFloat("startClue", 1f);
+    }
 
     public virtual void Interact()
     {

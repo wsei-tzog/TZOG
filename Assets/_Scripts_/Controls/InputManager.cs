@@ -59,12 +59,10 @@ public class InputManager : MonoBehaviour
         // sprint
         if (groundMovement.Sprint.ReadValue<float>() > 0.1f)
         {
-            Debug.Log("sprint true");
             movement.OnSprintPressed(true);
         }
         else
         {
-            Debug.Log("sprint false");
             movement.OnSprintPressed(false);
         }
 

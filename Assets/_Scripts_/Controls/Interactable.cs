@@ -61,9 +61,7 @@ public class Interactable : MonoBehaviour
         {
             StartCoroutine(RotateOverTime(door.wing, Quaternion.identity, duration, door.boxCollider));
             doorOpened = false;
-            Debug.Log("Closing");
         }
-        Debug.Log("Is it closed?");
     }
 
     private void TryOpen()

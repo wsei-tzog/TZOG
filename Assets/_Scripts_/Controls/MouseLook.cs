@@ -45,7 +45,6 @@ public class MouseLook : MonoBehaviour
 
         if (lF.letterUI.enabled == true)
         {
-            Debug.Log("true enabled");
             lF.hideLetter();
             isPickingUp = false;
         }
@@ -100,7 +99,6 @@ public class MouseLook : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log("Interacting with it");
                         var interactable = rayHit.transform.gameObject.GetComponent<Interactable>();
                         if (interactable != null)
                         {

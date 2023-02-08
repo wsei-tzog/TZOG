@@ -107,15 +107,11 @@ public class Movement : MonoBehaviour
     {
         if (sprint)
         {
-            Debug.Log("sprint speed");
-
             speed = sprintSpeed;
             // play sound sprint
         }
         else if (!sprint)
         {
-            Debug.Log("normal speed");
-
             speed = normalSpeed;
         }
     }

@@ -146,7 +146,6 @@ public class NewEnemyAI : MonoBehaviour
             // target.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
             animator.SetFloat("locomotion", 0f);
             animator.SetBool("Attack", true);
-            Debug.Log("Attacking");
             // Reset the attack timer
             attackTimer = 0f;
         }

@@ -46,7 +46,6 @@ public class photoFound : MonoBehaviour
 
     public void turnOnEnemies()
     {
-        Debug.Log("Turning on enemies");
         enemies.SetActive(true);
     }
 }

@@ -263,7 +263,6 @@ public class GunSystem : MonoBehaviour
                     }
                     else if (rayHit.collider.CompareTag("destructibleEnv"))
                     {
-                        Debug.Log("destrucible");
                         rayHit.collider.GetComponent<destroyEnv>().destroyObject(damage);
 
                         targetTransform = rayHit.collider.GetComponent<Transform>();

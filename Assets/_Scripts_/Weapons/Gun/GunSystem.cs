@@ -38,6 +38,9 @@ public class GunSystem : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip clip;
     public TextMeshProUGUI text;
+    public Transform targetTransform;
+    public float pushForce = 10f;
+
     #endregion
 
     #region recoil
@@ -249,6 +252,11 @@ public class GunSystem : MonoBehaviour
                     if (rayHit.collider.CompareTag("Enemy"))
                     {
                         rayHit.collider.GetComponent<NewEnemyAI>().TakeDamage(damage);
+
+                        targetTransform = rayHit.collider.GetComponent<Transform>();
+                        Vector3 forceDirection = targetTransform.position - transform.position;
+                        targetTransform.position += direction.normalized * pushForce * Time.deltaTime;
+
                         //Graphics
                         Destroy((Instantiate(enemyHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
 
@@ -257,6 +265,10 @@ public class GunSystem : MonoBehaviour
                     {
                         Debug.Log("destrucible");
                         rayHit.collider.GetComponent<destroyEnv>().destroyObject(damage);
+
+                        targetTransform = rayHit.collider.GetComponent<Transform>();
+                        Vector3 forceDirection = targetTransform.position - transform.position;
+                        targetTransform.position += direction.normalized * pushForce * Time.deltaTime;
                         //Graphics
                         Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
                     }

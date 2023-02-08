@@ -169,6 +169,7 @@ public class GunSystem : MonoBehaviour
             readyToShoot = false;
             Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
             AlarmEnemies();
+            // this.ge
             if (isAiming)
             {
                 transform.rotation = Quaternion.Euler(aimRecoilAmout, 0, 0);

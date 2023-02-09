@@ -120,16 +120,13 @@ public class NewEnemyAI : MonoBehaviour
     {
         // Calculate the angle between the enemy's forward direction and the direction to the player
         float angleToTarget = Vector3.Angle(transform.forward, target.position - transform.position);
-        Debug.Log("Checking in field of view");
         // Check if there is an obstacle blocking the line of sight
         RaycastHit hit;
         if (Physics.Linecast(transform.position, target.position, out hit))
         {
-            Debug.Log("Raycast made");
             // Return false if the line of sight is blocked by an object
             if (hit.collider.CompareTag("Player"))
             {
-                Debug.Log("Raycast hitted player");
                 // Return true if the angle is within the enemy's field of view
                 return angleToTarget < fieldOfViewAngle * 0.5f;
             }
@@ -175,7 +172,6 @@ public class NewEnemyAI : MonoBehaviour
         Alive = false;
         navMeshAgent.isStopped = true;
         animator.SetBool("Die", true);
-        Destroy(this.gameObject, 5f);
     }
 
     public void TakeDamage(int damage)
@@ -184,7 +180,6 @@ public class NewEnemyAI : MonoBehaviour
 
         if (Health < 0)
         {
-            Debug.Log("Health lower than 0");
             Die();
         }
     }

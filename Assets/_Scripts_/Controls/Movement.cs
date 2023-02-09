@@ -11,6 +11,7 @@ public class Movement : MonoBehaviour
     public float sprintSpeed;
     public float normalSpeed;
     public AudioSource audioStepSource;
+    public AudioClip[] audioClips;
     public void ReceiveInput(Vector2 _horizontalInput)
     {
         horizontalInput = _horizontalInput;
@@ -28,10 +29,10 @@ public class Movement : MonoBehaviour
 
     #endregion
     #region polish
-    public WeaponSwing weaponSwing;
+    // public WeaponSwing weaponSwing;
     // private bool isRunning = false;
     private Animator animator;
-    Vector3 horizontalVelocity;
+    // Vector3 horizontalVelocity;
     #endregion
     void Awake()
     {
@@ -56,13 +57,14 @@ public class Movement : MonoBehaviour
         #region horizontal move
         Vector3 horizontalVelocity = (transform.right * horizontalInput.x + transform.forward * horizontalInput.y) * speed * Time.deltaTime;
         controller.Move(horizontalVelocity);
+
         if (horizontalVelocity.x != 0 || horizontalVelocity.z != 0 && isGrounded)
         {
             PlaySteps(true);
         }
         else
         {
-            PlaySteps(false);
+            audioStepSource.Stop();
         }
         #endregion
     }
@@ -91,16 +93,16 @@ public class Movement : MonoBehaviour
     public void PlaySteps(bool playSteps)
     {
         audioStepSource.pitch = Random.Range(0.85f, 1.3f);
-        audioStepSource.volume = Random.Range(0.4f, 1);
+        audioStepSource.volume = Random.Range(0.6f, 1);
 
         if (playSteps && !audioStepSource.isPlaying)
         {
-            audioStepSource.Play();
+            audioStepSource.PlayOneShot(audioClips[Random.Range(0, audioClips.Length)]);
         }
-        else if (!playSteps && audioStepSource.isPlaying)
-        {
-            audioStepSource.Stop();
-        }
+        // else if (!playSteps && audioStepSource.isPlaying)
+        // {
+        //     audioStepSource.Stop();
+        // }
 
     }
     public void OnSprintPressed(bool sprint)

@@ -163,21 +163,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 20
+  magazineSize: 20
+  bulletsPerTap: 4
   timeBetweenShooting: 1.5
   spread: 0.6
-  aimSpread: 0.25
+  aimSpread: 0.2
   spreadHolder: 0
   range: 8
   reloadTime: 3
   timeBetweenShots: 1
-  magazineSize: 20
-  bulletsPerTap: 4
+  aimAnimationSpeed: 1
+  pushForce: 20.35
   allowButtonHold: 1
-  allowPewPew: 0
+  turnOffCanvas: 0
   isAiming: 0
   wasAiming: 0
-  turnOffCanvas: 0
-  aimAnimationSpeed: 1
   fpsCam: {fileID: 0}
   attackPoint: {fileID: 1058261734178976519}
   hittable:
@@ -192,11 +192,10 @@ MonoBehaviour:
   clip: {fileID: 0}
   text: {fileID: 0}
   targetTransform: {fileID: 0}
-  pushForce: 20.35
-  positionReturnSpeed: 10
-  rotationReturnSpeed: 15
-  RecoilKickBackAim: {x: 0.015, y: 0, z: -0.2}
-  RecoilKickBack: {x: 0.015, y: 0, z: -0.2}
+  recoilAmout: 0
+  aimRecoilAmout: 0
+  counter: 0
+  returnSpeed: 0
 --- !u!114 &3883823666392832435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,8 +231,8 @@ MonoBehaviour:
   pQ3: {fileID: 0}
   defaultPosition: {fileID: 0}
   mouseLook: {fileID: 0}
-  dropForwardForce: 5
-  dropUpwardForce: 5
+  dropForwardForce: 3
+  dropUpwardForce: 3
   equipped: 0
 --- !u!54 &6923622596397841809
 Rigidbody:

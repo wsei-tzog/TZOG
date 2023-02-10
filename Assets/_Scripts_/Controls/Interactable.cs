@@ -7,6 +7,10 @@ public class Interactable : MonoBehaviour
 
     public QuestController questController;
 
+    [Header("Default settings")]
+    public bool canItBePickedUp;
+    public float throwForce = 10f;
+
     [Header("Door settings")]
     public bool isItDoor;
     bool doorOpened;
@@ -40,6 +44,11 @@ public class Interactable : MonoBehaviour
 
     public virtual void Interact()
     {
+        if (canItBePickedUp)
+        {
+            GrabObjects();
+        }
+
         if (isItKey)
         {
             CollectKey();
@@ -58,6 +67,17 @@ public class Interactable : MonoBehaviour
         }
     }
 
+
+    private void GrabObjects()
+    {
+        objectInHand = hit.transform;
+        objectInHandRigidbody = objectInHand.GetComponent<Rigidbody>();
+        objectInHandRigidbody.useGravity = false;
+        objectInHandRigidbody.detectCollisions = false;
+        objectInHand.GetComponent<Collider>().enabled = false;
+        objectInHand.transform.position = transform.position + transform.forward * 1.5f;
+        objectInHand.transform.parent = transform;
+    }
 
     private void TryClose()
     {

@@ -15,21 +15,6 @@ public class Movement : MonoBehaviour
     #endregion
 
 
-    [Header("Sound")]
-    #region sound
-    public AudioSource audioStepSource;
-    public AudioClip[] audioStepClips;
-    public AudioClip[] audioJumpClips;
-    public AudioClip[] audioLandClips;
-    public AudioClip[] audioSprintClips;
-    public void ReceiveInput(Vector2 _horizontalInput)
-    {
-        horizontalInput = _horizontalInput;
-
-    }
-
-    #endregion
-
     [Header("Gravity && Jump")]
     #region gravity && jump settings
     public float gravity = -9.81f;
@@ -43,6 +28,21 @@ public class Movement : MonoBehaviour
     bool isRunning;
     bool justJumped;
     private Animator animator;
+    #endregion
+
+    [Header("Sound")]
+    #region sound
+    public AudioSource audioStepSource;
+    public AudioClip[] audioStepClips;
+    public AudioClip[] audioJumpClips;
+    public AudioClip[] audioLandClips;
+    public AudioClip[] audioSprintClips;
+    public void ReceiveInput(Vector2 _horizontalInput)
+    {
+        horizontalInput = _horizontalInput;
+
+    }
+
     #endregion
 
 

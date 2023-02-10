@@ -166,6 +166,12 @@ public class NewEnemyAI : MonoBehaviour
         }
     }
 
+    public void CheckNoise(Vector3 noiseSourcePosition)
+    {
+        animator.SetFloat("locomotion", 1f);
+        navMeshAgent.SetDestination(noiseSourcePosition);
+    }
+
     public void Die()
     {
         Alive = false;

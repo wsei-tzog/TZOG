@@ -86,6 +86,10 @@ public class PickUpController : MonoBehaviour
         {
             pQ3.showq3();
         }
+        else
+        {
+
+        }
     }
     public void PickUp(GameObject rayHittedGameObject)
     {

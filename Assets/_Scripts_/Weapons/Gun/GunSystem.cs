@@ -11,7 +11,7 @@ public class GunSystem : MonoBehaviour
 
     [Header("Gun stats")]
     public int damage, magazineSize, bulletsPerTap;
-    public float timeBetweenShooting, spread, aimSpread, spreadHolder, range, reloadTime, timeBetweenShots, aimAnimationSpeed, pushForce;
+    public float timeBetweenShooting, spread, aimSpread, spreadHolder, range, reloadTime, timeBetweenShots, aimAnimationSpeed, pushForce, shootWaveRange;
     public bool allowButtonHold, turnOffCanvas;
     int bulletsLeft, bulletsShot;
     bool shooting, readyToShoot, reloading, startShooting, reloadNow, isLeftMouseHeld;
@@ -169,7 +169,6 @@ public class GunSystem : MonoBehaviour
             readyToShoot = false;
             Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
             AlarmEnemies();
-            // this.ge
             if (isAiming)
             {
                 transform.rotation = Quaternion.Euler(aimRecoilAmout, 0, 0);
@@ -267,8 +266,16 @@ public class GunSystem : MonoBehaviour
 
     public void AlarmEnemies()
     {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);
 
 
+        foreach (Collider enemy in enemiesInRange)
+        {
+            if (enemy.CompareTag("Enemy"))
+            {
+                enemy.GetComponent<NewEnemyAI>().CheckNoise(this.transform.position);
+            }
+        }
     }
     public void OnShootPressed()
     {

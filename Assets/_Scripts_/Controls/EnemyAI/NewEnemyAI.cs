@@ -134,7 +134,6 @@ public class NewEnemyAI : MonoBehaviour
                 return false;
         }
 
-        Debug.Log("Raycast not used");
         return angleToTarget < fieldOfViewAngle * 0.5f;
     }
 

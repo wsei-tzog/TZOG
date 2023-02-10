@@ -27,7 +27,6 @@ public class destroyEnv : MonoBehaviour
         if (healt <= 0)
         {
             switchModel();
-            // RotateOverTime(this.transform, Quaternion.Euler(270, 0, 0), 3);
             // StartCoroutine(RotateOverTime(this.transform, targetRotation, duration));
         }
     }

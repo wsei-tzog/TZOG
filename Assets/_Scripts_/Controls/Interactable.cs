@@ -5,11 +5,14 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
 
-    public QuestController questController;
 
     [Header("Default settings")]
     public bool canItBePickedUp;
-    public float throwForce = 10f;
+    public float range;
+    public Transform objectHolder;
+    public MouseLook mouseLook;
+    public float dropForwardForce, dropUpwardForce;
+    private Vector3 scale;
 
     [Header("Door settings")]
     public bool isItDoor;
@@ -35,6 +38,7 @@ public class Interactable : MonoBehaviour
 
     [Header("Key settings")]
     public bool isItKey;
+    public QuestController questController;
 
     private void Start()
     {
@@ -68,16 +72,61 @@ public class Interactable : MonoBehaviour
     }
 
 
+    public void Throw()
+    {
+        mouseLook.objectSlotFull = false;
+        mouseLook.grabbedObject = null;
+        // Vector3 scale = transform.localScale;
+        transform.SetParent(null);
+        transform.localScale = scale;
+
+        gameObject.AddComponent<Rigidbody>();
+        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+        rb.isKinematic = false;
+        transform.gameObject.GetComponent<Collider>().isTrigger = false;
+        transform.gameObject.GetComponent<Collider>().enabled = true;
+        rb.AddForce(mouseLook.playerCamera.forward * dropForwardForce, ForceMode.Impulse);
+        rb.AddForce(mouseLook.playerCamera.up * dropUpwardForce, ForceMode.Impulse);
+        // rb.AddTorque(new Vector3(random, random, random) * 10);
+    }
     private void GrabObjects()
     {
-        objectInHand = hit.transform;
-        objectInHandRigidbody = objectInHand.GetComponent<Rigidbody>();
-        objectInHandRigidbody.useGravity = false;
-        objectInHandRigidbody.detectCollisions = false;
-        objectInHand.GetComponent<Collider>().enabled = false;
-        objectInHand.transform.position = transform.position + transform.forward * 1.5f;
-        objectInHand.transform.parent = transform;
+        // rg and coll
+        Destroy(this.GetComponent<Rigidbody>());
+        // this.GetComponent<Collider>().enabled = false;
+
+        // init
+        scale = this.transform.localScale;
+        this.transform.SetParent(objectHolder);
+        mouseLook.objectSlotFull = true;
+
+        mouseLook.grabbedObject = this.gameObject;
+        mouseLook.gun.SetActive(false);
+
+
+        // scale and rotation
+        this.transform.localPosition = Vector3.zero;
+        this.transform.localRotation = Quaternion.identity;
+        this.transform.localScale = scale;
+
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (canItBePickedUp)
+        {
+            Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);
+
+            foreach (Collider enemy in enemiesInRange)
+            {
+                if (enemy.CompareTag("Enemy"))
+                {
+                    enemy.GetComponent<NewEnemyAI>().CheckNoise(this.transform.position);
+                }
+            }
+        }
+    }
+
 
     private void TryClose()
     {
@@ -103,7 +152,6 @@ public class Interactable : MonoBehaviour
             Debug.Log("No such key!");
         }
     }
-
 
     private void CollectKey()
     {

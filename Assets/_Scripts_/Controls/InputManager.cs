@@ -43,6 +43,7 @@ public class InputManager : MonoBehaviour
         interaction.Reload.performed += ctx => gunSystem.OnReloadPressed();
 
         interaction.Interact.performed += _ => mouseLook.OnPickUpPressed();
+        interaction.ShowGun.performed += _ => mouseLook.ShowGun();
         interaction.Drop.performed += _ => pickUpController.OnDropPressed();
         interaction.TorchSwitch.performed += _ => torch.OnTorchSwitchPressed();
 

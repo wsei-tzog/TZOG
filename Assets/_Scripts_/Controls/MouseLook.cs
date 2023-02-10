@@ -6,9 +6,12 @@ public class MouseLook : MonoBehaviour
 {
     #region reference
     public RaycastHit rayHit;
+    public GameObject gun;
+    public GameObject grabbedObject;
     public static WeaponSwing weaponSwing;
     public static PickUpController pickUpController;
     public static bool slotFull;
+    public bool objectSlotFull;
     public QuestController questController;
     public Transform playerCamera;
     public letterFound lF;
@@ -25,7 +28,10 @@ public class MouseLook : MonoBehaviour
     public static bool isPickingUp;
     #endregion
 
-
+    private void Awake()
+    {
+        objectSlotFull = false;
+    }
     public void ReceiveAimingBool(bool _isAiming)
     {
         weaponSwing.isAiming = _isAiming;
@@ -34,10 +40,6 @@ public class MouseLook : MonoBehaviour
     {
         mouseX = mouseInput.x * sensitivityX;
         mouseY = mouseInput.y * sensitivityY;
-        // weaponSwing.ReceiveInput(mouseInput);
-
-
-
     }
     public void OnPickUpPressed()
     {
@@ -57,6 +59,10 @@ public class MouseLook : MonoBehaviour
         {
             pQ3.hideq3();
             isPickingUp = false;
+        }
+        else if (objectSlotFull)
+        {
+            grabbedObject.GetComponent<Interactable>().Throw();
         }
         else
         {
@@ -117,9 +123,26 @@ public class MouseLook : MonoBehaviour
             #endregion
         }
     }
-    private void Awake()
+    public void ShowGun()
     {
+        if (gun != null && !objectSlotFull)
+        {
+            if (gun.activeInHierarchy == true)
+            {
+                gun.SetActive(false);
+            }
+            else
+            {
+                gun.SetActive(true);
+            }
+        }
+        else
+        {
+            Debug.Log("No gun to show");
+        }
     }
+
+
 
     void Update()
     {

@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class NewEnemyAI : MonoBehaviour
 {
+    private float waitTimer = 3f;
+    public bool checkingNoise;
     // The target transform (i.e. the player)
     public Transform target;
 
@@ -65,7 +67,7 @@ public class NewEnemyAI : MonoBehaviour
             // Calculate distance to target
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
-            // If the player is within the detection range and within the enemy's field of view
+            // If the player is within the detection range and the enemy's field of view
             if (distanceToTarget < detectionRange && IsInFieldOfView())
             {
                 Alerted = true;
@@ -75,31 +77,39 @@ public class NewEnemyAI : MonoBehaviour
                 // If the player is within the attack range
                 if (distanceToTarget < attackRange)
                 {
-                    // Attack the player
                     Attack();
                 }
-                // If the player is outside the attack range
                 else
                 {
                     animator.SetBool("Attack", false);
-                    // Set the enemy's animation state to "running"
                     navMeshAgent.speed = runningSpeed;
                     animator.SetFloat("locomotion", 2f);
                 }
             }
-            // If the player is outside the lose sight range
-            else if (distanceToTarget > loseSightRange)
+            else
             {
+                // If the player is outside the lose sight range
+                // else if (distanceToTarget > loseSightRange)
                 Alerted = false;
                 navMeshAgent.speed = moveSpeed;
+            }
 
-                if (patrolPoints.Count != 0)
+            if (!Alerted)
+            {
+                if (checkingNoise)
                 {
-
+                    if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+                    {
+                        StartCoroutine(WaitAtDestination());
+                    }
+                }
+                else if (patrolPoints.Count != 0 && !checkingNoise)
+                {
                     animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
                     // Check if the enemy has reached its current patrol point
                     if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
                     {
+
                         // Increment the current patrol point index
                         currentPatrolPointIndex = (currentPatrolPointIndex + 1) % patrolPoints.Count;
 
@@ -111,7 +121,6 @@ public class NewEnemyAI : MonoBehaviour
                 {
                     animator.SetFloat("locomotion", 0f, 0.4f, Time.deltaTime);
                 }
-
             }
         }
     }
@@ -139,7 +148,7 @@ public class NewEnemyAI : MonoBehaviour
 
     public void Stun()
     {
-        if (!animator.GetBool("Attack") && !Alerted)
+        if (!animator.GetBool("Attack") && !Alerted && Alive)
         {
             Alive = false;
             navMeshAgent.isStopped = true;
@@ -168,15 +177,41 @@ public class NewEnemyAI : MonoBehaviour
 
     public void CheckNoise(Vector3 noiseSourcePosition)
     {
-        animator.SetFloat("locomotion", 1f);
-        navMeshAgent.SetDestination(noiseSourcePosition);
+        if (Alive)
+        {
+            animator.SetFloat("locomotion", 1f);
+            navMeshAgent.SetDestination(noiseSourcePosition);
+            checkingNoise = true;
+        }
+    }
+
+    private IEnumerator WaitAtDestination()
+    {
+        var timePassed = 0f;
+        animator.SetFloat("locomotion", 0f);
+
+        while (timePassed < waitTimer)
+        {
+            var factor = timePassed / waitTimer;
+            navMeshAgent.isStopped = true;
+            // increae by the time passed since last frame
+            timePassed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        navMeshAgent.isStopped = false;
+        checkingNoise = false;
     }
 
     public void Die()
     {
-        Alive = false;
-        navMeshAgent.isStopped = true;
-        animator.SetBool("Die", true);
+        if (Alive)
+        {
+            Alive = false;
+            navMeshAgent.isStopped = true;
+            animator.SetBool("Die", true);
+        }
     }
 
     public void TakeDamage(int damage)

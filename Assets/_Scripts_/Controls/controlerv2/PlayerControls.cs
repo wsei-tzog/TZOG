@@ -244,6 +244,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ShowGun"",
+                    ""type"": ""Button"",
+                    ""id"": ""bfac36b7-7d60-4008-b749-8b499ce2448b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -356,6 +364,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Mission"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""96fb003a-29e1-4b93-a025-018480b623cd"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -408,6 +427,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Interactions_TorchSwitch = m_Interactions.FindAction("TorchSwitch", throwIfNotFound: true);
         m_Interactions_Esc = m_Interactions.FindAction("Esc", throwIfNotFound: true);
         m_Interactions_Mission = m_Interactions.FindAction("Mission", throwIfNotFound: true);
+        m_Interactions_ShowGun = m_Interactions.FindAction("ShowGun", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Click = m_UI.FindAction("Click", throwIfNotFound: true);
@@ -535,6 +555,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Interactions_TorchSwitch;
     private readonly InputAction m_Interactions_Esc;
     private readonly InputAction m_Interactions_Mission;
+    private readonly InputAction m_Interactions_ShowGun;
     public struct InteractionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -549,6 +570,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @TorchSwitch => m_Wrapper.m_Interactions_TorchSwitch;
         public InputAction @Esc => m_Wrapper.m_Interactions_Esc;
         public InputAction @Mission => m_Wrapper.m_Interactions_Mission;
+        public InputAction @ShowGun => m_Wrapper.m_Interactions_ShowGun;
         public InputActionMap Get() { return m_Wrapper.m_Interactions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -588,6 +610,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Mission.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMission;
                 @Mission.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMission;
                 @Mission.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnMission;
+                @ShowGun.started -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShowGun;
+                @ShowGun.performed -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShowGun;
+                @ShowGun.canceled -= m_Wrapper.m_InteractionsActionsCallbackInterface.OnShowGun;
             }
             m_Wrapper.m_InteractionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -622,6 +647,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Mission.started += instance.OnMission;
                 @Mission.performed += instance.OnMission;
                 @Mission.canceled += instance.OnMission;
+                @ShowGun.started += instance.OnShowGun;
+                @ShowGun.performed += instance.OnShowGun;
+                @ShowGun.canceled += instance.OnShowGun;
             }
         }
     }
@@ -679,6 +707,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnTorchSwitch(InputAction.CallbackContext context);
         void OnEsc(InputAction.CallbackContext context);
         void OnMission(InputAction.CallbackContext context);
+        void OnShowGun(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

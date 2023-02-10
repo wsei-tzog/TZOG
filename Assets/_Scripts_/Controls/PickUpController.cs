@@ -37,8 +37,6 @@ public class PickUpController : MonoBehaviour
         }
     }
 
-
-
     #region equip / drop
 
     public void OnDropPressed()
@@ -91,9 +89,9 @@ public class PickUpController : MonoBehaviour
 
         }
     }
+
     public void PickUp(GameObject rayHittedGameObject)
     {
-
 
         equipped = true;
         MouseLook.slotFull = true;
@@ -108,6 +106,7 @@ public class PickUpController : MonoBehaviour
         // set that weapon as weapon swing and gun system
         InputManager.gunSystem = rayHittedGameObject.GetComponent<GunSystem>();
         MouseLook.weaponSwing = rayHittedGameObject.GetComponent<WeaponSwing>();
+        mouseLook.gun = this.gameObject;
         GunSystem.weaponIsActive = true;
         gunSystem.turnOffCanvas = false;
         gunSystem.UIBullets();
@@ -128,6 +127,7 @@ public class PickUpController : MonoBehaviour
     private void Drop()
     {
         Debug.Log("dropinn");
+        mouseLook.gun = null;
         // isDropping = false;
         Vector3 scale = transform.localScale;
         equipped = false;

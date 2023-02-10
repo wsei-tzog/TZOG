@@ -98,19 +98,6 @@ public class GunSystem : MonoBehaviour
             OutAim();
         }
 
-
-        // if (isAiming)
-        // {
-        //     positionAfterRecoil = aimPosition.transform;
-        //     rotationAfterRecoil = aimPosition.transform.rotation;
-        // }
-        // else if (!isAiming)
-        // {
-        //     positionAfterRecoil = defaultPosition.transform;
-        //     rotationAfterRecoil = defaultPosition.transform.rotation;
-        // }
-
-
     }
 
     private void Awake()
@@ -130,9 +117,6 @@ public class GunSystem : MonoBehaviour
         if (weaponIsActive)
             MouseLook.slotFull = true;
 
-        // float recoil = Mathf.Sin(counter) * aimRecoilAmount;
-
-        // transform.position = Vector3.Lerp(transform.position, positionAfterRecoil.transform.position, positionReturnSpeed * Time.deltaTime);
     }
 
 

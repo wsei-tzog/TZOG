@@ -5,34 +5,45 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
 
+    [Header("Alwyas set this one")]
+    public MouseLook mouseLook;
 
-    [Header("Default settings")]
+    [Header("PickedUp settings")]
+    #region 
     public bool canItBePickedUp;
     public float range;
     public Transform objectHolder;
-    public MouseLook mouseLook;
     public float dropForwardForce, dropUpwardForce;
     private Vector3 scale;
     public LayerMask groundMask;
     public AudioSource audioSource;
     public AudioClip[] hitSounds;
+    #endregion
 
     [Header("Ammo settings")]
+    #region 
 
     public AmmoManager ammoManager;
     public bool isItAmmo;
     public AmmoType ammoType;
     public int amountOfAmmo;
 
+    #endregion
+
     [Header("Destroy settings")]
+    #region 
+
+
     public bool isItDestrucable;
     public GameObject notDestroyed;
     public GameObject destroyed;
     public List<GameObject> cargo = new List<GameObject>();
     public float healt;
 
+    #endregion
 
     [Header("Door settings")]
+    #region 
     public bool isItDoor;
     bool doorOpened;
     public int lockID;
@@ -48,13 +59,37 @@ public class Interactable : MonoBehaviour
 
     public List<DoorInfo> doorList;
 
+    #endregion
 
     [Header("Key settings")]
+    #region 
     public bool isItKey;
     public QuestController questController;
+    #endregion
+
+    [Header("Lever settings")]
+    #region 
+    public bool isItLever;
+    bool leverSwitched;
+
+    [System.Serializable]
+    public struct LeverInfo
+    {
+        public Transform lever;
+        public Quaternion openRotation;
+    }
+    public List<LeverInfo> LeverList;
+    public List<Light> LightList;
+
+    #endregion
 
     private void Start()
     {
+        foreach (var light in LightList)
+        {
+            light.enabled = false;
+        }
+
         notDestroyed.SetActive(true);
         destroyed.SetActive(false);
         if (null != cargo)
@@ -63,8 +98,10 @@ public class Interactable : MonoBehaviour
                 thing.SetActive(false);
             }
 
+
         if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
             renderer.material.SetFloat("startClue", 1f);
+
     }
 
 
@@ -97,6 +134,19 @@ public class Interactable : MonoBehaviour
         if (isItAmmo)
         {
             CollectAmmo();
+        }
+
+        if (isItLever)
+        {
+            if (!leverSwitched)
+            {
+                TurnOnLever();
+            }
+            else
+            {
+                TurnOffLever();
+            }
+
         }
     }
 
@@ -202,6 +252,38 @@ public class Interactable : MonoBehaviour
             Debug.Log("No such key!");
         }
     }
+    private void CollectAmmo()
+    {
+        Destroy(this.gameObject);
+        ammoManager.AddAmmo(ammoType, amountOfAmmo);
+    }
+    private void TurnOnLever()
+    {
+        foreach (var l in LeverList)
+        {
+            StartCoroutine(RotateOverTime(l.lever, l.openRotation, duration, null));
+            leverSwitched = true;
+        }
+
+        foreach (var light in LightList)
+        {
+            light.enabled = true;
+        }
+    }
+    private void TurnOffLever()
+    {
+        foreach (var l in LeverList)
+        {
+            StartCoroutine(RotateOverTime(l.lever, Quaternion.identity, duration, null));
+            leverSwitched = false;
+        }
+
+        foreach (var light in LightList)
+        {
+            light.enabled = false;
+        }
+    }
+
     private IEnumerator RotateOverTime(Transform transformToRotate, Quaternion targetRotation, float duration, BoxCollider boxCollider)
     {
         // this.GetComponent<Collider>().enabled = false;
@@ -235,11 +317,6 @@ public class Interactable : MonoBehaviour
         // to be sure to end with exact values set the target rotation fix when done
         transformToRotate.localRotation = targetRotation;
 
-    }
-    private void CollectAmmo()
-    {
-        Destroy(this.gameObject);
-        ammoManager.AddAmmo(ammoType, amountOfAmmo);
     }
 
     // Destroy 

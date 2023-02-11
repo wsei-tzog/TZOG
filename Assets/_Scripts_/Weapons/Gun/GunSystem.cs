@@ -9,11 +9,19 @@ public class GunSystem : MonoBehaviour
     // poprawić automatyczne strzelanie
     // weapon swing & bob
 
+    [Header("Ammo stats")]
+    public AmmoType type;
+    public int ammoUsage;
+    public int bulletsActuallyFired;
+    public AmmoManager ammoManager;
+    public int amountOfAmmoType;
+
+
     [Header("Gun stats")]
     public int damage, magazineSize, bulletsPerTap;
     public float timeBetweenShooting, spread, aimSpread, spreadHolder, range, reloadTime, timeBetweenShots, aimAnimationSpeed, pushForce, shootWaveRange;
     public bool allowButtonHold, turnOffCanvas;
-    int bulletsLeft, bulletsShot;
+    int bulletsLeftInMagazine, bulletsShot;
     bool shooting, readyToShoot, reloading, startShooting, reloadNow, isLeftMouseHeld;
     public bool isAiming, wasAiming;
     public static bool weaponIsActive;
@@ -100,11 +108,16 @@ public class GunSystem : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        amountOfAmmoType = ammoManager.GetAmmoCount(type);
+        Debug.Log("Ammo count for " + type + ": " + amountOfAmmoType);
+
+    }
     private void Awake()
     {
-        bulletsLeft = magazineSize;
-        readyToShoot = true;
 
+        readyToShoot = true;
         spreadHolder = spread;
 
         if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
@@ -113,7 +126,9 @@ public class GunSystem : MonoBehaviour
 
     private void Update()
     {
-        text.SetText(bulletsLeft + " / " + magazineSize);
+        int ammoLeft = ammoManager.GetAmmoCount(type);
+
+        text.SetText(bulletsLeftInMagazine + " / " + ammoLeft);
         if (weaponIsActive)
             MouseLook.slotFull = true;
 
@@ -146,9 +161,11 @@ public class GunSystem : MonoBehaviour
     }
     private void Shoot()
     {
+
+
         bulletsShot = bulletsPerTap;
 
-        if (!reloading && readyToShoot && bulletsLeft > 0)
+        if (!reloading && readyToShoot && bulletsLeftInMagazine > 0)
         {
             readyToShoot = false;
             Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
@@ -165,7 +182,13 @@ public class GunSystem : MonoBehaviour
             StartCoroutine(Return());
 
             // shoot
-            for (int i = 0; i < bulletsPerTap; i++)
+
+            if (bulletsLeftInMagazine >= bulletsPerTap)
+                bulletsActuallyFired = bulletsPerTap;
+            else
+                bulletsActuallyFired = bulletsLeftInMagazine;
+
+            for (int i = 0; i < bulletsActuallyFired; i++)
             {
                 //spread
                 float x = Random.Range(-spread, spread);
@@ -188,9 +211,9 @@ public class GunSystem : MonoBehaviour
                         Destroy((Instantiate(enemyHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
 
                     }
-                    else if (rayHit.collider.CompareTag("destructibleEnv"))
+                    else if (rayHit.collider.CompareTag("Interactable"))
                     {
-                        rayHit.collider.GetComponent<destroyEnv>().destroyObject(damage);
+                        rayHit.collider.GetComponent<Interactable>().destroyObject(damage);
 
                         targetTransform = rayHit.collider.GetComponent<Transform>();
                         Vector3 forceDirection = targetTransform.position - transform.position;
@@ -205,12 +228,13 @@ public class GunSystem : MonoBehaviour
                     }
                 }
 
-                bulletsLeft--;
-                bulletsShot--;
+                bulletsLeftInMagazine--;
+                // bulletsShot--;
             }
 
+
             Invoke("ResetShoot", timeBetweenShooting);
-            // if (bulletsShot > 0 && bulletsLeft > 0)
+            // if (bulletsShot > 0 && bulletsLeftInMagazine > 0)
             //     Invoke("Shoot", timeBetweenShots);
 
         }
@@ -261,6 +285,7 @@ public class GunSystem : MonoBehaviour
             }
         }
     }
+
     public void OnShootPressed()
     {
         startShooting = true;
@@ -280,7 +305,7 @@ public class GunSystem : MonoBehaviour
 
     private void Reload()
     {
-        if (bulletsLeft < magazineSize && !reloading)
+        if (bulletsLeftInMagazine < magazineSize && !reloading)
         {
             audioSource.Play();
             reloading = true;
@@ -292,7 +317,20 @@ public class GunSystem : MonoBehaviour
 
     private void ReloadingFinished()
     {
-        bulletsLeft = magazineSize;
+        amountOfAmmoType = ammoManager.GetAmmoCount(type);
+        int bulletsToFullMagazine = (magazineSize - bulletsLeftInMagazine);
+        Debug.Log("Bullets to full magazine :" + bulletsToFullMagazine + " for " + this.name);
+
+        if (bulletsToFullMagazine <= amountOfAmmoType)
+        {
+            bulletsLeftInMagazine = magazineSize;
+            ammoManager.UseAmmo(type, bulletsToFullMagazine);
+        }
+        else if (bulletsToFullMagazine >= amountOfAmmoType)
+        {
+            bulletsLeftInMagazine = bulletsLeftInMagazine + amountOfAmmoType;
+            ammoManager.UseAmmo(type, amountOfAmmoType);
+        }
         reloading = false;
     }
 

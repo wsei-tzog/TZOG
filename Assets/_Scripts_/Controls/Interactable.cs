@@ -13,6 +13,16 @@ public class Interactable : MonoBehaviour
     public MouseLook mouseLook;
     public float dropForwardForce, dropUpwardForce;
     private Vector3 scale;
+    public LayerMask groundMask;
+    public AudioSource audioSource;
+    public AudioClip[] hitSounds;
+
+    [Header("Destroy settings")]
+    public GameObject notDestroyed;
+    public GameObject destroyed;
+    public GameObject cargo;
+    public float healt;
+
 
     [Header("Door settings")]
     public bool isItDoor;
@@ -42,9 +52,34 @@ public class Interactable : MonoBehaviour
 
     private void Start()
     {
+        notDestroyed.SetActive(true);
+        destroyed.SetActive(false);
+        if (null != cargo)
+            cargo.SetActive(false);
+
         if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
             renderer.material.SetFloat("startClue", 1f);
     }
+
+
+    public void destroyObject(int damange)
+    {
+        healt -= damange;
+
+        if (healt <= 0)
+        {
+            switchModel();
+        }
+    }
+    public void switchModel()
+    {
+        notDestroyed.SetActive(false);
+        destroyed.SetActive(true);
+        if (null != cargo)
+            cargo.SetActive(true);
+    }
+
+
 
     public virtual void Interact()
     {
@@ -87,7 +122,6 @@ public class Interactable : MonoBehaviour
         transform.gameObject.GetComponent<Collider>().enabled = true;
         rb.AddForce(mouseLook.playerCamera.forward * dropForwardForce, ForceMode.Impulse);
         rb.AddForce(mouseLook.playerCamera.up * dropUpwardForce, ForceMode.Impulse);
-        // rb.AddTorque(new Vector3(random, random, random) * 10);
     }
     private void GrabObjects()
     {
@@ -113,6 +147,13 @@ public class Interactable : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        // audioSource.pitch = Random.Range(0.85f, 1.3f);
+        // audioSource.volume = Random.Range(0.8f, 1);
+        // audioSource.PlayOneShot(hitSounds[Random.Range(0, hitSounds.Length)]);
+
+        Debug.Log("Hitting flore");
+        destroyObject(1);
+
         if (canItBePickedUp)
         {
             Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);

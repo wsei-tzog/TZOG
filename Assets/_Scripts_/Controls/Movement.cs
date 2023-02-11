@@ -37,6 +37,7 @@ public class Movement : MonoBehaviour
     public AudioClip[] audioJumpClips;
     public AudioClip[] audioLandClips;
     public AudioClip[] audioSprintClips;
+
     public void ReceiveInput(Vector2 _horizontalInput)
     {
         horizontalInput = _horizontalInput;

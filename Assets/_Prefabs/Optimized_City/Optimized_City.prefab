@@ -925,6 +925,7 @@ GameObject:
   - component: {fileID: 5151008094695904469}
   - component: {fileID: 7906559723035628224}
   - component: {fileID: 943315886221071534}
+  - component: {fileID: 1421783822421992560}
   m_Layer: 0
   m_Name: Building06
   m_TagString: Untagged
@@ -1114,6 +1115,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.0899887, y: 4.4214487, z: 6.109253}
   m_Center: {x: 55.511723, y: 2.2107053, z: 36.27643}
+--- !u!65 &1421783822421992560
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2926707631687777719}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.025017, y: 6.6350713, z: 2.0368805}
+  m_Center: {x: 46.071056, y: 3.3175309, z: 17.753822}
 --- !u!1 &3005801138084629693
 GameObject:
   m_ObjectHideFlags: 0

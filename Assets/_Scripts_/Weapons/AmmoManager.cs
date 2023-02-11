@@ -18,8 +18,8 @@ public class AmmoManager : MonoBehaviour
     {
         ammoCounts[AmmoType.Pistol] = 20;
         ammoCounts[AmmoType.SMG] = 20;
-        ammoCounts[AmmoType.Shotgun] = 6;
-        ammoCounts[AmmoType.Rifle] = 30;
+        ammoCounts[AmmoType.Shotgun] = 12;
+        ammoCounts[AmmoType.Rifle] = 20;
     }
 
     public int GetAmmoCount(AmmoType type)
@@ -30,5 +30,9 @@ public class AmmoManager : MonoBehaviour
     public void UseAmmo(AmmoType type, int amount)
     {
         ammoCounts[type] -= amount;
+    }
+    public void AddAmmo(AmmoType type, int amount)
+    {
+        ammoCounts[type] += amount;
     }
 }

@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 1013043419342696966}
   - component: {fileID: 7213506404174065329}
   - component: {fileID: 1967437883284523097}
+  - component: {fileID: 4287952513505363144}
+  - component: {fileID: 2931569427703962958}
   m_Layer: 0
   m_Name: Ammo_Small
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7690373596095349826}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3.7191, y: 3.7191, z: 3.7191}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -81,3 +83,53 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4287952513505363144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690373596095349826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3104e4e4ebb30c34aa0dda581e5fb51b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canItBePickedUp: 0
+  range: 0
+  objectHolder: {fileID: 0}
+  mouseLook: {fileID: 0}
+  dropForwardForce: 0
+  dropUpwardForce: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  audioSource: {fileID: 0}
+  hitSounds: []
+  ammoManager: {fileID: 0}
+  isItAmmo: 1
+  ammoType: 0
+  amountOfAmmo: 25
+  notDestroyed: {fileID: 0}
+  destroyed: {fileID: 0}
+  cargo:
+  - {fileID: 0}
+  healt: 0
+  isItDoor: 0
+  lockID: 0
+  doorList: []
+  isItKey: 0
+  questController: {fileID: 0}
+--- !u!65 &2931569427703962958
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690373596095349826}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.050914884, y: 0.050040822, z: 0.049652033}
+  m_Center: {x: -0.012181428, y: 0.024922524, z: -0.0073276726}

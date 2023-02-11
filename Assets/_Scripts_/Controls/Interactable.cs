@@ -17,10 +17,18 @@ public class Interactable : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip[] hitSounds;
 
+    [Header("Ammo settings")]
+
+    public AmmoManager ammoManager;
+    public bool isItAmmo;
+    public AmmoType ammoType;
+    public int amountOfAmmo;
+
     [Header("Destroy settings")]
+    public bool isItDestrucable;
     public GameObject notDestroyed;
     public GameObject destroyed;
-    public GameObject cargo;
+    public List<GameObject> cargo = new List<GameObject>();
     public float healt;
 
 
@@ -28,12 +36,7 @@ public class Interactable : MonoBehaviour
     public bool isItDoor;
     bool doorOpened;
     public int lockID;
-    // public Quaternion targetRotation;
     float duration = 1.5f;
-    // public Quaternion closeRotation;
-    // public List<Transform> wings = new List<Transform>();
-    // public Quaternion openRotation1Wing;
-    // public Quaternion openRotation2Wings;
 
     [System.Serializable]
     public struct DoorInfo
@@ -55,34 +58,20 @@ public class Interactable : MonoBehaviour
         notDestroyed.SetActive(true);
         destroyed.SetActive(false);
         if (null != cargo)
-            cargo.SetActive(false);
+            foreach (GameObject thing in cargo)
+            {
+                thing.SetActive(false);
+            }
 
         if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
             renderer.material.SetFloat("startClue", 1f);
     }
 
 
-    public void destroyObject(int damange)
-    {
-        healt -= damange;
-
-        if (healt <= 0)
-        {
-            switchModel();
-        }
-    }
-    public void switchModel()
-    {
-        notDestroyed.SetActive(false);
-        destroyed.SetActive(true);
-        if (null != cargo)
-            cargo.SetActive(true);
-    }
-
-
-
     public virtual void Interact()
     {
+
+
         if (canItBePickedUp)
         {
             GrabObjects();
@@ -104,9 +93,37 @@ public class Interactable : MonoBehaviour
                 TryClose();
             }
         }
+
+        if (isItAmmo)
+        {
+            CollectAmmo();
+        }
     }
 
 
+    private void GrabObjects()
+    {
+        // rg and coll
+        Destroy(this.GetComponent<Rigidbody>());
+        // this.GetComponent<Collider>().enabled = false;
+
+        // init
+        scale = this.transform.localScale;
+        this.transform.SetParent(objectHolder);
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+        mouseLook.objectSlotFull = true;
+
+        mouseLook.grabbedObject = this.gameObject;
+        mouseLook.gun.SetActive(false);
+
+
+        // scale and rotation
+        this.transform.localPosition = Vector3.zero;
+        this.transform.localRotation = Quaternion.identity;
+        this.transform.localScale = scale;
+
+    }
     public void Throw()
     {
         mouseLook.objectSlotFull = false;
@@ -120,31 +137,10 @@ public class Interactable : MonoBehaviour
         rb.isKinematic = false;
         transform.gameObject.GetComponent<Collider>().isTrigger = false;
         transform.gameObject.GetComponent<Collider>().enabled = true;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
         rb.AddForce(mouseLook.playerCamera.forward * dropForwardForce, ForceMode.Impulse);
         rb.AddForce(mouseLook.playerCamera.up * dropUpwardForce, ForceMode.Impulse);
     }
-    private void GrabObjects()
-    {
-        // rg and coll
-        Destroy(this.GetComponent<Rigidbody>());
-        // this.GetComponent<Collider>().enabled = false;
-
-        // init
-        scale = this.transform.localScale;
-        this.transform.SetParent(objectHolder);
-        mouseLook.objectSlotFull = true;
-
-        mouseLook.grabbedObject = this.gameObject;
-        mouseLook.gun.SetActive(false);
-
-
-        // scale and rotation
-        this.transform.localPosition = Vector3.zero;
-        this.transform.localRotation = Quaternion.identity;
-        this.transform.localScale = scale;
-
-    }
-
     private void OnCollisionEnter(Collision collision)
     {
         // audioSource.pitch = Random.Range(0.85f, 1.3f);
@@ -152,23 +148,37 @@ public class Interactable : MonoBehaviour
         // audioSource.PlayOneShot(hitSounds[Random.Range(0, hitSounds.Length)]);
 
         Debug.Log("Hitting flore");
-        destroyObject(1);
-
-        if (canItBePickedUp)
+        if (isItDestrucable)
         {
-            Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);
+            destroyObject(1);
+        }
 
-            foreach (Collider enemy in enemiesInRange)
+        // if (canItBePickedUp)
+        // {
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);
+        Debug.Log("spawning overlap sphere");
+
+        foreach (Collider enemy in enemiesInRange)
+        {
+            if (enemy.CompareTag("Enemy"))
             {
-                if (enemy.CompareTag("Enemy"))
-                {
-                    enemy.GetComponent<NewEnemyAI>().CheckNoise(this.transform.position);
-                }
+                Debug.Log("Getting enemy " + enemy);
+                enemy.GetComponent<NewEnemyAI>().CheckNoise(this.transform.position);
             }
         }
+        // }
     }
+    private void CollectKey()
+    {
+        Key key = this.transform.gameObject.GetComponent<Key>();
+        if (key != null)
+        {
+            questController.keys.Add(key.keyID);
+            // Destroy the key game object
+            Destroy(key.gameObject);
+        }
 
-
+    }
     private void TryClose()
     {
         foreach (var door in doorList)
@@ -177,7 +187,6 @@ public class Interactable : MonoBehaviour
             doorOpened = false;
         }
     }
-
     private void TryOpen()
     {
         if (questController.keys.Contains(lockID))
@@ -193,20 +202,6 @@ public class Interactable : MonoBehaviour
             Debug.Log("No such key!");
         }
     }
-
-    private void CollectKey()
-    {
-        Key key = this.transform.gameObject.GetComponent<Key>();
-        if (key != null)
-        {
-            questController.keys.Add(key.keyID);
-            // Destroy the key game object
-            Destroy(key.gameObject);
-        }
-
-    }
-
-
     private IEnumerator RotateOverTime(Transform transformToRotate, Quaternion targetRotation, float duration, BoxCollider boxCollider)
     {
         // this.GetComponent<Collider>().enabled = false;
@@ -241,7 +236,55 @@ public class Interactable : MonoBehaviour
         transformToRotate.localRotation = targetRotation;
 
     }
+    private void CollectAmmo()
+    {
+        Destroy(this.gameObject);
+        ammoManager.AddAmmo(ammoType, amountOfAmmo);
+    }
 
+    // Destroy 
+    public void destroyObject(int damange)
+    {
+        healt -= damange;
+
+        if (healt <= 0)
+        {
+            switchModel();
+        }
+    }
+    public void switchModel()
+    {
+        Transform notDestroyedTransform = notDestroyed.transform;
+        notDestroyed.SetActive(false);
+        destroyed.transform.SetParent(null);
+
+        destroyed.transform.position = notDestroyedTransform.position;
+        destroyed.SetActive(true);
+        destroyed.AddComponent<Rigidbody>();
+        Rigidbody drb = destroyed.GetComponent<Rigidbody>();
+        drb.AddForce(Vector3.up * 1, ForceMode.Impulse);
+        destroyed.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
+        destroyed.transform.gameObject.GetComponent<Collider>().isTrigger = false;
+        destroyed.transform.gameObject.GetComponent<Collider>().enabled = true;
+
+        if (null != cargo)
+            foreach (GameObject thing in cargo)
+            {
+                thing.transform.SetParent(null);
+                thing.transform.position = notDestroyedTransform.position;
+
+                thing.AddComponent<Rigidbody>();
+                Rigidbody rb = thing.GetComponent<Rigidbody>();
+                rb.isKinematic = false;
+                thing.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
+                thing.transform.gameObject.GetComponent<Collider>().isTrigger = false;
+                thing.transform.gameObject.GetComponent<Collider>().enabled = true;
+
+                thing.SetActive(true);
+                rb.AddForce(Vector3.up * 3, ForceMode.Impulse);
+            }
+        Destroy(this);
+    }
 
 
 

@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 5816398363760790874}
   - component: {fileID: 1878389940943152882}
   - component: {fileID: 8594259516577289487}
+  - component: {fileID: 921959974}
   m_Layer: 0
   m_Name: WoodPlanks01
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6471988165775542282}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.15643767, y: 0.15643767, z: 0.15643767}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -95,3 +96,39 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5528855, y: 0.39999998, z: 3.545086}
   m_Center: {x: 0.05393383, y: 0.19999999, z: -0.013968825}
+--- !u!114 &921959974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6471988165775542282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3104e4e4ebb30c34aa0dda581e5fb51b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canItBePickedUp: 1
+  range: 15
+  objectHolder: {fileID: 0}
+  mouseLook: {fileID: 0}
+  dropForwardForce: 3
+  dropUpwardForce: 3
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 9
+  audioSource: {fileID: 0}
+  hitSounds: []
+  ammoManager: {fileID: 0}
+  isItAmmo: 0
+  ammoType: 0
+  amountOfAmmo: 0
+  notDestroyed: {fileID: 0}
+  destroyed: {fileID: 0}
+  cargo: []
+  healt: 0
+  isItDoor: 0
+  lockID: 0
+  doorList: []
+  isItKey: 0
+  questController: {fileID: 0}

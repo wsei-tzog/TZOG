@@ -83,7 +83,7 @@ public class GunSystem : MonoBehaviour
     {
         isLeftMouseHeld = _isLeftMouseHeld;
 
-        if (weaponIsActive && isLeftMouseHeld)
+        if (weaponIsActive && isLeftMouseHeld && gameObject.activeInHierarchy)
         {
             if (startShooting)
             {

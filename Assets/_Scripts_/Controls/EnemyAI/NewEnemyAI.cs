@@ -68,14 +68,14 @@ public class NewEnemyAI : MonoBehaviour
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
 
             // If the player is within the detection range and the enemy's field of view
-            if (distanceToTarget < detectionRange && IsInFieldOfView())
+            if (distanceToTarget < detectionRange && IsInFieldOfView() && Alive)
             {
                 Alerted = true;
                 // Set the enemy's destination to the player's position
                 navMeshAgent.SetDestination(target.position);
 
                 // If the player is within the attack range
-                if (distanceToTarget < attackRange)
+                if (distanceToTarget < attackRange && Alive)
                 {
                     Attack();
                 }
@@ -96,14 +96,14 @@ public class NewEnemyAI : MonoBehaviour
 
             if (!Alerted)
             {
-                if (checkingNoise)
+                if (checkingNoise && Alive)
                 {
-                    if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
+                    if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance && Alive)
                     {
                         StartCoroutine(WaitAtDestination());
                     }
                 }
-                else if (patrolPoints.Count != 0 && !checkingNoise)
+                else if (patrolPoints.Count != 0 && !checkingNoise && Alive)
                 {
                     animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
                     // Check if the enemy has reached its current patrol point
@@ -134,7 +134,7 @@ public class NewEnemyAI : MonoBehaviour
         if (Physics.Linecast(transform.position, target.position, out hit))
         {
             // Return false if the line of sight is blocked by an object
-            if (hit.collider.CompareTag("Player"))
+            if (hit.collider.CompareTag("Player") && Alive)
             {
                 // Return true if the angle is within the enemy's field of view
                 return angleToTarget < fieldOfViewAngle * 0.5f;

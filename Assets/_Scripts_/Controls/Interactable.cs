@@ -36,7 +36,7 @@ public class Interactable : MonoBehaviour
 
     public bool isItDestrucable;
     public GameObject notDestroyed;
-    public GameObject destroyed;
+    public List<GameObject> destroyed = new List<GameObject>();
     public List<GameObject> cargo = new List<GameObject>();
     public float healt;
 
@@ -91,7 +91,11 @@ public class Interactable : MonoBehaviour
         }
 
         notDestroyed.SetActive(true);
-        destroyed.SetActive(false);
+        if (null != destroyed)
+            foreach (GameObject thing in destroyed)
+            {
+                thing.SetActive(false);
+            }
         if (null != cargo)
             foreach (GameObject thing in cargo)
             {
@@ -333,19 +337,22 @@ public class Interactable : MonoBehaviour
     {
         if (notDestroyed != null)
         {
-
             Transform notDestroyedTransform = notDestroyed.transform;
             notDestroyed.SetActive(false);
-            destroyed.transform.SetParent(null);
 
-            destroyed.transform.position = notDestroyedTransform.position;
-            destroyed.SetActive(true);
-            destroyed.AddComponent<Rigidbody>();
-            Rigidbody drb = destroyed.GetComponent<Rigidbody>();
-            drb.AddForce(Vector3.up * 1, ForceMode.Impulse);
-            destroyed.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
-            destroyed.transform.gameObject.GetComponent<Collider>().isTrigger = false;
-            destroyed.transform.gameObject.GetComponent<Collider>().enabled = true;
+            foreach (GameObject destroyedThing in destroyed)
+            {
+                destroyedThing.transform.SetParent(null);
+
+                // destroyedThing.transform.position = notDestroyedTransform.position;
+                destroyedThing.SetActive(true);
+                destroyedThing.AddComponent<Rigidbody>();
+                Rigidbody drb = destroyedThing.GetComponent<Rigidbody>();
+                drb.AddForce(Vector3.up * 0.2f, ForceMode.Impulse);
+                destroyedThing.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
+                destroyedThing.transform.gameObject.GetComponent<Collider>().isTrigger = false;
+                destroyedThing.transform.gameObject.GetComponent<Collider>().enabled = true;
+            }
 
             if (null != cargo)
                 foreach (GameObject thing in cargo)

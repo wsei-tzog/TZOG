@@ -331,36 +331,41 @@ public class Interactable : MonoBehaviour
     }
     public void switchModel()
     {
-        Transform notDestroyedTransform = notDestroyed.transform;
-        notDestroyed.SetActive(false);
-        destroyed.transform.SetParent(null);
+        if (notDestroyed != null)
+        {
 
-        destroyed.transform.position = notDestroyedTransform.position;
-        destroyed.SetActive(true);
-        destroyed.AddComponent<Rigidbody>();
-        Rigidbody drb = destroyed.GetComponent<Rigidbody>();
-        drb.AddForce(Vector3.up * 1, ForceMode.Impulse);
-        destroyed.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
-        destroyed.transform.gameObject.GetComponent<Collider>().isTrigger = false;
-        destroyed.transform.gameObject.GetComponent<Collider>().enabled = true;
+            Transform notDestroyedTransform = notDestroyed.transform;
+            notDestroyed.SetActive(false);
+            destroyed.transform.SetParent(null);
 
-        if (null != cargo)
-            foreach (GameObject thing in cargo)
-            {
-                thing.transform.SetParent(null);
-                thing.transform.position = notDestroyedTransform.position;
+            destroyed.transform.position = notDestroyedTransform.position;
+            destroyed.SetActive(true);
+            destroyed.AddComponent<Rigidbody>();
+            Rigidbody drb = destroyed.GetComponent<Rigidbody>();
+            drb.AddForce(Vector3.up * 1, ForceMode.Impulse);
+            destroyed.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
+            destroyed.transform.gameObject.GetComponent<Collider>().isTrigger = false;
+            destroyed.transform.gameObject.GetComponent<Collider>().enabled = true;
 
-                thing.AddComponent<Rigidbody>();
-                Rigidbody rb = thing.GetComponent<Rigidbody>();
-                rb.isKinematic = false;
-                thing.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
-                thing.transform.gameObject.GetComponent<Collider>().isTrigger = false;
-                thing.transform.gameObject.GetComponent<Collider>().enabled = true;
+            if (null != cargo)
+                foreach (GameObject thing in cargo)
+                {
+                    thing.transform.SetParent(null);
+                    thing.transform.position = notDestroyedTransform.position;
 
-                thing.SetActive(true);
-                rb.AddForce(Vector3.up * 3, ForceMode.Impulse);
-            }
-        Destroy(this);
+                    thing.AddComponent<Rigidbody>();
+                    Rigidbody rb = thing.GetComponent<Rigidbody>();
+                    rb.isKinematic = false;
+                    thing.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
+                    thing.transform.gameObject.GetComponent<Collider>().isTrigger = false;
+                    thing.transform.gameObject.GetComponent<Collider>().enabled = true;
+
+                    thing.SetActive(true);
+                    rb.AddForce(Vector3.up * 3, ForceMode.Impulse);
+                }
+            Destroy(this);
+        }
+
     }
 
 

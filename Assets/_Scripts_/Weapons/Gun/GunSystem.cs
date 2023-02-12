@@ -15,15 +15,15 @@ public class GunSystem : MonoBehaviour
     public int bulletsActuallyFired;
     public AmmoManager ammoManager;
     public int amountOfAmmoType;
+    int ammoLeft;
 
 
     [Header("Gun stats")]
     public int damage, magazineSize, bulletsPerTap;
     public float timeBetweenShooting, spread, aimSpread, spreadHolder, range, reloadTime, timeBetweenShots, aimAnimationSpeed, pushForce, shootWaveRange;
-    public bool allowButtonHold, turnOffCanvas;
     int bulletsLeftInMagazine, bulletsShot;
-    bool shooting, readyToShoot, reloading, startShooting, reloadNow, isLeftMouseHeld;
-    public bool isAiming, wasAiming;
+    bool reloading, isLeftMouseHeld, isAiming, wasAiming;
+    public bool turnOffCanvas, readyToShoot, coroutineUsed;
     public static bool weaponIsActive;
 
     [Header("Reference")]
@@ -78,19 +78,13 @@ public class GunSystem : MonoBehaviour
             text.gameObject.SetActive(true);
         }
     }
-
-    public void ReceiveInput(bool _isLeftMouseHeld)
+    public void OnShootPressed()
     {
-        isLeftMouseHeld = _isLeftMouseHeld;
-
-        if (weaponIsActive && isLeftMouseHeld && gameObject.activeInHierarchy)
-        {
-            if (startShooting)
-            {
-                Shoot();
-            }
-        }
+        // startShooting = true;
+        // readyToShoot = true;
     }
+
+
 
     public void ReceiveAimInput(bool _isAiming)
     {
@@ -111,7 +105,7 @@ public class GunSystem : MonoBehaviour
     private void Start()
     {
         amountOfAmmoType = ammoManager.GetAmmoCount(type);
-        Debug.Log("Ammo count for " + type + ": " + amountOfAmmoType);
+        ReloadingFinished();
 
     }
     private void Awake()
@@ -126,15 +120,13 @@ public class GunSystem : MonoBehaviour
 
     private void Update()
     {
-        int ammoLeft = ammoManager.GetAmmoCount(type);
+        ammoLeft = ammoManager.GetAmmoCount(type);
 
         text.SetText(bulletsLeftInMagazine + " / " + ammoLeft);
         if (weaponIsActive)
             MouseLook.slotFull = true;
 
     }
-
-
     private void OutAim()
     {
         spread = spreadHolder;
@@ -159,89 +151,76 @@ public class GunSystem : MonoBehaviour
 
         Vector3.Lerp(weaponPosition, aimPosition.transform.position, aimAnimationSpeed * Time.deltaTime);
     }
+    public void ReceiveInput(bool _isLeftMouseHeld)
+    {
+        isLeftMouseHeld = _isLeftMouseHeld;
+        Debug.Log("ReceiveInput called");
+        if (!reloading && isLeftMouseHeld && gameObject.activeInHierarchy && readyToShoot && bulletsLeftInMagazine > 0)
+        {
+            Debug.Log("ReceiveInput ifs went fine");
+            Shoot();
+        }
+    }
     private void Shoot()
     {
+        Debug.Log("shoot call");
+        readyToShoot = false;
+        Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
+        AlarmEnemies();
 
+        // Vector3 recoil = isAiming ? aimRecoilAmout : recoilAmout;
+        // transform.rotation = Quaternion.Euler(recoil, 0, 0);
+        // StartCoroutine(Return());
 
-        bulletsShot = bulletsPerTap;
+        bulletsActuallyFired = Mathf.Min(bulletsPerTap, bulletsLeftInMagazine);
+        bulletsShot = bulletsActuallyFired;
 
-        if (!reloading && readyToShoot && bulletsLeftInMagazine > 0)
+        for (int i = 0; i < bulletsActuallyFired; i++)
         {
-            readyToShoot = false;
-            Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
-            AlarmEnemies();
-            if (isAiming)
+            float x = Random.Range(-spread, spread);
+            float y = Random.Range(-spread, spread);
+
+            Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
+
+            if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, hittable))
             {
-                transform.rotation = Quaternion.Euler(aimRecoilAmout, 0, 0);
-            }
-            else
-            {
-                transform.rotation = Quaternion.Euler(recoilAmout, 0, 0);
-            }
-
-            StartCoroutine(Return());
-
-            // shoot
-
-            if (bulletsLeftInMagazine >= bulletsPerTap)
-                bulletsActuallyFired = bulletsPerTap;
-            else
-                bulletsActuallyFired = bulletsLeftInMagazine;
-
-            for (int i = 0; i < bulletsActuallyFired; i++)
-            {
-                //spread
-                float x = Random.Range(-spread, spread);
-                float y = Random.Range(-spread, spread);
-
-                Vector3 direction = fpsCam.transform.forward + new Vector3(x, y, 0);
-
-                //Raycast
-                if (Physics.Raycast(fpsCam.transform.position, direction, out rayHit, range, hittable))
+                if (rayHit.collider.CompareTag("Enemy"))
                 {
-                    if (rayHit.collider.CompareTag("Enemy"))
-                    {
-                        rayHit.collider.GetComponent<NewEnemyAI>().TakeDamage(damage);
-                        targetTransform = rayHit.collider.GetComponent<Transform>();
-
-                        Vector3 forceDirection = targetTransform.position - transform.position;
-                        targetTransform.position += direction.normalized * pushForce * Time.deltaTime;
-
-                        //Graphics
-                        Destroy((Instantiate(enemyHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
-
-                    }
-                    else if (rayHit.collider.CompareTag("Interactable"))
-                    {
-                        rayHit.collider.GetComponent<Interactable>().destroyObject(damage);
-
-                        targetTransform = rayHit.collider.GetComponent<Transform>();
-                        Vector3 forceDirection = targetTransform.position - transform.position;
-                        targetTransform.position += direction.normalized * pushForce * Time.deltaTime;
-                        //Graphics
-                        Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
-                    }
-                    else
-                    {
-                        //Graphics
-                        Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
-                    }
+                    NewEnemyAI enemy = rayHit.collider.GetComponent<NewEnemyAI>();
+                    enemy.TakeDamage(damage);
+                    Vector3 forceDirection = rayHit.collider.transform.position - transform.position;
+                    rayHit.collider.transform.position += direction.normalized * pushForce * Time.deltaTime;
+                    Destroy((Instantiate(enemyHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
                 }
-
-                bulletsLeftInMagazine--;
-                // bulletsShot--;
+                else if (rayHit.collider.CompareTag("Interactable"))
+                {
+                    Interactable interactable = rayHit.collider.GetComponent<Interactable>();
+                    interactable.destroyObject(damage);
+                    Vector3 forceDirection = rayHit.collider.transform.position - transform.position;
+                    rayHit.collider.transform.position += direction.normalized * pushForce * Time.deltaTime;
+                    Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
+                }
+                else
+                {
+                    Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
+                }
             }
 
-
-            Invoke("ResetShoot", timeBetweenShooting);
-            // if (bulletsShot > 0 && bulletsLeftInMagazine > 0)
-            //     Invoke("Shoot", timeBetweenShots);
-
+            bulletsLeftInMagazine--;
+            if (bulletsShot > 0)
+                bulletsShot--;
         }
-        startShooting = false;
+        coroutineUsed = false;
+        if (bulletsShot == 0)
+            StartCoroutine(ResetShoot());
     }
 
-
+    private IEnumerator ResetShoot()
+    {
+        yield return new WaitForSeconds(timeBetweenShooting);
+        coroutineUsed = true;
+        readyToShoot = true;
+    }
     private IEnumerator Return()
     {
         Quaternion presentRotation = transform.rotation;
@@ -286,40 +265,23 @@ public class GunSystem : MonoBehaviour
         }
     }
 
-    public void OnShootPressed()
-    {
-        startShooting = true;
-        readyToShoot = true;
-    }
 
-    public void ResetShoot()
-    {
-        readyToShoot = true;
-    }
 
     public void OnReloadPressed()
     {
-        reloadNow = true;
-        Reload();
-    }
-
-    private void Reload()
-    {
-        if (bulletsLeftInMagazine < magazineSize && !reloading)
+        if (ammoLeft > 0 && bulletsLeftInMagazine < magazineSize && !reloading)
         {
             audioSource.Play();
             reloading = true;
             Invoke("ReloadingFinished", reloadTime);
         }
 
-        reloadNow = false;
     }
 
     private void ReloadingFinished()
     {
         amountOfAmmoType = ammoManager.GetAmmoCount(type);
         int bulletsToFullMagazine = (magazineSize - bulletsLeftInMagazine);
-        Debug.Log("Bullets to full magazine :" + bulletsToFullMagazine + " for " + this.name);
 
         if (bulletsToFullMagazine <= amountOfAmmoType)
         {

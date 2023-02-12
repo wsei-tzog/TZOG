@@ -39,7 +39,7 @@ public class InputManager : MonoBehaviour
         groundMovement.MouseY.performed += ctx => mouseInput.y = ctx.ReadValue<float>();
 
         // interaction
-        interaction.Shoot.performed += ctx => gunSystem.OnShootPressed();
+        // interaction.Shoot.performed += ctx => gunSystem.OnShootPressed();
         interaction.Reload.performed += ctx => gunSystem.OnReloadPressed();
 
         interaction.Interact.performed += _ => mouseLook.OnPickUpPressed();

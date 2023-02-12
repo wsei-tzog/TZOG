@@ -182,28 +182,47 @@ public class GunSystem : MonoBehaviour
             if (!resettingWeapon)
             {
                 resettingWeapon = true;
-                StartCoroutine(ResetWeaponPosition());
+                StartCoroutine(Recoil());
             }
             else
             {
-                StopCoroutine("ResetWeaponPosition");
-                StartCoroutine(ResetWeaponPosition());
+                StopCoroutine("Recoil");
+                StartCoroutine(Recoil());
             }
             nextFireTime = Time.time + fireRate;
         }
     }
 
 
-    private IEnumerator ResetWeaponPosition()
+    private IEnumerator Recoil()
     {
         Vector3 recoilVector = new Vector3(0, 0, 1f);
         Vector3 recoilPosition = Vector3.zero - recoilVector;
 
+        Quaternion recoilRotationAmount = Quaternion.Euler(
+                    Quaternion.identity.x - 50,
+                    Quaternion.identity.y,
+                    Quaternion.identity.z
+                );
+
+        Quaternion zeroRotationAmount = Quaternion.Euler(
+            Quaternion.identity.x,
+            Quaternion.identity.y,
+            Quaternion.identity.z
+        );
+
+        this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, recoilRotationAmount, 0.1f);
         this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, recoilPosition, 0.1f);
+
 
         yield return new WaitForSeconds(0.2f);
 
+        this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, zeroRotationAmount, 0.3f);
         this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, Vector3.zero, 0.2f);
+
+        yield return new WaitForSeconds(0.2f);
+        this.transform.localRotation = Quaternion.identity;
+
         resettingWeapon = false;
     }
 

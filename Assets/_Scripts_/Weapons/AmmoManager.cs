@@ -17,7 +17,7 @@ public class AmmoManager : MonoBehaviour
     void Start()
     {
         ammoCounts[AmmoType.Pistol] = 20;
-        ammoCounts[AmmoType.SMG] = 20;
+        ammoCounts[AmmoType.SMG] = 200;
         ammoCounts[AmmoType.Shotgun] = 12;
         ammoCounts[AmmoType.Rifle] = 20;
     }

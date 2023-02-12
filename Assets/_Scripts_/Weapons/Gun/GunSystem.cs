@@ -19,11 +19,12 @@ public class GunSystem : MonoBehaviour
 
 
     [Header("Gun stats")]
-    public int damage, magazineSize, bulletsPerTap;
+
+    public int damage, magazineSize, bulletsPerTap, recoilForce;
     public float fireRate, spread, aimSpread, spreadHolder, range, reloadTime, aimAnimationSpeed, pushForce, shootWaveRange;
     int bulletsLeftInMagazine, bulletsShot;
     bool reloading, isLeftMouseHeld, isAiming, wasAiming;
-    public bool turnOffCanvas, readyToShoot, coroutineUsed;
+    public bool turnOffCanvas, readyToShoot;
     public static bool weaponIsActive;
     private float nextFireTime;
 
@@ -47,12 +48,8 @@ public class GunSystem : MonoBehaviour
 
     [Header("Recoil")]
 
-    // public float recoilAmount = 25f;
-    // public float aimRecoilAmount = 15f;
-    public float recoilAmout;
-    public float aimRecoilAmout;
-    public float counter;
-    public float returnSpeed;
+    public float recoilDuration, recoilSpeed, recoilBackSpeed;
+    public bool resettingWeapon;
 
     public void UIBullets()
     {
@@ -180,40 +177,34 @@ public class GunSystem : MonoBehaviour
                     }
                 }
                 bulletsLeftInMagazine--;
-                nextFireTime = Time.time + fireRate;
             }
+
+            if (!resettingWeapon)
+            {
+                resettingWeapon = true;
+                StartCoroutine(ResetWeaponPosition());
+            }
+            else
+            {
+                StopCoroutine("ResetWeaponPosition");
+                StartCoroutine(ResetWeaponPosition());
+            }
+            nextFireTime = Time.time + fireRate;
         }
     }
 
 
-    private IEnumerator Return()
+    private IEnumerator ResetWeaponPosition()
     {
-        Quaternion presentRotation = transform.rotation;
+        Vector3 recoilVector = new Vector3(0, 0, 1f);
+        Vector3 recoilPosition = Vector3.zero - recoilVector;
 
-        var timePassed = 0f;
-        while (timePassed < returnSpeed)
-        {
-            var factor = timePassed / returnSpeed;
-            // optional add ease-in and -out
-            // factor = Mathf.SmoothStep(0, 1, factor);
-            factor = 1f - Mathf.Cos(factor * Mathf.PI * 0.7f);
+        this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, recoilPosition, 0.1f);
 
-            transform.localRotation = Quaternion.Lerp(presentRotation, Quaternion.identity, factor);
-            // or
-            //transformToRotate.rotation = Quaternion.Slerp(startRotation, targetRotation, factor);
+        yield return new WaitForSeconds(0.2f);
 
-            // increae by the time passed since last frame
-            timePassed += Time.deltaTime;
-
-            // important! This tells Unity to interrupt here, render this frame
-            // and continue from here in the next frame
-            yield return null;
-        }
-
-
-        // to be sure to end with exact values set the target rotation fix when done
-        transform.localRotation = Quaternion.identity;
-
+        this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, Vector3.zero, 0.2f);
+        resettingWeapon = false;
     }
 
     public void AlarmEnemies()
@@ -229,8 +220,6 @@ public class GunSystem : MonoBehaviour
             }
         }
     }
-
-
 
     public void OnReloadPressed()
     {

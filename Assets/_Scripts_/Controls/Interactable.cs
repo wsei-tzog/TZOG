@@ -339,6 +339,7 @@ public class Interactable : MonoBehaviour
         {
             Transform notDestroyedTransform = notDestroyed.transform;
             notDestroyed.SetActive(false);
+            this.transform.gameObject.GetComponent<Collider>().enabled = false;
 
             foreach (GameObject destroyedThing in destroyed)
             {
@@ -350,8 +351,8 @@ public class Interactable : MonoBehaviour
                 Rigidbody drb = destroyedThing.GetComponent<Rigidbody>();
                 drb.AddForce(Vector3.up * 0.2f, ForceMode.Impulse);
                 destroyedThing.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
-                destroyedThing.transform.gameObject.GetComponent<Collider>().isTrigger = false;
-                destroyedThing.transform.gameObject.GetComponent<Collider>().enabled = true;
+                // destroyedThing.transform.gameObject.GetComponent<Collider>().isTrigger = false;
+                // destroyedThing.transform.gameObject.GetComponent<Collider>().enabled = true;
             }
 
             if (null != cargo)

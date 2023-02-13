@@ -5,6 +5,12 @@ using UnityEngine.AI;
 
 public class NewEnemyAI : MonoBehaviour
 {
+
+    [Header("Sound")]
+    AudioSource audioSource;
+    public SoundManager soundManager;
+    public SoundType soundType;
+
     private float waitTimer = 3f;
     public bool checkingNoise;
     // The target transform (i.e. the player)
@@ -51,6 +57,19 @@ public class NewEnemyAI : MonoBehaviour
     public bool Alerted;
     public int Health;
 
+    private void Awake()
+    {
+        soundManager = FindObjectOfType<SoundManager>();
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            this.gameObject.AddComponent<AudioSource>();
+            audioSource = GetComponent<AudioSource>();
+        }
+        audioSource.playOnAwake = false;
+    }
+
     private void Start()
     {
         // Get reference to Animator and NavMeshAgent components
@@ -71,6 +90,7 @@ public class NewEnemyAI : MonoBehaviour
             if (distanceToTarget < detectionRange && IsInFieldOfView() && Alive)
             {
                 Alerted = true;
+                PlaySound(SoundType.SawPlayer);
                 // Set the enemy's destination to the player's position
                 navMeshAgent.SetDestination(target.position);
 
@@ -84,6 +104,7 @@ public class NewEnemyAI : MonoBehaviour
                     animator.SetBool("Attack", false);
                     navMeshAgent.speed = runningSpeed;
                     animator.SetFloat("locomotion", 2f);
+                    PlaySound(SoundType.Run);
                 }
             }
             else
@@ -102,10 +123,15 @@ public class NewEnemyAI : MonoBehaviour
                     {
                         StartCoroutine(WaitAtDestination());
                     }
+                    else
+                    {
+                        PlaySound(SoundType.Walk);
+                    }
                 }
                 else if (patrolPoints.Count != 0 && !checkingNoise && Alive)
                 {
                     animator.SetFloat("locomotion", 1f, 0.4f, Time.deltaTime);
+                    PlaySound(SoundType.Walk);
                     // Check if the enemy has reached its current patrol point
                     if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance)
                     {
@@ -153,6 +179,8 @@ public class NewEnemyAI : MonoBehaviour
             Alive = false;
             navMeshAgent.isStopped = true;
             animator.SetBool("Die", true);
+            PlaySound(SoundType.Stun);
+
         }
     }
     private void Attack()
@@ -164,6 +192,7 @@ public class NewEnemyAI : MonoBehaviour
             // target.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
             animator.SetFloat("locomotion", 0f);
             animator.SetBool("Attack", true);
+            PlaySound(SoundType.MeeleAttack);
             // Reset the attack timer
             attackTimer = 0f;
         }
@@ -208,6 +237,7 @@ public class NewEnemyAI : MonoBehaviour
     {
         if (Alive)
         {
+            PlaySound(SoundType.Die);
             Alive = false;
             navMeshAgent.isStopped = true;
             animator.SetBool("Die", true);
@@ -217,13 +247,32 @@ public class NewEnemyAI : MonoBehaviour
     public void TakeDamage(int damage)
     {
         Health -= damage;
-
+        PlaySound(SoundType.TookDamage);
         if (Health < 0)
         {
             Die();
         }
     }
 
+    private void PlaySound(SoundType soundType)
+    {
+        List<AudioClip> soundList = soundManager.GetSoundList(soundType);
 
+        if (soundList != null)
+        {
+            AudioClip clip = soundList[Random.Range(0, soundList.Count)];
+
+
+            audioSource.clip = clip;
+
+            audioSource.pitch = Random.Range(0.85f, 1.3f);
+            audioSource.volume = Random.Range(0.8f, 1);
+            audioSource.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.LogError("Sound type not found: " + soundType);
+        }
+
+    }
 }
-//The `Update` method checks whether the player is within the enemy's detection range and field of view, and if so, sets the enemy's destination to the player's position and sets the enemy's animation state to "walking". If the player is within the attack range, the enemy will attack the player. If the player is outside the lose sight range, the enemy will reset its destination and set its animation state to "idle". The `IsInFieldOfView` method calculates the angle between the enemy's forward direction and the direction to the player, and returns true if the angle is within the enemy's field of view. The `Attack` method applies damage to the player and has a timer to ensure that the enemy can only attack at the specified attack rate.

@@ -46,6 +46,13 @@ public enum SoundType
     GateOpen,
     Interact,
     Glass,
-    Metal
+    Metal,
+    Run,
+    Walk,
+    SawPlayer,
+    MeeleAttack,
+    TookDamage,
+    Die,
+    Stun
 
 }

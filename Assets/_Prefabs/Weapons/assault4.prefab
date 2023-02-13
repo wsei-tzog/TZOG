@@ -145,20 +145,18 @@ MonoBehaviour:
   damage: 10
   magazineSize: 60
   bulletsPerTap: 1
-  timeBetweenShooting: 0.1
+  recoilForce: 0
+  fireRate: 0.3
   spread: 0.05
   aimSpread: 0.003
   spreadHolder: 0
   range: 50
   reloadTime: 1.5
-  timeBetweenShots: 1
   aimAnimationSpeed: 2
   pushForce: 0
   shootWaveRange: 0
-  allowButtonHold: 1
   turnOffCanvas: 0
-  isAiming: 0
-  wasAiming: 0
+  readyToShoot: 0
   fpsCam: {fileID: 0}
   attackPoint: {fileID: 1446296873341122542}
   hittable:
@@ -173,10 +171,10 @@ MonoBehaviour:
   clip: {fileID: 0}
   text: {fileID: 0}
   targetTransform: {fileID: 0}
-  recoilAmout: 0
-  aimRecoilAmout: 0
-  counter: 0
-  returnSpeed: 0
+  recoilDuration: 0
+  recoilSpeed: 0
+  recoilBackSpeed: 0
+  resettingWeapon: 0
 --- !u!65 &1167737539753138853
 BoxCollider:
   m_ObjectHideFlags: 0

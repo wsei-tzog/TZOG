@@ -134,23 +134,23 @@ MonoBehaviour:
   type: 1
   ammoUsage: 0
   bulletsActuallyFired: 0
+  ammoManager: {fileID: 0}
+  amountOfAmmoType: 0
   damage: 10
   magazineSize: 30
   bulletsPerTap: 1
-  timeBetweenShooting: 0.1
+  recoilForce: 0
+  fireRate: 0.2
   spread: 0.2
   aimSpread: 0.02
   spreadHolder: 0
   range: 20
   reloadTime: 1
-  timeBetweenShots: 0.3
   aimAnimationSpeed: 3
   pushForce: 0
   shootWaveRange: 0
-  allowButtonHold: 1
   turnOffCanvas: 0
-  isAiming: 0
-  wasAiming: 0
+  readyToShoot: 0
   fpsCam: {fileID: 0}
   attackPoint: {fileID: 4991352695023968164}
   hittable:
@@ -165,10 +165,10 @@ MonoBehaviour:
   clip: {fileID: 0}
   text: {fileID: 0}
   targetTransform: {fileID: 0}
-  recoilAmout: 0
-  aimRecoilAmout: 0
-  counter: 0
-  returnSpeed: 0
+  recoilDuration: 20
+  recoilSpeed: 0
+  recoilBackSpeed: 0
+  resettingWeapon: 0
 --- !u!114 &5769505644784845228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -370,7 +370,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7904588574022926637}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.92, z: -0.98}
+  m_LocalPosition: {x: -0, y: 0.51, z: -0.98}
   m_LocalScale: {x: 0.058716074, y: 0.058716074, z: 0.058716074}
   m_Children: []
   m_Father: {fileID: 9069971324905331079}

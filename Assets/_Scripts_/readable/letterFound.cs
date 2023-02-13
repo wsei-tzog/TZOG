@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class letterFound : MonoBehaviour
 {
     public QuestController questController;
-    public lightOut lOut;
     public bool letterFounded;
     bool presentMission;
     public Image letterUI;
@@ -42,11 +41,10 @@ public class letterFound : MonoBehaviour
         else
             letterUI.enabled = false;
 
-        if (letterFounded)
-        {
-            lOut.onAllLightOff();
-            enemies_q1.SetActive(true);
-        }
+        // if (letterFounded)
+        // {
+        //     enemies_q1.SetActive(true);
+        // }
 
     }
 }

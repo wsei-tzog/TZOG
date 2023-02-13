@@ -49,7 +49,7 @@ public class PickUpController : MonoBehaviour
 
     public void PickUpTorch(GameObject rayHittedGameObject)
     {
-        rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("startClue", 0f);
+        rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("glowStrenght", 0f);
         // set this torch in input
         InputManager.torch = rayHittedGameObject.GetComponent<Torch>();
         torch.torchEquipped = true;
@@ -98,6 +98,7 @@ public class PickUpController : MonoBehaviour
         // MouseLook.isPickingUp = false;
         rayHittedGameObject.GetComponent<Collider>().enabled = false;
         rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("startClue", 0f);
+        rayHittedGameObject.GetComponent<Renderer>().material.SetFloat("glowStrenght", 0f);
 
         //Remove rigidbody and BoxCollider
         Destroy(rayHittedGameObject.GetComponent<Rigidbody>());

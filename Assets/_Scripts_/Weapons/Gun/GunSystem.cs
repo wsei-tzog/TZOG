@@ -220,7 +220,7 @@ public class GunSystem : MonoBehaviour
         this.transform.localRotation = Quaternion.Lerp(this.transform.localRotation, zeroRotationAmount, 0.3f);
         this.transform.localPosition = Vector3.Lerp(this.transform.localPosition, Vector3.zero, 0.2f);
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.4f);
         this.transform.localRotation = Quaternion.identity;
 
         resettingWeapon = false;

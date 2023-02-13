@@ -10,6 +10,10 @@ public class Torch : MonoBehaviour
     public AudioClip clip;
     public GameObject torchLight;
 
+    private void Awake()
+    {
+        turnOn();
+    }
 
     public void OnTorchSwitchPressed()
     {

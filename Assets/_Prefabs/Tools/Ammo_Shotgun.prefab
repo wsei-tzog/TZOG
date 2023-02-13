@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 8464497375662229253}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.8909, y: 3.8909, z: 3.8909}
+  m_LocalScale: {x: 3.8908997, y: 3.8909, z: 3.8909004}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -95,10 +95,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3104e4e4ebb30c34aa0dda581e5fb51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouseLook: {fileID: 0}
   canItBePickedUp: 0
   range: 0
   objectHolder: {fileID: 0}
-  mouseLook: {fileID: 0}
   dropForwardForce: 0
   dropUpwardForce: 0
   groundMask:
@@ -110,8 +110,10 @@ MonoBehaviour:
   isItAmmo: 1
   ammoType: 3
   amountOfAmmo: 5
+  isItDestrucable: 0
   notDestroyed: {fileID: 0}
-  destroyed: {fileID: 0}
+  destroyed:
+  - {fileID: 0}
   cargo:
   - {fileID: 0}
   healt: 0
@@ -120,6 +122,9 @@ MonoBehaviour:
   doorList: []
   isItKey: 0
   questController: {fileID: 0}
+  isItLever: 0
+  LeverList: []
+  LightList: []
 --- !u!65 &801266461492827591
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -131,5 +136,5 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.090095654, y: 0.04300001, z: 0.07327819}
+  m_Size: {x: 0.08, y: 0.08, z: 0.08}
   m_Center: {x: 0.0028519367, y: 0.021729743, z: -0.0044422327}

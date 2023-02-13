@@ -23,9 +23,8 @@ public class Movement : MonoBehaviour
     public float sprintJumpHeigt = 7f;
     Vector3 verticalVelocity = Vector3.zero;
     public LayerMask groundMask;
-    bool isGrounded;
+    public bool isGrounded, isRunning;
     bool jump;
-    bool isRunning;
     bool justJumped;
     private Animator animator;
     #endregion

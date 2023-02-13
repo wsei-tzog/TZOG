@@ -11,9 +11,12 @@ GameObject:
   - component: {fileID: 1420860691622035422}
   - component: {fileID: 7967343295302314991}
   - component: {fileID: 6323816171249153336}
+  - component: {fileID: 534076777996442553}
+  - component: {fileID: 3814789132896795955}
+  - component: {fileID: 8912587057009839338}
   m_Layer: 0
   m_Name: Key03
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4175028906331167520}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -81,3 +84,70 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &534076777996442553
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175028906331167520}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 0.1, z: 0.15}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3814789132896795955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175028906331167520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc0a6ea028b2c144daa431f009d5eff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keyID: 98
+--- !u!114 &8912587057009839338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175028906331167520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3104e4e4ebb30c34aa0dda581e5fb51b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseLook: {fileID: 0}
+  canItBePickedUp: 0
+  range: 0
+  objectHolder: {fileID: 0}
+  dropForwardForce: 0
+  dropUpwardForce: 0
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
+  audioSource: {fileID: 0}
+  hitSounds: []
+  ammoManager: {fileID: 0}
+  isItAmmo: 0
+  ammoType: 0
+  amountOfAmmo: 0
+  isItDestrucable: 0
+  notDestroyed: {fileID: 0}
+  destroyed:
+  - {fileID: 0}
+  cargo: []
+  healt: 0
+  isItDoor: 0
+  lockID: 0
+  doorList: []
+  isItKey: 1
+  questController: {fileID: 0}
+  isItLever: 0
+  LeverList: []
+  LightList: []

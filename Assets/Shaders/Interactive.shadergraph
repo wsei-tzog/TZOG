@@ -769,7 +769,7 @@
     },
     "m_Name": "glowStrenght",
     "m_DefaultReferenceName": "Vector1_2e7f2d2532df434ab7d2d9f67eb28ddb",
-    "m_OverrideReferenceName": "",
+    "m_OverrideReferenceName": "glowStrenght",
     "m_GeneratePropertyBlock": true,
     "m_Precision": 0,
     "overrideHLSLDeclaration": false,

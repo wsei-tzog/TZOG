@@ -90,6 +90,7 @@ public class MouseLook : MonoBehaviour
                     else if (rayHit.transform.gameObject.CompareTag("Quest"))
                     {
                         rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 0f);
+                        rayHit.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_glowStrenght", 0f);
                         pickUpController = rayHit.transform.gameObject.GetComponent<PickUpController>();
                         pickUpController.PickUpStuff(rayHit.transform.gameObject);
 

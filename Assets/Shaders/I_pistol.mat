@@ -52,6 +52,8 @@ Material:
     - Vector1_cabc079c0dd6456e8cf885e6a21ce93c: 1
     - Vector1_eb0f2f6f7b584ea5993859ebbf95b703: 0
     - _startClue: 1
+    - glowStrenght: 7.76
+    - startClue: 0
     m_Colors:
-    - Color_e3acac520dfe4d2fbbf5c72fc63bd1b4: {r: 1.5058824, g: 0.45490196, b: 0, a: 0.3254902}
+    - Color_e3acac520dfe4d2fbbf5c72fc63bd1b4: {r: 1825.2128, g: 1825.2128, b: 1825.2128, a: 0.3254902}
   m_BuildTextureStacks: []

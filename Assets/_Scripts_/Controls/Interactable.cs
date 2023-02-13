@@ -5,19 +5,21 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
 
-    [Header("Alwyas set this one")]
-    public MouseLook mouseLook;
+    [Header("Sound")]
+    AudioSource audioSource;
+    public SoundManager soundManager;
+    public SoundType soundType;
+
 
     [Header("PickedUp settings")]
     #region 
+    public MouseLook mouseLook;
     public bool canItBePickedUp;
     public float range;
     public Transform objectHolder;
     public float dropForwardForce, dropUpwardForce;
     private Vector3 scale;
     public LayerMask groundMask;
-    public AudioSource audioSource;
-    public AudioClip[] hitSounds;
     #endregion
 
     [Header("Ammo settings")]
@@ -79,17 +81,40 @@ public class Interactable : MonoBehaviour
         public Quaternion openRotation;
     }
     public List<LeverInfo> LeverList;
-    public List<Light> LightList;
+    public List<GameObject> LightList;
+    public List<GameObject> LightOffList;
 
     #endregion
 
+    private void Awake()
+    {
+        soundManager = FindObjectOfType<SoundManager>();
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            this.gameObject.AddComponent<AudioSource>();
+            audioSource = GetComponent<AudioSource>();
+        }
+        audioSource.playOnAwake = false;
+    }
+
     private void Start()
     {
+        #region light
+
         foreach (var light in LightList)
         {
-            light.enabled = false;
+            light.SetActive(false);
         }
 
+        foreach (var light in LightOffList)
+        {
+            light.SetActive(true);
+        }
+        #endregion
+
+        #region destroyed
         notDestroyed.SetActive(true);
         if (null != destroyed)
             foreach (GameObject thing in destroyed)
@@ -101,11 +126,12 @@ public class Interactable : MonoBehaviour
             {
                 thing.SetActive(false);
             }
+        #endregion
 
-
+        #region clue
         if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
             renderer.material.SetFloat("startClue", 1f);
-
+        #endregion
     }
 
 
@@ -157,6 +183,8 @@ public class Interactable : MonoBehaviour
 
     private void GrabObjects()
     {
+
+        PlaySound();
         // rg and coll
         Destroy(this.GetComponent<Rigidbody>());
         // this.GetComponent<Collider>().enabled = false;
@@ -180,6 +208,8 @@ public class Interactable : MonoBehaviour
     }
     public void Throw()
     {
+
+        PlaySound();
         mouseLook.objectSlotFull = false;
         mouseLook.grabbedObject = null;
         // Vector3 scale = transform.localScale;
@@ -197,30 +227,23 @@ public class Interactable : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        // audioSource.pitch = Random.Range(0.85f, 1.3f);
-        // audioSource.volume = Random.Range(0.8f, 1);
-        // audioSource.PlayOneShot(hitSounds[Random.Range(0, hitSounds.Length)]);
 
-        Debug.Log("Hitting flore");
+
+        PlaySound();
         if (isItDestrucable)
         {
             destroyObject(1);
         }
 
-        // if (canItBePickedUp)
-        // {
         Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);
-        Debug.Log("spawning overlap sphere");
 
         foreach (Collider enemy in enemiesInRange)
         {
             if (enemy.CompareTag("Enemy"))
             {
-                Debug.Log("Getting enemy " + enemy);
                 enemy.GetComponent<NewEnemyAI>().CheckNoise(this.transform.position);
             }
         }
-        // }
     }
     private void CollectKey()
     {
@@ -230,6 +253,8 @@ public class Interactable : MonoBehaviour
             questController.keys.Add(key.keyID);
             // Destroy the key game object
             Destroy(key.gameObject);
+
+            PlaySound();
         }
 
     }
@@ -237,6 +262,8 @@ public class Interactable : MonoBehaviour
     {
         foreach (var door in doorList)
         {
+
+            PlaySound();
             StartCoroutine(RotateOverTime(door.wing, Quaternion.identity, duration, door.boxCollider));
             doorOpened = false;
         }
@@ -250,19 +277,34 @@ public class Interactable : MonoBehaviour
                 StartCoroutine(RotateOverTime(door.wing, door.openRotation, duration, door.boxCollider));
             }
             doorOpened = true;
+
+            PlaySound();
         }
         else
         {
+            List<AudioClip> soundList = soundManager.GetSoundList(SoundType.DoorsClosed);
+
+            if (soundList != null)
+            {
+                AudioClip clip = soundList[Random.Range(0, soundList.Count)];
+                AudioSource audioSource = GetComponent<AudioSource>();
+                audioSource.clip = clip;
+                audioSource.PlayOneShot(clip);
+            }
             Debug.Log("No such key!");
         }
     }
     private void CollectAmmo()
     {
+
+        PlaySound();
         Destroy(this.gameObject);
         ammoManager.AddAmmo(ammoType, amountOfAmmo);
     }
     private void TurnOnLever()
     {
+
+        PlaySound();
         foreach (var l in LeverList)
         {
             StartCoroutine(RotateOverTime(l.lever, l.openRotation, duration, null));
@@ -271,11 +313,17 @@ public class Interactable : MonoBehaviour
 
         foreach (var light in LightList)
         {
-            light.enabled = true;
+            light.SetActive(true);
+        }
+        foreach (var light in LightOffList)
+        {
+            light.SetActive(false);
         }
     }
     private void TurnOffLever()
     {
+
+        PlaySound();
         foreach (var l in LeverList)
         {
             StartCoroutine(RotateOverTime(l.lever, Quaternion.identity, duration, null));
@@ -284,7 +332,12 @@ public class Interactable : MonoBehaviour
 
         foreach (var light in LightList)
         {
-            light.enabled = false;
+            light.SetActive(false);
+        }
+
+        foreach (var light in LightOffList)
+        {
+            light.SetActive(true);
         }
     }
 
@@ -327,6 +380,8 @@ public class Interactable : MonoBehaviour
     public void destroyObject(int damange)
     {
         healt -= damange;
+
+        PlaySound();
 
         if (healt <= 0)
         {
@@ -378,17 +433,27 @@ public class Interactable : MonoBehaviour
 
 
 
+    private void PlaySound()
+    {
+        List<AudioClip> soundList = soundManager.GetSoundList(soundType);
+
+        if (soundList != null)
+        {
+            AudioClip clip = soundList[Random.Range(0, soundList.Count)];
 
 
+            audioSource.clip = clip;
 
+            audioSource.pitch = Random.Range(0.85f, 1.3f);
+            audioSource.volume = Random.Range(0.8f, 1);
+            audioSource.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.LogError("Sound type not found: " + soundType);
+        }
 
-
-
-
-
-
-
-
+    }
 
 
 }

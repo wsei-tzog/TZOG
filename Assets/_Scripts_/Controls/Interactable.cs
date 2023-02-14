@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
+    private ClueImageManager clueImageManager;
 
     [Header("Sound")]
     #region 
@@ -11,6 +12,7 @@ public class Interactable : MonoBehaviour
     public SoundManager soundManager;
     public SoundType soundType;
     #endregion
+
 
     [Header("PickedUp settings")]
     #region 
@@ -23,6 +25,7 @@ public class Interactable : MonoBehaviour
     public LayerMask groundMask;
     #endregion
 
+
     [Header("Ammo settings")]
     #region 
 
@@ -32,6 +35,7 @@ public class Interactable : MonoBehaviour
     public int amountOfAmmo;
 
     #endregion
+
 
     [Header("Destroy settings")]
     #region 
@@ -44,6 +48,7 @@ public class Interactable : MonoBehaviour
     public float healt;
 
     #endregion
+
 
     [Header("Door settings")]
     #region 
@@ -64,11 +69,13 @@ public class Interactable : MonoBehaviour
 
     #endregion
 
+
     [Header("Key settings")]
     #region 
     public bool isItKey;
     public QuestController questController;
     #endregion
+
 
     [Header("Lever settings")]
     #region 
@@ -87,6 +94,17 @@ public class Interactable : MonoBehaviour
 
     #endregion
 
+
+    [Header("Bateerry settings")]
+    #region 
+    public float rechargeAmount = 20f;
+
+    public GameObject torch;
+    public bool isItBattery;
+    #endregion
+
+
+
     private void Awake()
     {
         soundManager = FindObjectOfType<SoundManager>();
@@ -103,7 +121,7 @@ public class Interactable : MonoBehaviour
 
     private void Start()
     {
-        // torch = FindObjectOfType<Torch>();
+        clueImageManager = GameObject.FindObjectOfType<ClueImageManager>();
 
         #region light
 
@@ -141,50 +159,40 @@ public class Interactable : MonoBehaviour
 
     public virtual void Interact()
     {
-
-
-        if (canItBePickedUp)
+        switch (true)
         {
-            GrabObjects();
-        }
-
-        if (isItKey)
-        {
-            CollectKey();
-        }
-
-        if (isItDoor)
-        {
-            if (!doorOpened)
-            {
-                TryOpen();
-            }
-            else
-            {
-                TryClose();
-            }
-        }
-
-        if (isItAmmo)
-        {
-            CollectAmmo();
-        }
-
-        if (isItLever)
-        {
-            if (!leverSwitched)
-            {
-                TurnOnLever();
-            }
-            else
-            {
-                TurnOffLever();
-            }
-
-        }
-        if (isItBattery)
-        {
-            RechargeTorch();
+            case bool x when canItBePickedUp && x:
+                GrabObjects();
+                break;
+            case bool x when isItKey && x:
+                CollectKey();
+                break;
+            case bool x when isItDoor && x:
+                if (!doorOpened)
+                {
+                    TryOpen();
+                }
+                else
+                {
+                    TryClose();
+                }
+                break;
+            case bool x when isItAmmo && x:
+                CollectAmmo();
+                break;
+            case bool x when isItLever && x:
+                if (!leverSwitched)
+                {
+                    TurnOnLever();
+                }
+                else
+                {
+                    TurnOffLever();
+                }
+                break;
+            case bool x when isItBattery && x:
+                RechargeTorch();
+                break;
         }
     }
 
@@ -348,7 +356,11 @@ public class Interactable : MonoBehaviour
             light.SetActive(true);
         }
     }
-
+    private void RechargeTorch()
+    {
+        torch.GetComponent<Torch>().Recharge(rechargeAmount);
+        Destroy(gameObject);
+    }
     private IEnumerator RotateOverTime(Transform transformToRotate, Quaternion targetRotation, float duration, BoxCollider boxCollider)
     {
         // this.GetComponent<Collider>().enabled = false;
@@ -383,6 +395,7 @@ public class Interactable : MonoBehaviour
         transformToRotate.localRotation = targetRotation;
 
     }
+
 
     // Destroy 
     public void destroyObject(int damange)
@@ -438,9 +451,19 @@ public class Interactable : MonoBehaviour
         }
 
     }
+    private void OnDestroy()
+    {
+        if (clueImageManager != null)
+        {
+            Collider collider = GetComponent<Collider>();
+            if (collider != null)
+            {
+                clueImageManager.RemoveDisplayImage(collider);
+            }
+        }
+    }
 
-
-
+    // Sound
     private void PlaySound()
     {
         List<AudioClip> soundList = soundManager.GetSoundList(soundType);
@@ -464,106 +487,5 @@ public class Interactable : MonoBehaviour
     }
 
 
-    public GameObject displayImagePrefab;
-    public float Xoffset = 1f;
-    public float Yoffset = 1f;
-    public float Zoffset = 1f;
-    public float offset = 1f;
 
-
-    private Dictionary<Collider, GameObject> imageMap = new Dictionary<Collider, GameObject>();
-
-    private void OnTriggerEnter(Collider other)
-    {
-
-        if (other.gameObject.CompareTag("Interactable"))
-        {
-            if (!imageMap.ContainsKey(other) && other.gameObject.activeInHierarchy)
-            {
-                // GameObject displayImage = Instantiate(displayImagePrefab);
-                // Bounds bounds = other.gameObject.GetComponent<Renderer>().bounds;
-                // Vector3 imagePosition = bounds.center;
-                // imagePosition.x += Xoffset;
-                // imagePosition.y += Yoffset;
-                // imagePosition.z += Zoffset;
-                // displayImage.transform.position = imagePosition;
-                // imageMap[other] = displayImage;
-                GameObject displayImage = Instantiate(displayImagePrefab);
-                Bounds bounds = other.gameObject.GetComponent<Renderer>().bounds;
-                Vector3 imagePosition = bounds.center;
-                imageMap[other] = displayImage;
-            }
-        }
-
-    }
-
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (imageMap.ContainsKey(other))
-    //     {
-    //         GameObject displayImage = imageMap[other];
-    //         Destroy(displayImage);
-    //         imageMap.Remove(other);
-    //     }
-    // }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (imageMap.ContainsKey(other))
-        {
-            GameObject displayImage = imageMap[other];
-            Destroy(displayImage);
-            imageMap.Remove(other);
-        }
-    }
-    // public void RemoveDisplayImage(GameObject other)
-    // {
-    //     if (imageMap.ContainsKey(other))
-    //     {
-    //         GameObject displayImage = imageMap[other];
-    //         Destroy(displayImage);
-    //         imageMap.Remove(other);
-    //     }
-    // }
-
-    // public Interactable player;
-    // private void OnDestroy()
-    // {
-    //     if (player != null)
-    //     {
-    //         player.RemoveDisplayImage(this.gameObject);
-    //     }
-    // }
-    private void Update()
-    {
-        foreach (var entry in imageMap)
-        {
-            Collider other = entry.Key;
-            GameObject displayImage = entry.Value;
-            Bounds bounds = other.gameObject.GetComponent<Renderer>().bounds;
-            Vector3 imagePosition = bounds.center;
-            imagePosition += offset * (Camera.main.transform.position - imagePosition).normalized;
-            displayImage.transform.position = imagePosition;
-            displayImage.transform.LookAt(Camera.main.transform.position);
-            displayImage.transform.rotation = Quaternion.LookRotation(displayImage.transform.position - Camera.main.transform.position);
-        }
-        // foreach (var image in imageMap.Values)
-        // {
-        //     image.transform.LookAt(Camera.main.transform.position);
-        //     image.transform.rotation = Quaternion.LookRotation(image.transform.position - Camera.main.transform.position);
-        // }
-    }
-
-
-
-
-    public float rechargeAmount = 20f;
-
-    public GameObject torch;
-    public bool isItBattery;
-    private void RechargeTorch()
-    {
-        torch.GetComponent<Torch>().Recharge(rechargeAmount);
-        Destroy(gameObject);
-    }
 }

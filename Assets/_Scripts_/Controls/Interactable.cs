@@ -103,6 +103,8 @@ public class Interactable : MonoBehaviour
 
     private void Start()
     {
+        // torch = FindObjectOfType<Torch>();
+
         #region light
 
         foreach (var light in LightList)
@@ -179,6 +181,10 @@ public class Interactable : MonoBehaviour
                 TurnOffLever();
             }
 
+        }
+        if (isItBattery)
+        {
+            RechargeTorch();
         }
     }
 
@@ -464,11 +470,12 @@ public class Interactable : MonoBehaviour
     public float Zoffset = 1f;
     public float offset = 1f;
 
+
     private Dictionary<Collider, GameObject> imageMap = new Dictionary<Collider, GameObject>();
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("collided with " + other.tag);
+
         if (other.gameObject.CompareTag("Interactable"))
         {
             if (!imageMap.ContainsKey(other) && other.gameObject.activeInHierarchy)
@@ -487,7 +494,18 @@ public class Interactable : MonoBehaviour
                 imageMap[other] = displayImage;
             }
         }
+
     }
+
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (imageMap.ContainsKey(other))
+    //     {
+    //         GameObject displayImage = imageMap[other];
+    //         Destroy(displayImage);
+    //         imageMap.Remove(other);
+    //     }
+    // }
 
     private void OnTriggerExit(Collider other)
     {
@@ -498,25 +516,24 @@ public class Interactable : MonoBehaviour
             imageMap.Remove(other);
         }
     }
+    // public void RemoveDisplayImage(GameObject other)
+    // {
+    //     if (imageMap.ContainsKey(other))
+    //     {
+    //         GameObject displayImage = imageMap[other];
+    //         Destroy(displayImage);
+    //         imageMap.Remove(other);
+    //     }
+    // }
 
-    public void RemoveDisplayImage(GameObject other)
-    {
-        if (imageMap.ContainsKey(other))
-        {
-            GameObject displayImage = imageMap[other];
-            Destroy(displayImage);
-            imageMap.Remove(other);
-        }
-    }
-
-    public Interactable player;
-    private void OnDestroy()
-    {
-        if (player != null)
-        {
-            player.RemoveDisplayImage(this.gameObject);
-        }
-    }
+    // public Interactable player;
+    // private void OnDestroy()
+    // {
+    //     if (player != null)
+    //     {
+    //         player.RemoveDisplayImage(this.gameObject);
+    //     }
+    // }
     private void Update()
     {
         foreach (var entry in imageMap)
@@ -535,5 +552,18 @@ public class Interactable : MonoBehaviour
         //     image.transform.LookAt(Camera.main.transform.position);
         //     image.transform.rotation = Quaternion.LookRotation(image.transform.position - Camera.main.transform.position);
         // }
+    }
+
+
+
+
+    public float rechargeAmount = 20f;
+
+    public GameObject torch;
+    public bool isItBattery;
+    private void RechargeTorch()
+    {
+        torch.GetComponent<Torch>().Recharge(rechargeAmount);
+        Destroy(gameObject);
     }
 }

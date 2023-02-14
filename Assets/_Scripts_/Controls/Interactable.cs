@@ -6,10 +6,11 @@ public class Interactable : MonoBehaviour
 {
 
     [Header("Sound")]
+    #region 
     AudioSource audioSource;
     public SoundManager soundManager;
     public SoundType soundType;
-
+    #endregion
 
     [Header("PickedUp settings")]
     #region 
@@ -95,6 +96,7 @@ public class Interactable : MonoBehaviour
         {
             this.gameObject.AddComponent<AudioSource>();
             audioSource = GetComponent<AudioSource>();
+            audioSource.playOnAwake = false;
         }
         audioSource.playOnAwake = false;
     }
@@ -456,4 +458,82 @@ public class Interactable : MonoBehaviour
     }
 
 
+    public GameObject displayImagePrefab;
+    public float Xoffset = 1f;
+    public float Yoffset = 1f;
+    public float Zoffset = 1f;
+    public float offset = 1f;
+
+    private Dictionary<Collider, GameObject> imageMap = new Dictionary<Collider, GameObject>();
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("collided with " + other.tag);
+        if (other.gameObject.CompareTag("Interactable"))
+        {
+            if (!imageMap.ContainsKey(other) && other.gameObject.activeInHierarchy)
+            {
+                // GameObject displayImage = Instantiate(displayImagePrefab);
+                // Bounds bounds = other.gameObject.GetComponent<Renderer>().bounds;
+                // Vector3 imagePosition = bounds.center;
+                // imagePosition.x += Xoffset;
+                // imagePosition.y += Yoffset;
+                // imagePosition.z += Zoffset;
+                // displayImage.transform.position = imagePosition;
+                // imageMap[other] = displayImage;
+                GameObject displayImage = Instantiate(displayImagePrefab);
+                Bounds bounds = other.gameObject.GetComponent<Renderer>().bounds;
+                Vector3 imagePosition = bounds.center;
+                imageMap[other] = displayImage;
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (imageMap.ContainsKey(other))
+        {
+            GameObject displayImage = imageMap[other];
+            Destroy(displayImage);
+            imageMap.Remove(other);
+        }
+    }
+
+    public void RemoveDisplayImage(GameObject other)
+    {
+        if (imageMap.ContainsKey(other))
+        {
+            GameObject displayImage = imageMap[other];
+            Destroy(displayImage);
+            imageMap.Remove(other);
+        }
+    }
+
+    public Interactable player;
+    private void OnDestroy()
+    {
+        if (player != null)
+        {
+            player.RemoveDisplayImage(this.gameObject);
+        }
+    }
+    private void Update()
+    {
+        foreach (var entry in imageMap)
+        {
+            Collider other = entry.Key;
+            GameObject displayImage = entry.Value;
+            Bounds bounds = other.gameObject.GetComponent<Renderer>().bounds;
+            Vector3 imagePosition = bounds.center;
+            imagePosition += offset * (Camera.main.transform.position - imagePosition).normalized;
+            displayImage.transform.position = imagePosition;
+            displayImage.transform.LookAt(Camera.main.transform.position);
+            displayImage.transform.rotation = Quaternion.LookRotation(displayImage.transform.position - Camera.main.transform.position);
+        }
+        // foreach (var image in imageMap.Values)
+        // {
+        //     image.transform.LookAt(Camera.main.transform.position);
+        //     image.transform.rotation = Quaternion.LookRotation(image.transform.position - Camera.main.transform.position);
+        // }
+    }
 }

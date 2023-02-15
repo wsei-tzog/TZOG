@@ -9,7 +9,7 @@ public class Interactable : MonoBehaviour
 
     [Header("Sound")]
     #region 
-    AudioSource audioSource;
+    private AudioSource audioSource;
     public SoundManager soundManager;
     public SoundType soundType;
     #endregion
@@ -110,12 +110,13 @@ public class Interactable : MonoBehaviour
     {
         soundManager = FindObjectOfType<SoundManager>();
         ammoManager = FindObjectOfType<AmmoManager>();
+        // gameObject.tag = "Interactable";
 
-        audioSource = GetComponent<AudioSource>();
+        TryGetComponent<AudioSource>(out AudioSource audioSource);
+
         if (audioSource == null)
         {
-            this.gameObject.AddComponent<AudioSource>();
-            audioSource = GetComponent<AudioSource>();
+            audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.playOnAwake = false;
         }
         audioSource.playOnAwake = false;
@@ -297,7 +298,6 @@ public class Interactable : MonoBehaviour
         foreach (var door in doorList)
         {
 
-            PlaySound();
             StartCoroutine(RotateOverTime(door.wing, Quaternion.identity, duration, door.boxCollider));
             doorOpened = false;
         }
@@ -312,7 +312,6 @@ public class Interactable : MonoBehaviour
             }
             doorOpened = true;
 
-            PlaySound();
         }
         else
         {
@@ -338,7 +337,6 @@ public class Interactable : MonoBehaviour
     private void TurnOnLever()
     {
 
-        PlaySound();
         foreach (var l in LeverList)
         {
             StartCoroutine(RotateOverTime(l.lever, l.openRotation, duration, null));
@@ -357,7 +355,6 @@ public class Interactable : MonoBehaviour
     private void TurnOffLever()
     {
 
-        PlaySound();
         foreach (var l in LeverList)
         {
             StartCoroutine(RotateOverTime(l.lever, Quaternion.identity, duration, null));
@@ -382,6 +379,7 @@ public class Interactable : MonoBehaviour
     private IEnumerator RotateOverTime(Transform transformToRotate, Quaternion targetRotation, float duration, BoxCollider boxCollider)
     {
         // this.GetComponent<Collider>().enabled = false;
+        // PlaySound();
 
         var startRotation = transformToRotate.localRotation;
 
@@ -489,8 +487,6 @@ public class Interactable : MonoBehaviour
         if (soundList != null)
         {
             AudioClip clip = soundList[Random.Range(0, soundList.Count)];
-
-
             audioSource.clip = clip;
 
             audioSource.pitch = Random.Range(0.85f, 1.3f);

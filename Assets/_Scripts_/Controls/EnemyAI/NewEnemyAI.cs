@@ -7,7 +7,7 @@ public class NewEnemyAI : MonoBehaviour
 {
 
     [Header("Sound")]
-    AudioSource audioSource;
+    private AudioSource audioSource;
     public SoundManager soundManager;
 
     private float waitTimer = 3f;
@@ -60,11 +60,13 @@ public class NewEnemyAI : MonoBehaviour
     {
         soundManager = FindObjectOfType<SoundManager>();
 
-        audioSource = GetComponent<AudioSource>();
+        TryGetComponent<AudioSource>(out AudioSource audioSource);
+
         if (audioSource == null)
         {
-            this.gameObject.AddComponent<AudioSource>();
-            audioSource = GetComponent<AudioSource>();
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false;
+            audioSource.spatialBlend = 1;
         }
         audioSource.playOnAwake = false;
     }
@@ -89,22 +91,26 @@ public class NewEnemyAI : MonoBehaviour
             if (distanceToTarget < detectionRange && IsInFieldOfView() && Alive)
             {
                 Alerted = true;
-                PlaySound(SoundType.SawPlayer);
+
                 // Set the enemy's destination to the player's position
                 navMeshAgent.SetDestination(target.position);
+                animator.SetBool("Attack", false);
+                navMeshAgent.speed = runningSpeed;
+                animator.SetFloat("locomotion", 2f);
+                PlaySound(SoundType.Run);
 
                 // If the player is within the attack range
                 if (distanceToTarget < attackRange && Alive)
                 {
                     Attack();
                 }
-                else
-                {
-                    animator.SetBool("Attack", false);
-                    navMeshAgent.speed = runningSpeed;
-                    animator.SetFloat("locomotion", 2f);
-                    PlaySound(SoundType.Run);
-                }
+                // else
+                // {
+                //     animator.SetBool("Attack", false);
+                //     navMeshAgent.speed = runningSpeed;
+                //     animator.SetFloat("locomotion", 2f);
+                //     PlaySound(SoundType.Run);
+                // }
             }
             else
             {
@@ -267,13 +273,12 @@ public class NewEnemyAI : MonoBehaviour
         if (soundList != null)
         {
             AudioClip clip = soundList[Random.Range(0, soundList.Count)];
-
-
             audioSource.clip = clip;
 
             audioSource.pitch = Random.Range(0.85f, 1.3f);
             audioSource.volume = Random.Range(0.8f, 1);
             audioSource.PlayOneShot(clip);
+
         }
         else
         {

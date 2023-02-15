@@ -12,6 +12,10 @@ TagManager:
   - PickAble
   - destructibleEnv
   - Interactable
+  - NPCsister
+  - enemytag
+  - NPCside
+  - NPCsisterTag
   layers:
   - Default
   - TransparentFX

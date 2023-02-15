@@ -9,7 +9,6 @@ public class NewEnemyAI : MonoBehaviour
     [Header("Sound")]
     AudioSource audioSource;
     public SoundManager soundManager;
-    public SoundType soundType;
 
     private float waitTimer = 3f;
     public bool checkingNoise;
@@ -177,9 +176,12 @@ public class NewEnemyAI : MonoBehaviour
         if (!animator.GetBool("Attack") && !Alerted && Alive)
         {
             Alive = false;
-            navMeshAgent.isStopped = true;
             animator.SetBool("Die", true);
             PlaySound(SoundType.Stun);
+            navMeshAgent.SetDestination(this.transform.position);
+
+            GetComponent<NavMeshAgent>().enabled = false;
+            GetComponent<NewEnemyAI>().enabled = false;
 
         }
     }
@@ -237,21 +239,25 @@ public class NewEnemyAI : MonoBehaviour
     {
         if (Alive)
         {
-            PlaySound(SoundType.Die);
             Alive = false;
-            navMeshAgent.isStopped = true;
             animator.SetBool("Die", true);
+            navMeshAgent.SetDestination(this.transform.position);
+            navMeshAgent.isStopped = true;
+
+            // GetComponent<NavMeshAgent>().enabled = false;
+            // GetComponent<NewEnemyAI>().enabled = false;
+            PlaySound(SoundType.Die);
         }
     }
 
     public void TakeDamage(int damage)
     {
         Health -= damage;
-        PlaySound(SoundType.TookDamage);
-        if (Health < 0)
+        if (Health <= 0)
         {
             Die();
         }
+        PlaySound(SoundType.TookDamage);
     }
 
     private void PlaySound(SoundType soundType)

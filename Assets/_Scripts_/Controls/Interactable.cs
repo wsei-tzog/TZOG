@@ -6,6 +6,7 @@ public class Interactable : MonoBehaviour
 {
     private ClueImageManager clueImageManager;
 
+
     [Header("Sound")]
     #region 
     AudioSource audioSource;
@@ -108,6 +109,7 @@ public class Interactable : MonoBehaviour
     private void Awake()
     {
         soundManager = FindObjectOfType<SoundManager>();
+        ammoManager = FindObjectOfType<AmmoManager>();
 
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -137,17 +139,36 @@ public class Interactable : MonoBehaviour
         #endregion
 
         #region destroyed
-        notDestroyed.SetActive(true);
-        if (null != destroyed)
+        if (!isItDestrucable)
+        {
+            notDestroyed = null;
+            destroyed = null;
+        }
+
+        if (null != notDestroyed)
+        {
+            notDestroyed.SetActive(true);
+        }
+        else
+            notDestroyed = null;
+
+        if (destroyed != null)
             foreach (GameObject thing in destroyed)
             {
                 thing.SetActive(false);
             }
+        else
+        {
+            destroyed = null;
+        }
+
         if (null != cargo)
             foreach (GameObject thing in cargo)
             {
                 thing.SetActive(false);
             }
+        else
+            cargo = null;
         #endregion
 
         #region clue
@@ -200,7 +221,6 @@ public class Interactable : MonoBehaviour
     private void GrabObjects()
     {
 
-        PlaySound();
         // rg and coll
         Destroy(this.GetComponent<Rigidbody>());
         // this.GetComponent<Collider>().enabled = false;
@@ -224,8 +244,7 @@ public class Interactable : MonoBehaviour
     }
     public void Throw()
     {
-
-        PlaySound();
+        mouseLook.gun.SetActive(true);
         mouseLook.objectSlotFull = false;
         mouseLook.grabbedObject = null;
         // Vector3 scale = transform.localScale;
@@ -245,7 +264,6 @@ public class Interactable : MonoBehaviour
     {
 
 
-        PlaySound();
         if (isItDestrucable)
         {
             destroyObject(1);

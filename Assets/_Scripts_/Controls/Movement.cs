@@ -24,7 +24,7 @@ public class Movement : MonoBehaviour
     Vector3 verticalVelocity = Vector3.zero;
     public LayerMask groundMask;
     public bool isGrounded, isRunning;
-    bool jump;
+    // bool jump;
     bool justJumped;
     private Animator animator;
     #endregion
@@ -132,9 +132,8 @@ public class Movement : MonoBehaviour
             audioStepSource.PlayOneShot(audioJumpClips[Random.Range(0, audioJumpClips.Length)]);
             verticalVelocity.y = 0;
             verticalVelocity.y = Mathf.Sqrt(-2f * jumpHeight * gravity);
-            Debug.Log("Jumping");
         }
-        jump = false;
+        // jump = false;
     }
     public void OnSprintPressed(bool sprint)
     {

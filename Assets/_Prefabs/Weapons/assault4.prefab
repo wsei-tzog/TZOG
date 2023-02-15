@@ -115,7 +115,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSystem: {fileID: 35318064}
-  actuallMission: {fileID: 0}
   torch: {fileID: 0}
   lF: {fileID: 0}
   pQ2: {fileID: 0}
@@ -145,7 +144,6 @@ MonoBehaviour:
   damage: 10
   magazineSize: 60
   bulletsPerTap: 1
-  recoilForce: 0
   fireRate: 0.3
   spread: 0.05
   aimSpread: 0.003
@@ -154,23 +152,20 @@ MonoBehaviour:
   reloadTime: 1.5
   aimAnimationSpeed: 2
   pushForce: 0
-  shootWaveRange: 0
   turnOffCanvas: 0
   readyToShoot: 0
   fpsCam: {fileID: 0}
   attackPoint: {fileID: 1446296873341122542}
   hittable:
     serializedVersion: 2
-    m_Bits: 73
+    m_Bits: 585
   muzzleFlash: {fileID: 5808326520354011648, guid: fffc4b831b4c60d49b50d0c6d989d100, type: 3}
   bulletHole: {fileID: 6963562663894467095, guid: 20f5b59db528b04439b04bf3acb3cbfd, type: 3}
   enemyHole: {fileID: 0}
   defaultPosition: {fileID: 0}
   aimPosition: {fileID: 0}
   audioSource: {fileID: 247502087}
-  clip: {fileID: 0}
   text: {fileID: 0}
-  targetTransform: {fileID: 0}
   recoilDuration: 0
   recoilSpeed: 0
   recoilBackSpeed: 0

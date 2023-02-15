@@ -10,9 +10,8 @@ public class Torch : MonoBehaviour
     public AudioClip clip;
     public GameObject torchLight;
 
-    public float startingPower = 100f;
-    public float powerDrainRate = 5f;
-    public float rechargeAmount = 20f;
+    public float startingPower = 1000f;
+    public float powerDrainRate = 2f;
 
     private float currentPower;
     private bool isActive;
@@ -36,7 +35,7 @@ public class Torch : MonoBehaviour
 
             if (currentPower <= 0f)
             {
-                Deactivate();
+                torchLight.GetComponent<Light>().intensity = 20f;
             }
 
             // Adjust the light's intensity based on the torch's current power level

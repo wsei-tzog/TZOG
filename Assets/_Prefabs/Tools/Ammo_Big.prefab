@@ -95,6 +95,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3104e4e4ebb30c34aa0dda581e5fb51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 0}
+  soundType: 0
   mouseLook: {fileID: 0}
   canItBePickedUp: 0
   range: 0
@@ -104,18 +106,14 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 0
-  audioSource: {fileID: 0}
-  hitSounds: []
   ammoManager: {fileID: 0}
   isItAmmo: 1
   ammoType: 1
   amountOfAmmo: 10
   isItDestrucable: 0
   notDestroyed: {fileID: 0}
-  destroyed:
-  - {fileID: 0}
-  cargo:
-  - {fileID: 0}
+  destroyed: []
+  cargo: []
   healt: 0
   isItDoor: 0
   lockID: 0
@@ -125,6 +123,10 @@ MonoBehaviour:
   isItLever: 0
   LeverList: []
   LightList: []
+  LightOffList: []
+  rechargeAmount: 20
+  torch: {fileID: 0}
+  isItBattery: 0
 --- !u!65 &4779203591312324017
 BoxCollider:
   m_ObjectHideFlags: 0

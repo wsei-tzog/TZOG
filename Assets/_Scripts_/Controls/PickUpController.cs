@@ -6,7 +6,6 @@ public class PickUpController : MonoBehaviour
 {
     #region reference
     public GunSystem gunSystem;
-    public GameObject actuallMission;
     public Torch torch;
     public letterFound lF;
     public photoFound pQ2;
@@ -22,6 +21,9 @@ public class PickUpController : MonoBehaviour
 
     private void Start()
     {
+        gunSystem = FindObjectOfType<GunSystem>();
+        mouseLook = FindObjectOfType<MouseLook>();
+
         if (this.gameObject.TryGetComponent<Renderer>(out Renderer renderer))
             renderer.material.SetFloat("startClue", 1f);
         //Setup
@@ -86,7 +88,7 @@ public class PickUpController : MonoBehaviour
         }
         else
         {
-
+            Debug.Log("Pickup controller, lane 89 pickupstuff else");
         }
     }
 
@@ -150,7 +152,7 @@ public class PickUpController : MonoBehaviour
         gameObject.AddComponent<Rigidbody>();
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.isKinematic = false;
-        transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);
+        transform.gameObject.GetComponent<Renderer>().material.SetFloat("glowStrenght", 1f);
         transform.gameObject.GetComponent<Collider>().isTrigger = false;
         transform.gameObject.GetComponent<Collider>().enabled = true;
 
@@ -159,7 +161,6 @@ public class PickUpController : MonoBehaviour
         rb.AddForce(mouseLook.playerCamera.up * dropUpwardForce, ForceMode.Impulse);
         // Add random rotation
         float random = Random.Range(-1f, 1f);
-        rb.AddTorque(new Vector3(random, random, random) * 10);
     }
     #endregion
 

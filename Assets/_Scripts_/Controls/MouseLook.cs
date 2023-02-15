@@ -10,8 +10,9 @@ public class MouseLook : MonoBehaviour
     public GameObject grabbedObject;
     public static WeaponSwing weaponSwing;
     public static PickUpController pickUpController;
-    public static bool slotFull;
+
     public bool objectSlotFull;
+    public static bool slotFull;
     public QuestController questController;
     public Transform playerCamera;
     public letterFound lF;
@@ -21,6 +22,7 @@ public class MouseLook : MonoBehaviour
 
     #region vars
     public float sensitivityX = 5f;
+
     public float sensitivityY = 1f;
     float mouseX, mouseY;
     public float xCamlp = 85f;

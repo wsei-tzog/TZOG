@@ -44,6 +44,7 @@ public class NewEnemyAI : MonoBehaviour
     public bool Alive;
     public bool Alerted;
     public int Health;
+    public bool Attacking;
     #endregion
     private void Awake()
     {
@@ -75,43 +76,12 @@ public class NewEnemyAI : MonoBehaviour
 
     private void Update()
     {
+        attackTimer = Time.deltaTime;
+
         if (Alive)
         {
             // Calculate distance to target
             float distanceToTarget = Vector3.Distance(transform.position, target.position);
-
-            // If the player is within the detection range and the enemy's field of view
-            if (distanceToTarget < detectionRange && IsInFieldOfView() && Alive)
-            {
-                Alerted = true;
-
-                // Set the enemy's destination to the player's position
-                navMeshAgent.SetDestination(target.position);
-                animator.SetBool("Attack", false);
-                navMeshAgent.speed = runningSpeed;
-                animator.SetFloat("locomotion", 2f);
-                PlaySound(SoundType.Run);
-
-                // If the player is within the attack range
-                if (distanceToTarget < attackRange && Alive)
-                {
-                    Attack();
-                }
-                // else
-                // {
-                //     animator.SetBool("Attack", false);
-                //     navMeshAgent.speed = runningSpeed;
-                //     animator.SetFloat("locomotion", 2f);
-                //     PlaySound(SoundType.Run);
-                // }
-            }
-            else
-            {
-                // If the player is outside the lose sight range
-                // else if (distanceToTarget > loseSightRange)
-                Alerted = false;
-                navMeshAgent.speed = moveSpeed;
-            }
 
             if (!Alerted)
             {
@@ -146,6 +116,48 @@ public class NewEnemyAI : MonoBehaviour
                     animator.SetFloat("locomotion", 0f, 0.4f, Time.deltaTime);
                 }
             }
+
+            // If the player is within the detection range and the enemy's field of view
+            if (distanceToTarget < detectionRange && IsInFieldOfView() && Alive)
+            {
+                Alerted = true;
+
+                // Set the enemy's destination to the player's position
+                navMeshAgent.SetDestination(target.position);
+                animator.SetBool("Attack", false);
+                navMeshAgent.speed = runningSpeed;
+                animator.SetFloat("locomotion", 2f);
+                PlaySound(SoundType.Run);
+
+                // If the player is within the attack range
+                if (distanceToTarget <= attackRange)
+                {
+                    if (!Attacking)
+                    {
+                        Attacking = true;
+                        StartCoroutine(Attack());
+                    }
+                    else { Debug.Log("Serving justice"); }
+                }
+                else if (distanceToTarget > attackRange)
+                {
+                    animator.SetBool("Attack", false);
+                    navMeshAgent.speed = runningSpeed;
+                    animator.SetFloat("locomotion", 2f);
+                    PlaySound(SoundType.Run);
+                }
+            }
+            else if (distanceToTarget > loseSightRange)
+            {
+                Alerted = false;
+                navMeshAgent.speed = moveSpeed;
+            }
+            else
+            {
+                Debug.Log("waiting to delilver attack");
+            }
+
+
         }
     }
 
@@ -184,32 +196,63 @@ public class NewEnemyAI : MonoBehaviour
 
         }
     }
-    private void Attack()
+
+    private IEnumerator Attack()
     {
-        // If the attack timer has reached the attack rate
-        if (attackTimer >= attackRate)
+        attackRate += Time.deltaTime;
+
+        if (attackTimer <= attackRate)
         {
-            // Apply damage to the player
-            // target.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
             animator.SetFloat("locomotion", 0f);
             animator.SetBool("Attack", true);
             PlaySound(SoundType.MeeleAttack);
-            // Reset the attack timer
-            attackTimer = 0f;
         }
-        // If the attack timer has not yet reached the attack rate
         else
-        {
-            // Increment the attack timer
-            attackTimer += Time.deltaTime;
-        }
+            yield return new WaitForSeconds(attackRate);
+
+        Attacking = false;
+
     }
+    // if (attackTimer >= attackRate)
+    // {
+    // Apply damage to the player
+    // target.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
+    // animator.SetFloat("locomotion", 0f);
+    // animator.SetBool("Attack", true);
+    // PlaySound(SoundType.MeeleAttack);
+    // Reset the attack timer
+    // }
+    // else
+    // {
+    // Increment the attack timer
+    // attackTimer += Time.deltaTime;
+    // }
+    // private void Attack()
+    // {
+    //     // If the attack timer has reached the attack rate
+    //     if (attackTimer >= attackRate)
+    //     {
+    //         Attacking = true;
+    //         // Apply damage to the player
+    //         // target.GetComponent<PlayerHealth>().TakeDamage(attackDamage);
+    //         animator.SetFloat("locomotion", 0f);
+    //         animator.SetBool("Attack", true);
+    //         PlaySound(SoundType.MeeleAttack);
+    //         // Reset the attack timer
+    //         attackTimer = 0f;
+    //     }
+    //     else
+    //     {
+    //         // Increment the attack timer
+    //         attackTimer += Time.deltaTime;
+    //         Attacking = false;
+    //     }
+    // }
 
     public void CheckNoise(Vector3 noiseSourcePosition)
     {
         if (Alive)
         {
-            Debug.Log("Ide sobie sprawdzic " + gameObject.name);
             animator.SetFloat("locomotion", 1f);
             navMeshAgent.SetDestination(noiseSourcePosition);
             checkingNoise = true;
@@ -235,7 +278,6 @@ public class NewEnemyAI : MonoBehaviour
         checkingNoise = false;
     }
 
-    // public Vector3 bloodOffset;
     public Quaternion bloodRotation;
     public void Die()
     {

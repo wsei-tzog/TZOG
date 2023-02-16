@@ -40,8 +40,6 @@ public class Interactable : MonoBehaviour
 
     [Header("Destroy settings")]
     #region 
-
-
     public bool isItDestrucable;
     public GameObject notDestroyed;
     public List<GameObject> destroyed = new List<GameObject>();
@@ -119,6 +117,8 @@ public class Interactable : MonoBehaviour
         ammoManager = FindObjectOfType<AmmoManager>();
         mouseLook = FindObjectOfType<MouseLook>();
         audioSource = GetComponent<AudioSource>();
+        questController = FindObjectOfType<QuestController>();
+
 
         if (audioSource == null)
         {

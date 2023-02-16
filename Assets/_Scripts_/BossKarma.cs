@@ -44,8 +44,8 @@ public class BossKarma : MonoBehaviour
         float enemyKilled = NewEnemyAI.enemyKilled;
         float karmaFactor = (enemyKilled / 10);
 
-        NewEnemyAI.moveSpeed += karmaFactor;
-        NewEnemyAI.runningSpeed += karmaFactor;
+        // NewEnemyAI.moveSpeed += karmaFactor;
+        // NewEnemyAI.runningSpeed += karmaFactor;
         NewEnemyAI.attackDamage += karmaFactor;
 
     }

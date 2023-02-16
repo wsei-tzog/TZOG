@@ -1,26 +1,26 @@
 fileFormatVersion: 2
-guid: 65d069a3739c3c64cbb19bff18f76d70
+guid: 8c622dd2679d51f4eb1638beca6597d1
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
-      74: -203655887218126122
-    second: mixamo.com
+      74: 3618420698690315038
+    second: Armature|Armature.001|mixamo.com|Layer0.003
   - first:
-      74: 4120841582849099076
-    second: NPC02_T-pose|Armature.001|mixamo.com|Layer0.003
+      74: 6842826258572903525
+    second: Armature|Armature.002|mixamo.com|Layer0.002
   - first:
-      74: -4498010971760957091
-    second: NPC02_T-pose|Armature.002|mixamo.com|Layer0.002
+      74: -3874622737766231957
+    second: Armature|Armature|mixamo.com|Layer0.004
   - first:
-      74: -2335130849964233722
-    second: NPC02_T-pose|Armature|mixamo.com|Layer0.004
+      74: -8087900805205052197
+    second: Armature|Armature|mixamo.com|Layer0.009
   - first:
-      74: -3986750705297689801
-    second: NPC02_T-pose|Armature|mixamo.com|Layer0.009
+      74: -4231929178395640962
+    second: Armature|Armature|mixamo.com|Layer0.010
   - first:
-      74: -2964234178689945340
-    second: NPC02_T-pose|Armature|mixamo.com|Layer0.010
+      74: 8638809952182699435
+    second: Armature|Armature|mixamo.com|Layer0.011
   externalObjects: {}
   materials:
     materialImportMode: 2

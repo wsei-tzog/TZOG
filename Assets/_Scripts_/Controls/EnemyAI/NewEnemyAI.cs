@@ -6,10 +6,21 @@ using UnityEngine.AI;
 public class NewEnemyAI : MonoBehaviour
 {
 
-    [Header("Sound")]
-    private AudioSource audioSource;
-    public SoundManager soundManager;
+    [Header("Karma")]
+    public BossKarma bossKarma;
+    public static float moveSpeed = 3f;
+    [SerializeField]
+    public static float runningSpeed = 5f;
+    [SerializeField]
+    public static float attackDamage = 10;
+    [SerializeField]
+    public static int enemyKilled = 0;
 
+    [Header("Sound")]
+    #region setup
+    public AudioSource audioSource;
+    public SoundManager soundManager;
+    public List<GameObject> enemyBlood = new List<GameObject>();
     private float waitTimer = 3f;
     public bool checkingNoise;
     // The target transform (i.e. the player)
@@ -21,54 +32,36 @@ public class NewEnemyAI : MonoBehaviour
     // The range at which the enemy will stop chasing the player
     public float loseSightRange = 15f;
 
-    // The speed at which the enemy moves towards the player
-    public float moveSpeed = 3f;
-    public float runningSpeed = 5f;
-
-    // The distance at which the enemy will attack the player
     public float attackRange = 1.5f;
-
-    // The amount of damage the enemy does when it attacks
-    public int attackDamage = 10;
-
-    // The rate at which the enemy can attack
-    public float attackRate = 1f;
-
-    // The enemy's field of view angle (in degrees)
-    public float fieldOfViewAngle = 200f;
-
-    // A list of transforms representing the enemy's patrol points
-    public List<Transform> patrolPoints;
-
-    // A reference to the enemy's Animator component
-    private Animator animator;
-
-    // A reference to the enemy's NavMeshAgent component
-    private NavMeshAgent navMeshAgent;
-
-    // A timer for keeping track of the enemy's attack rate
     private float attackTimer;
-
-    // The current patrol point index
+    public float attackRate = 1f;
+    public float fieldOfViewAngle = 200f;
+    public List<Transform> patrolPoints;
     private int currentPatrolPointIndex = 0;
+    private Animator animator;
+    private NavMeshAgent navMeshAgent;
 
     public bool Alive;
     public bool Alerted;
     public int Health;
-
+    #endregion
     private void Awake()
     {
+        gameObject.tag = "Enemy";
         soundManager = FindObjectOfType<SoundManager>();
+        bossKarma = FindObjectOfType<BossKarma>();
 
-        TryGetComponent<AudioSource>(out AudioSource audioSource);
+        // Try to get the existing AudioSource component
+        audioSource = GetComponent<AudioSource>();
 
         if (audioSource == null)
         {
+            // If an AudioSource component does not exist, add one and assign it to the variable
             audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.playOnAwake = false;
-            audioSource.spatialBlend = 1;
         }
+        // Set the playOnAwake property to false
         audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 1;
     }
 
     private void Start()
@@ -122,7 +115,7 @@ public class NewEnemyAI : MonoBehaviour
 
             if (!Alerted)
             {
-                if (checkingNoise && Alive)
+                if (checkingNoise)
                 {
                     if (navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance && Alive)
                     {
@@ -216,6 +209,7 @@ public class NewEnemyAI : MonoBehaviour
     {
         if (Alive)
         {
+            Debug.Log("Ide sobie sprawdzic " + gameObject.name);
             animator.SetFloat("locomotion", 1f);
             navMeshAgent.SetDestination(noiseSourcePosition);
             checkingNoise = true;
@@ -241,6 +235,8 @@ public class NewEnemyAI : MonoBehaviour
         checkingNoise = false;
     }
 
+    // public Vector3 bloodOffset;
+    public Quaternion bloodRotation;
     public void Die()
     {
         if (Alive)
@@ -249,10 +245,19 @@ public class NewEnemyAI : MonoBehaviour
             animator.SetBool("Die", true);
             navMeshAgent.SetDestination(this.transform.position);
             navMeshAgent.isStopped = true;
-
-            // GetComponent<NavMeshAgent>().enabled = false;
-            // GetComponent<NewEnemyAI>().enabled = false;
+            bloodRotation.x = 0;
+            bloodRotation.y = 90;
+            bloodRotation.z = 0;
+            int enemyBloodType = Random.Range(0, enemyBlood.Count);
+            Instantiate(enemyBlood[enemyBloodType], transform.position, bloodRotation);
+            enemyKilled++;
             PlaySound(SoundType.Die);
+            bossKarma.useEnemyKarma();
+
+            GetComponent<Collider>().enabled = false;
+            GetComponentInChildren<Collider>().enabled = false;
+            GetComponent<NavMeshAgent>().enabled = false;
+            GetComponent<NewEnemyAI>().enabled = false;
         }
     }
 
@@ -268,22 +273,6 @@ public class NewEnemyAI : MonoBehaviour
 
     private void PlaySound(SoundType soundType)
     {
-        List<AudioClip> soundList = soundManager.GetSoundList(soundType);
-
-        if (soundList != null)
-        {
-            AudioClip clip = soundList[Random.Range(0, soundList.Count)];
-            audioSource.clip = clip;
-
-            audioSource.pitch = Random.Range(0.85f, 1.3f);
-            audioSource.volume = Random.Range(0.8f, 1);
-            audioSource.PlayOneShot(clip);
-
-        }
-        else
-        {
-            Debug.LogError("Sound type not found: " + soundType);
-        }
-
+        soundManager.PlaySound(audioSource, soundType);
     }
 }

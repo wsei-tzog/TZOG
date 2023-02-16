@@ -9,7 +9,7 @@ public class Interactable : MonoBehaviour
 
     [Header("Sound")]
     #region 
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     public SoundManager soundManager;
     public SoundType soundType;
     #endregion
@@ -23,7 +23,7 @@ public class Interactable : MonoBehaviour
     public Transform objectHolder;
     public float dropForwardForce, dropUpwardForce;
     private Vector3 scale;
-    public LayerMask groundMask;
+    // public LayerMask groundMask;
     #endregion
 
 
@@ -104,21 +104,27 @@ public class Interactable : MonoBehaviour
     public bool isItBattery;
     #endregion
 
+    [Header("Medical pack settings")]
+    #region 
+    public bool isItMedicalPack;
+    public int amoutOfPack;
+
+    #endregion
+
 
 
     private void Awake()
     {
         soundManager = FindObjectOfType<SoundManager>();
         ammoManager = FindObjectOfType<AmmoManager>();
-        // gameObject.tag = "Interactable";
-
-        TryGetComponent<AudioSource>(out AudioSource audioSource);
+        mouseLook = FindObjectOfType<MouseLook>();
+        audioSource = GetComponent<AudioSource>();
 
         if (audioSource == null)
         {
             audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.playOnAwake = false;
         }
+        // Set the playOnAwake property to false
         audioSource.playOnAwake = false;
     }
 
@@ -215,16 +221,18 @@ public class Interactable : MonoBehaviour
             case bool x when isItBattery && x:
                 RechargeTorch();
                 break;
+            case bool x when isItMedicalPack && x:
+                CollectMedicalpack();
+                break;
         }
     }
-
 
     private void GrabObjects()
     {
 
         // rg and coll
         Destroy(this.GetComponent<Rigidbody>());
-        // this.GetComponent<Collider>().enabled = false;
+        this.GetComponent<Collider>().enabled = false;
 
         // init
         scale = this.transform.localScale;
@@ -234,7 +242,11 @@ public class Interactable : MonoBehaviour
         mouseLook.objectSlotFull = true;
 
         mouseLook.grabbedObject = this.gameObject;
-        mouseLook.gun.SetActive(false);
+        if (mouseLook.gun != null)
+        {
+            mouseLook.gun.SetActive(false);
+
+        }
 
 
         // scale and rotation
@@ -245,7 +257,12 @@ public class Interactable : MonoBehaviour
     }
     public void Throw()
     {
-        mouseLook.gun.SetActive(true);
+        if (mouseLook.gun != null)
+        {
+            mouseLook.gun.SetActive(true);
+
+        }
+
         mouseLook.objectSlotFull = false;
         mouseLook.grabbedObject = null;
         // Vector3 scale = transform.localScale;
@@ -264,21 +281,31 @@ public class Interactable : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);
 
         if (isItDestrucable)
         {
             destroyObject(1);
         }
 
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);
 
         foreach (Collider enemy in enemiesInRange)
         {
-            if (enemy.CompareTag("Enemy"))
+            if (enemy != null && enemy.CompareTag("Enemy"))
             {
-                enemy.GetComponent<NewEnemyAI>().CheckNoise(this.transform.position);
+                Debug.Log("In range is: " + enemy);
+                NewEnemyAI enemyAI = enemy.GetComponent<NewEnemyAI>();
+                if (enemyAI != null)
+                {
+                    enemyAI.CheckNoise(this.transform.position);
+                }
             }
         }
+    }
+    private void CollectMedicalpack()
+    {
+        NPCScript.medicalPackCount += amoutOfPack;
+        Destroy(gameObject);
     }
     private void CollectKey()
     {
@@ -379,7 +406,7 @@ public class Interactable : MonoBehaviour
     private IEnumerator RotateOverTime(Transform transformToRotate, Quaternion targetRotation, float duration, BoxCollider boxCollider)
     {
         // this.GetComponent<Collider>().enabled = false;
-        // PlaySound();
+        PlaySound();
 
         var startRotation = transformToRotate.localRotation;
 
@@ -429,6 +456,8 @@ public class Interactable : MonoBehaviour
     {
         if (notDestroyed != null)
         {
+            PlaySound();
+
             Transform notDestroyedTransform = notDestroyed.transform;
             notDestroyed.SetActive(false);
             this.transform.gameObject.GetComponent<Collider>().enabled = false;
@@ -482,21 +511,24 @@ public class Interactable : MonoBehaviour
     // Sound
     private void PlaySound()
     {
-        List<AudioClip> soundList = soundManager.GetSoundList(soundType);
+        soundManager.PlaySound(audioSource, soundType);
+        // audioSource.enabled = true;
 
-        if (soundList != null)
-        {
-            AudioClip clip = soundList[Random.Range(0, soundList.Count)];
-            audioSource.clip = clip;
+        // List<AudioClip> soundList = soundManager.GetSoundList(soundType);
 
-            audioSource.pitch = Random.Range(0.85f, 1.3f);
-            audioSource.volume = Random.Range(0.8f, 1);
-            audioSource.PlayOneShot(clip);
-        }
-        else
-        {
-            Debug.LogError("Sound type not found: " + soundType);
-        }
+        // if (soundList != null)
+        // {
+        //     AudioClip clip = soundList[Random.Range(0, soundList.Count)];
+        //     audioSource.clip = clip;
+
+        //     audioSource.pitch = Random.Range(0.85f, 1.3f);
+        //     audioSource.volume = Random.Range(0.8f, 1);
+        //     audioSource.PlayOneShot(clip);
+        // }
+        // else
+        // {
+        //     Debug.LogError("Sound type not found: " + soundType);
+        // }
 
     }
 

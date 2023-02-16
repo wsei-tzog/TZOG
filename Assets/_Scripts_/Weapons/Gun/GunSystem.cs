@@ -168,7 +168,6 @@ public class GunSystem : MonoBehaviour
                         {
                             if (rayHit.collider.gameObject.TryGetComponent<NewEnemyAI>(out NewEnemyAI newEnemyAI))
                             {
-                                Debug.Log("givin damage to " + rayHit.collider.gameObject.name);
                                 newEnemyAI.TakeDamage(damage);
 
                                 // Vector3 forceDirection = rayHit.collider.transform.position - transform.position;

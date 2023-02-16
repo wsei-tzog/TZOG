@@ -97,6 +97,9 @@ public class ClueImageManager : MonoBehaviour
     public float npcMin = 0.2f;
     public float npcpMax = 1.0f;
     public float enemyOffsetY = 0.5f;
+    public float npcOffsetY = 0.5f;
+    public float npcOffsetX = 0.5f;
+    public float npcOffsetZ = 0.5f;
     private void Update()
     {
         // Dictionary<Collider, GameObject> imageMapCopy = imageMap;
@@ -136,8 +139,21 @@ public class ClueImageManager : MonoBehaviour
                 displayImage.tag = "enemytag";
                 imageMap[other] = displayImage;
             }
+            else if (entry.Value.CompareTag("NPCsisterTag"))
+            {
+
+                Bounds bounds = other.gameObject.GetComponent<Renderer>().bounds;
+                Vector3 imagePosition = new Vector3(bounds.center.x, bounds.max.y, bounds.center.z);
+                Vector3 imageOffset = new Vector3(npcOffsetX, npcOffsetY, npcOffsetZ);
+                imagePosition += offset * (Camera.main.transform.position - imagePosition).normalized;
+                displayImage.transform.position = imagePosition + imageOffset;
+                displayImage.transform.LookAt(Camera.main.transform.position);
+                displayImage.tag = "NPCsisterTag";
+                imageMap[other] = displayImage;
+            }
             else
             {
+                Debug.Log("Displaying " + entry.Value);
                 Bounds bounds = other.gameObject.GetComponent<Renderer>().bounds;
                 Vector3 imagePosition = bounds.center;
                 imagePosition += offset * (Camera.main.transform.position - imagePosition).normalized;

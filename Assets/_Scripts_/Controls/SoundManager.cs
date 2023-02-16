@@ -35,6 +35,28 @@ public class SoundManager : MonoBehaviour
             return null;
         }
     }
+
+    public void PlaySound(AudioSource audioSource, SoundType soundType)
+    {
+        audioSource.enabled = true;
+
+        List<AudioClip> soundList = GetSoundList(soundType);
+
+        if (soundList != null)
+        {
+            AudioClip clip = soundList[Random.Range(0, soundList.Count)];
+            audioSource.clip = clip;
+
+            audioSource.pitch = Random.Range(0.85f, 1.3f);
+            audioSource.volume = Random.Range(0.8f, 1);
+            audioSource.PlayOneShot(clip);
+        }
+        else
+        {
+            Debug.LogError("Sound type not found: " + soundType);
+        }
+
+    }
 }
 
 public enum SoundType

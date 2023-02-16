@@ -112,9 +112,10 @@ GameObject:
   - component: {fileID: 4264007927103806679}
   - component: {fileID: 4264007927103806672}
   - component: {fileID: 4264007927103806673}
+  - component: {fileID: 7870826610114094056}
   m_Layer: 0
   m_Name: MedStation
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -261,3 +262,47 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.18078464, y: 0.02948767, z: 0.44700623}
   m_Center: {x: -0.13960764, y: 0.2906985, z: 0.00032806396}
+--- !u!114 &7870826610114094056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4264007927103806674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3104e4e4ebb30c34aa0dda581e5fb51b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
+  soundManager: {fileID: 0}
+  soundType: 0
+  mouseLook: {fileID: 0}
+  canItBePickedUp: 0
+  range: 0
+  objectHolder: {fileID: 0}
+  dropForwardForce: 0
+  dropUpwardForce: 0
+  ammoManager: {fileID: 0}
+  isItAmmo: 0
+  ammoType: 0
+  amountOfAmmo: 0
+  isItDestrucable: 0
+  notDestroyed: {fileID: 0}
+  destroyed: []
+  cargo: []
+  healt: 0
+  isItDoor: 0
+  lockID: 0
+  doorList: []
+  isItKey: 0
+  questController: {fileID: 0}
+  isItLever: 0
+  LeverList: []
+  LightList: []
+  LightOffList: []
+  rechargeAmount: 20
+  torch: {fileID: 0}
+  isItBattery: 0
+  isItMedicalPack: 1
+  amoutOfPack: 2

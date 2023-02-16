@@ -9,10 +9,6 @@ public class BossKarma : MonoBehaviour
     public GameObject gameObject2;
     public GameObject mainBoss;
 
-    public int bossBaseHealth = 100;
-    public int bossBaseDamage = 10;
-
-
 
     public void useNPCKarma()
     {
@@ -38,15 +34,17 @@ public class BossKarma : MonoBehaviour
 
     public void useEnemyKarma()
     {
-        float baseMoveSpeed = NewEnemyAI.moveSpeed;
-        float baseRunningSpeed = NewEnemyAI.runningSpeed;
-        float baseAttackDamage = NewEnemyAI.attackDamage;
         float enemyKilled = NewEnemyAI.enemyKilled;
+        float FieldOfView = NewEnemyAI.enemyKilled;
         float karmaFactor = (enemyKilled / 10);
 
-        // NewEnemyAI.moveSpeed += karmaFactor;
-        // NewEnemyAI.runningSpeed += karmaFactor;
+        float baseAttackDamage = NewEnemyAI.attackDamage;
+        // float playerSpeed = Movement.speed;
+
         NewEnemyAI.attackDamage += karmaFactor;
+        // NewEnemyAI.FieldOfView += karmaFactor;
+
+        // Movement.speed += karmaFactor;
 
     }
 }

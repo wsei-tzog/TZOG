@@ -143,13 +143,14 @@ public class GunSystem : MonoBehaviour
     {
         if (Time.time > nextFireTime)
         {
-            Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
-
-
             bulletsActuallyFired = Mathf.Min(bulletsPerTap, bulletsLeftInMagazine);
             bulletsShot = bulletsActuallyFired;
             bulletsLeftInMagazine -= bulletsActuallyFired;
 
+            for (int i = 0; i < bulletsActuallyFired; i++)
+            {
+                Instantiate(muzzleFlash, attackPoint.position, attackPoint.rotation);
+            }
 
             for (int i = 0; i < bulletsActuallyFired; i++)
             {
@@ -170,10 +171,6 @@ public class GunSystem : MonoBehaviour
                             {
                                 newEnemyAI.TakeDamage(damage);
 
-                                // Vector3 forceDirection = rayHit.collider.transform.position - transform.position;
-                                // rayHit.collider.transform.position += direction.normalized * pushForce * Time.deltaTime;
-                                // if (null != enemyHole)
-                                //     Destroy((Instantiate(enemyHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal), rayHit.transform)), 4);
                             }
                         }
                         else if (rayHit.collider.CompareTag("Interactable"))
@@ -191,9 +188,8 @@ public class GunSystem : MonoBehaviour
                         {
                             Destroy((Instantiate(bulletHole, rayHit.point + (rayHit.normal * 0.0005f), Quaternion.FromToRotation(Vector3.up, rayHit.normal))), 4);
                         }
+
                     }
-
-
 
                 }
 

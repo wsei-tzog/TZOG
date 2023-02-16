@@ -32,7 +32,7 @@ Transform:
   m_LocalPosition: {x: -147.19724, y: 14.542441, z: 53.007748}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3388805822876782616}
+  - {fileID: 2958353377275143995}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -124,6 +124,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.8679504, y: 0.71932244, z: 0.7876754}
   m_Center: {x: 0.010726929, y: 0.35966098, z: -0.76757884}
+--- !u!1 &2716252238320828346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2958353377275143995}
+  m_Layer: 0
+  m_Name: TrunkRotationHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2958353377275143995
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2716252238320828346}
+  m_LocalRotation: {x: -0.86493254, y: 0, z: 0, w: 0.5018882}
+  m_LocalPosition: {x: 0, y: 1.7879419, z: -0.7256135}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 3388805822876782616}
+  m_Father: {fileID: 8471839083846208589}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: -119.75, y: 0, z: 0}
 --- !u!1 &6848941366793615201
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,11 +180,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6848941366793615201}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.7879419, z: -0.7256088}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 8471839083846208589}
+  m_Father: {fileID: 2958353377275143995}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7682119996467114563

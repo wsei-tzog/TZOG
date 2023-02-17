@@ -16,6 +16,9 @@ TagManager:
   - enemytag
   - NPCside
   - NPCsisterTag
+  - NPCsideTag
+  - wife
+  - boss
   layers:
   - Default
   - TransparentFX

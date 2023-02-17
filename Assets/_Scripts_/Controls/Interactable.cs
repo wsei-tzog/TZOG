@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Interactable : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class Interactable : MonoBehaviour
 
     [Header("Door settings")]
     #region 
+    public YouDontHaveKey youDontHaveKey;
     public bool isItDoor;
     bool doorOpened;
     public int lockID;
@@ -113,6 +115,8 @@ public class Interactable : MonoBehaviour
 
     private void Awake()
     {
+        youDontHaveKey = FindObjectOfType<YouDontHaveKey>();
+
         soundManager = FindObjectOfType<SoundManager>();
         ammoManager = FindObjectOfType<AmmoManager>();
         mouseLook = FindObjectOfType<MouseLook>();
@@ -280,20 +284,26 @@ public class Interactable : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);
+        if (CompareTag("Enemy"))
+        {
+            NewEnemyAI newEnemyAI = collision.collider.gameObject.GetComponent<NewEnemyAI>();
+            if (newEnemyAI != null)
+            {
+                newEnemyAI.TakeDamage(1);
+            }
+        }
 
         if (isItDestrucable)
         {
             destroyObject(1);
         }
 
+        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, range);
 
         foreach (Collider enemy in enemiesInRange)
         {
             if (enemy != null && enemy.CompareTag("Enemy"))
             {
-                Debug.Log("In range is: " + enemy);
                 NewEnemyAI enemyAI = enemy.GetComponent<NewEnemyAI>();
                 if (enemyAI != null)
                 {
@@ -351,7 +361,8 @@ public class Interactable : MonoBehaviour
                 audioSource.clip = clip;
                 audioSource.PlayOneShot(clip);
             }
-            Debug.Log("No such key!");
+            Debug.Log("Calling cor");
+            youDontHaveKey.StartCoroutine("YouDontHaveKeyDisplay");
         }
     }
     private void CollectAmmo()
@@ -469,6 +480,7 @@ public class Interactable : MonoBehaviour
                 // destroyedThing.transform.position = notDestroyedTransform.position;
                 destroyedThing.SetActive(true);
                 destroyedThing.AddComponent<Rigidbody>();
+                destroyedThing.AddComponent<DestroyCargo>();
                 Rigidbody drb = destroyedThing.GetComponent<Rigidbody>();
                 drb.AddForce(Vector3.up * 0.2f, ForceMode.Impulse);
                 destroyedThing.transform.gameObject.GetComponent<Renderer>().material.SetFloat("startClue", 1f);

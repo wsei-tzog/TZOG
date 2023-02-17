@@ -8,9 +8,9 @@ public class NewEnemyAI : MonoBehaviour
 
     [Header("Karma")]
     public BossKarma bossKarma;
-    public static float moveSpeed = 3f;
+    public static float moveSpeed = 4f;
     [SerializeField]
-    public static float runningSpeed = 5f;
+    public static float runningSpeed = 6f;
     [SerializeField]
     public static float attackDamage = 10;
     [SerializeField]
@@ -76,6 +76,7 @@ public class NewEnemyAI : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("mvs " + moveSpeed);
         attackTimer = Time.deltaTime;
 
         if (Alive)

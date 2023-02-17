@@ -17,6 +17,14 @@ public class EscController : MonoBehaviour
             s.enabled = true;
         }
     }
+    private void Start()
+    {
+        inGameMenu.SetActive(false);
+        foreach (var s in Scripts)
+        {
+            s.enabled = true;
+        }
+    }
 
     // public void OnTabPressed()
     // {

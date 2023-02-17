@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3104e4e4ebb30c34aa0dda581e5fb51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioSource: {fileID: 0}
   soundManager: {fileID: 0}
   soundType: 0
   mouseLook: {fileID: 0}
@@ -103,12 +104,9 @@ MonoBehaviour:
   objectHolder: {fileID: 0}
   dropForwardForce: 0
   dropUpwardForce: 0
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 0
   ammoManager: {fileID: 0}
   isItAmmo: 1
-  ammoType: 1
+  ammoType: 2
   amountOfAmmo: 10
   isItDestrucable: 0
   notDestroyed: {fileID: 0}
@@ -127,6 +125,8 @@ MonoBehaviour:
   rechargeAmount: 20
   torch: {fileID: 0}
   isItBattery: 0
+  isItMedicalPack: 0
+  amoutOfPack: 0
 --- !u!65 &4779203591312324017
 BoxCollider:
   m_ObjectHideFlags: 0

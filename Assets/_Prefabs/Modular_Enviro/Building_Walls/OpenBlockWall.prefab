@@ -108,7 +108,6 @@ GameObject:
   - component: {fileID: 5885731651681461171}
   - component: {fileID: 3261921705851402692}
   - component: {fileID: 1340735731939606135}
-  - component: {fileID: 7477787052066954257}
   m_Layer: 0
   m_Name: OpenBlockWall
   m_TagString: Untagged
@@ -207,19 +206,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.0744569, y: 3.3397586, z: 0.18344438}
   m_Center: {x: -0.000008106232, y: 1.6698817, z: -0.90826803}
---- !u!65 &7477787052066954257
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5381429579989680742}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0744569, y: 0.78006554, z: 1.6559558}
-  m_Center: {x: -0.000008106232, y: 2.9497285, z: 0.000010043383}
 --- !u!1 &9132175453141419310
 GameObject:
   m_ObjectHideFlags: 0

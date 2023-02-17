@@ -14,7 +14,6 @@ public class NPCScript : MonoBehaviour
 
     public bool hasDeliveredMedicalPacks = false;
     public bool alradyDelivered = false;
-    public bool sister;
     public QuestController questController;
     public BossKarma bossKarma;
 

@@ -16,10 +16,10 @@ public class AmmoManager : MonoBehaviour
 
     void Start()
     {
-        ammoCounts[AmmoType.Pistol] = 200;
-        ammoCounts[AmmoType.SMG] = 200;
-        ammoCounts[AmmoType.Shotgun] = 12;
-        ammoCounts[AmmoType.Rifle] = 20;
+        ammoCounts[AmmoType.Pistol] = 20;
+        ammoCounts[AmmoType.SMG] = 40;
+        ammoCounts[AmmoType.Shotgun] = 20;
+        ammoCounts[AmmoType.Rifle] = 30;
     }
 
     public int GetAmmoCount(AmmoType type)

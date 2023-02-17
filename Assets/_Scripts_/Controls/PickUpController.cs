@@ -159,8 +159,6 @@ public class PickUpController : MonoBehaviour
         // AddForce
         rb.AddForce(mouseLook.playerCamera.forward * dropForwardForce, ForceMode.Impulse);
         rb.AddForce(mouseLook.playerCamera.up * dropUpwardForce, ForceMode.Impulse);
-        // Add random rotation
-        float random = Random.Range(-1f, 1f);
     }
     #endregion
 

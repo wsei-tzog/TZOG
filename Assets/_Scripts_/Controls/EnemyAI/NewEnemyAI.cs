@@ -12,7 +12,9 @@ public class NewEnemyAI : MonoBehaviour
     [SerializeField]
     public static float runningSpeed = 6f;
     [SerializeField]
-    public static float attackDamage = 10;
+    public static float attackDamage = 5;
+    [SerializeField]
+    public static float Health = 10;
     [SerializeField]
     public static int enemyKilled = 0;
 
@@ -40,10 +42,10 @@ public class NewEnemyAI : MonoBehaviour
     private int currentPatrolPointIndex = 0;
     private Animator animator;
     private NavMeshAgent navMeshAgent;
+    private Movement movement;
 
     public bool Alive;
     public bool Alerted;
-    public int Health;
     public bool Attacking;
     float distanceToTarget;
     #endregion
@@ -52,6 +54,7 @@ public class NewEnemyAI : MonoBehaviour
         gameObject.tag = "Enemy";
         soundManager = FindObjectOfType<SoundManager>();
         bossKarma = FindObjectOfType<BossKarma>();
+        movement = FindObjectOfType<Movement>();
 
         // Try to get the existing AudioSource component
         audioSource = GetComponent<AudioSource>();
@@ -78,11 +81,10 @@ public class NewEnemyAI : MonoBehaviour
     private void Update()
     {
         timeSinceLastAttack += Time.deltaTime;
+        distanceToTarget = Vector3.Distance(transform.position, target.position);
 
         if (Alive)
         {
-            // Calculate distance to target
-            distanceToTarget = Vector3.Distance(transform.position, target.position);
 
             if (!Alerted)
             {
@@ -119,37 +121,44 @@ public class NewEnemyAI : MonoBehaviour
             }
 
             // If the player is within the detection range and the enemy's field of view
-            if (distanceToTarget < detectionRange && IsInFieldOfView() && Alive)
+            if (distanceToTarget < detectionRange && IsInFieldOfView())
             {
                 Alerted = true;
 
-                // Set the enemy's destination to the player's position
-                navMeshAgent.SetDestination(target.position);
-                animator.SetBool("Attack", false);
-                navMeshAgent.speed = runningSpeed;
-                animator.SetFloat("locomotion", 2f);
-                PlaySound(SoundType.Run);
-
-                // If the player is within the attack range
-                if (distanceToTarget <= attackRange)
-                {
-                    StartCoroutine(Attack());
-                }
-                else
-                {
+                if (distanceToTarget >= attackRange)
+                {// Set the enemy's destination to the player's position
+                    navMeshAgent.SetDestination(target.position);
                     animator.SetBool("Attack", false);
                     navMeshAgent.speed = runningSpeed;
                     animator.SetFloat("locomotion", 2f);
                     PlaySound(SoundType.Run);
                 }
+                else if (distanceToTarget <= attackRange)
+                {
+                    animator.SetFloat("locomotion", 0f);
+                    StartCoroutine(Attack());
+                }
+                // else
+                // {
+                //     animator.SetBool("Attack", false);
+                //     navMeshAgent.speed = runningSpeed;
+                //     animator.SetFloat("locomotion", 2f);
+                //     PlaySound(SoundType.Run);
+                // }
             }
-            else if (distanceToTarget > loseSightRange)
+            else if (Alerted && distanceToTarget < detectionRange && !IsInFieldOfView())
+            {
+                animator.SetBool("Attack", false);
+                navMeshAgent.speed = runningSpeed;
+                animator.SetFloat("locomotion", 2f);
+                navMeshAgent.SetDestination(target.position);
+                PlaySound(SoundType.Run);
+            }
+            else if (distanceToTarget > detectionRange && !IsInFieldOfView())
             {
                 Alerted = false;
                 navMeshAgent.speed = moveSpeed;
             }
-
-
         }
     }
 
@@ -162,7 +171,7 @@ public class NewEnemyAI : MonoBehaviour
         if (Physics.Linecast(transform.position, target.position, out hit))
         {
             // Return false if the line of sight is blocked by an object
-            if (hit.collider.CompareTag("Player") && Alive)
+            if (hit.collider.CompareTag("Player"))
             {
                 // Return true if the angle is within the enemy's field of view
                 return angleToTarget < fieldOfViewAngle * 0.5f;
@@ -196,17 +205,21 @@ public class NewEnemyAI : MonoBehaviour
             yield break;
         }
 
-
         if (distanceToTarget < attackRange)
         {
-            animator.SetFloat("locomotion", 0f);
             animator.SetBool("Attack", true);
             PlaySound(SoundType.MeeleAttack);
             timeSinceLastAttack = 0.0f;
+            new WaitForSeconds(1);
+            if (distanceToTarget < attackRange)
+            {
+                movement.TakeDamage(attackDamage);
+            }
             yield break;
         }
         else
         {
+            animator.SetBool("Attack", false);
             yield return new WaitForSeconds(attackRate);
         }
 

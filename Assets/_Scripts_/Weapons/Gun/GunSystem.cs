@@ -52,14 +52,16 @@ public class GunSystem : MonoBehaviour
     {
         if (turnOffCanvas)
         {
-            text.gameObject.SetActive(false);
+            text.enabled = false;
 
         }
         else if (!turnOffCanvas)
         {
-            text.gameObject.SetActive(true);
+            text.enabled = true;
         }
     }
+
+
     public void ReceiveAimInput(bool _isAiming)
     {
         isAiming = _isAiming;
@@ -86,10 +88,10 @@ public class GunSystem : MonoBehaviour
         transform.localScale = scale;
 
         Vector3.Lerp(weaponPosition, defaultPosition.transform.position, aimAnimationSpeed * Time.deltaTime);
-
     }
     private void Awake()
     {
+        text = FindObjectOfType<TextMeshProUGUI>();
         audioSource.Stop();
         fpsCam = Camera.main;
         readyToShoot = true;
@@ -108,6 +110,13 @@ public class GunSystem : MonoBehaviour
             MouseLook.slotFull = true;
 
     }
+
+    public void OnDisable()
+    {
+        ammoManager.AddAmmo(type, bulletsLeftInMagazine);
+        bulletsLeftInMagazine = 0;
+    }
+
     private void OutAim()
     {
         spread = spreadHolder;

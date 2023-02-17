@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class MouseLook : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class MouseLook : MonoBehaviour
     public GameObject grabbedObject;
     public static WeaponSwing weaponSwing;
     public static PickUpController pickUpController;
+    public TextMeshProUGUI text;
 
     public bool objectSlotFull;
     public static bool slotFull;
@@ -32,6 +34,8 @@ public class MouseLook : MonoBehaviour
 
     private void Awake()
     {
+        text = FindObjectOfType<TextMeshProUGUI>();
+        text.enabled = false;
         objectSlotFull = false;
     }
     public void ReceiveAimingBool(bool _isAiming)

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Movement : MonoBehaviour
 {
     [Header("Move")]
@@ -45,15 +47,56 @@ public class Movement : MonoBehaviour
 
     #endregion
 
+    [Header("Life")]
+    #region Life
+    public float Health;
+    DamageScreenEffect damageScreen;
+    MouseLook mouseLook;
+    EscController escController;
+
+
+    private void Start()
+    {
+        damageScreen = FindObjectOfType<DamageScreenEffect>();
+        Camera.main.GetComponent<AudioListener>().enabled = true;
+    }
+
+    #endregion
+    public void TakeDamage(float damage)
+    {
+        float maxHealth = 100f;
+        float flashDurationHealth = maxHealth / Health;
+        float flashDurationHealthWithoutOne = flashDurationHealth - 1;
+
+        float flashDuration = Mathf.Clamp(flashDurationHealthWithoutOne, 0.1f, 4);
+        // damageScreen.flashDuration = flashDuration;
+        Health -= damage;
+
+        // float flashDuration = 0.25f + flashFactor;
+        Debug.Log("Flash durtation " + flashDuration);
+
+        StartCoroutine(damageScreen.Blooding(flashDuration, Health));
+
+        if (Health <= 0)
+        {
+            mouseLook.enabled = false;
+            damageScreen.StartCoroutine("Dead");
+
+        }
+    }
 
     void Awake()
     {
         animator = GetComponent<Animator>();
         speed = normalSpeed;
         OnSprintPressed(false);
+        mouseLook = FindObjectOfType<MouseLook>();
+        escController = FindObjectOfType<EscController>();
     }
     void Update()
     {
+        // Set the skybox's color based on the current amount of red
+
 
         #region horizontal move
         Vector3 horizontalVelocity = (transform.right * horizontalInput.x + transform.forward * horizontalInput.y) * speed * Time.deltaTime;

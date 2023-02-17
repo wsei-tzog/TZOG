@@ -279,9 +279,10 @@ public class Interactable : MonoBehaviour
         transform.gameObject.GetComponent<Collider>().isTrigger = false;
         transform.gameObject.GetComponent<Collider>().enabled = true;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        rb.AddForce(mouseLook.playerCamera.forward * dropForwardForce, ForceMode.Impulse);
-        rb.AddForce(mouseLook.playerCamera.up * dropUpwardForce, ForceMode.Impulse);
+        rb.AddForce(mouseLook.playerCamera.forward * 5, ForceMode.Impulse);
+        rb.AddForce(mouseLook.playerCamera.up * 3, ForceMode.Impulse);
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (CompareTag("Enemy"))
@@ -361,7 +362,6 @@ public class Interactable : MonoBehaviour
                 audioSource.clip = clip;
                 audioSource.PlayOneShot(clip);
             }
-            Debug.Log("Calling cor");
             youDontHaveKey.StartCoroutine("YouDontHaveKeyDisplay");
         }
     }

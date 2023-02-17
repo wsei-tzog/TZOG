@@ -39,10 +39,11 @@ public class BossKarma : MonoBehaviour
         float karmaFactor = (enemyKilled / 10);
 
         float baseAttackDamage = NewEnemyAI.attackDamage;
+        float baseHealth = NewEnemyAI.Health;
         // float playerSpeed = Movement.speed;
 
         NewEnemyAI.attackDamage += karmaFactor;
-        // NewEnemyAI.FieldOfView += karmaFactor;
+        NewEnemyAI.Health += karmaFactor;
 
         // Movement.speed += karmaFactor;
 

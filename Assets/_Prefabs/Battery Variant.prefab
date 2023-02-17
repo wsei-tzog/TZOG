@@ -43,6 +43,7 @@ MonoBehaviour:
   destroyed: []
   cargo: []
   healt: 0
+  youDontHaveKey: {fileID: 0}
   isItDoor: 0
   lockID: 0
   doorList: []
@@ -52,7 +53,7 @@ MonoBehaviour:
   LeverList: []
   LightList: []
   LightOffList: []
-  rechargeAmount: 200
+  rechargeAmount: 50
   torch: {fileID: 0}
   isItBattery: 1
   isItMedicalPack: 0

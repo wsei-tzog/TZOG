@@ -48,6 +48,8 @@ public class NewEnemyAI : MonoBehaviour
     public bool Alerted;
     public bool Attacking;
     float distanceToTarget;
+    public float thisDamageTaken;
+    // public float initialHealth;
     #endregion
     private void Awake()
     {
@@ -282,8 +284,13 @@ public class NewEnemyAI : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Health -= damage;
-        if (Health <= 0)
+        thisDamageTaken += damage;
+
+        float outCome = Health - thisDamageTaken;
+        Debug.Log("thisDamageTaken " + thisDamageTaken);
+        Debug.Log("outCome " + outCome);
+        Debug.Log("Health " + Health);
+        if (outCome <= 0)
         {
             Die();
         }

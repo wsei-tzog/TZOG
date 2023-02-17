@@ -44,6 +44,7 @@ public class BossKarma : MonoBehaviour
 
         NewEnemyAI.attackDamage += karmaFactor;
         NewEnemyAI.Health += karmaFactor;
+        // NewEnemyAI.AddHealtFromKarma((NewEnemyAI.Health  karmaFactor));
 
         // Movement.speed += karmaFactor;
 

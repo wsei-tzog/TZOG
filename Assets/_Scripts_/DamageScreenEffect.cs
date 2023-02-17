@@ -19,6 +19,7 @@ public class DamageScreenEffect : MonoBehaviour
 
         if (Health > 40)
         {
+            yield return new WaitForSeconds(flashDuration);
             damageImage.enabled = true;
             yield return new WaitForSeconds(flashDuration);
             damageImage.enabled = false;

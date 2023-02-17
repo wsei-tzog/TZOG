@@ -254,7 +254,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunSystem: {fileID: 7460417520599380889}
-  actuallMission: {fileID: 0}
   torch: {fileID: 0}
   lF: {fileID: 0}
   pQ2: {fileID: 0}
@@ -284,8 +283,7 @@ MonoBehaviour:
   damage: 2
   magazineSize: 10
   bulletsPerTap: 1
-  recoilForce: 0
-  fireRate: 0.7
+  fireRate: 0.5
   spread: 0.05
   aimSpread: 0.001
   spreadHolder: 0
@@ -293,7 +291,6 @@ MonoBehaviour:
   reloadTime: 2
   aimAnimationSpeed: 2
   pushForce: 0
-  shootWaveRange: 0
   turnOffCanvas: 0
   readyToShoot: 0
   fpsCam: {fileID: 0}
@@ -307,10 +304,5 @@ MonoBehaviour:
   defaultPosition: {fileID: 0}
   aimPosition: {fileID: 0}
   audioSource: {fileID: 7525849484247564748}
-  clip: {fileID: 0}
   text: {fileID: 0}
-  targetTransform: {fileID: 0}
-  recoilDuration: 0
-  recoilSpeed: 0
-  recoilBackSpeed: 0
   resettingWeapon: 0

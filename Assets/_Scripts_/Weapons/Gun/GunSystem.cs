@@ -16,12 +16,12 @@ public class GunSystem : MonoBehaviour
 
 
     [Header("Gun stats")]
-
+    public int bulletsLoaded;
     public int damage, magazineSize, bulletsPerTap;
     // , recoilForce;
     public float fireRate, spread, aimSpread, spreadHolder, range, reloadTime, aimAnimationSpeed, pushForce;
     // , shootWaveRange;
-    int bulletsLeftInMagazine, bulletsLoaded, bulletsShot;
+    int bulletsLeftInMagazine, bulletsShot;
     bool reloading, isLeftMouseHeld, isAiming;
     // , wasAiming;
     public bool turnOffCanvas, readyToShoot;
@@ -49,17 +49,17 @@ public class GunSystem : MonoBehaviour
     public bool resettingWeapon;
 
     public void UIBullets()
-    {
-        if (turnOffCanvas)
-        {
-            text.enabled = false;
+    { }
+    //     if (turnOffCanvas)
+    //     {
+    //         text.enabled = false;
 
-        }
-        else if (!turnOffCanvas)
-        {
-            text.enabled = true;
-        }
-    }
+    //     }
+    //     else if (!turnOffCanvas)
+    //     {
+    //         text.enabled = true;
+    //     }
+    // }
 
 
     public void ReceiveAimInput(bool _isAiming)
@@ -91,7 +91,6 @@ public class GunSystem : MonoBehaviour
     }
     private void Awake()
     {
-        text = FindObjectOfType<TextMeshProUGUI>();
         audioSource.Stop();
         fpsCam = Camera.main;
         readyToShoot = true;
@@ -103,9 +102,10 @@ public class GunSystem : MonoBehaviour
 
     private void Update()
     {
-        ammoLeft = ammoManager.GetAmmoCount(type);
 
-        text.SetText(bulletsLeftInMagazine + " / " + ammoLeft);
+        ammoLeft = ammoManager.GetAmmoCount(type);
+        int ammoFromManager = Mathf.Max(0, ammoLeft);
+        text.SetText(bulletsLeftInMagazine + " / " + ammoFromManager);
         if (weaponIsActive)
             MouseLook.slotFull = true;
 
@@ -113,9 +113,10 @@ public class GunSystem : MonoBehaviour
 
     private void OnEnable()
     {
+        text.enabled = true;
         int bulletsToLoad = ammoManager.GetAmmoCount(type);
 
-        if (bulletsLoaded >= bulletsToLoad)
+        if (bulletsLoaded <= bulletsToLoad)
         {
             bulletsLeftInMagazine = bulletsLoaded;
             ammoManager.UseAmmo(type, amountOfAmmoType);
@@ -124,6 +125,7 @@ public class GunSystem : MonoBehaviour
 
     private void OnDisable()
     {
+        text.enabled = false;
         bulletsLoaded = bulletsLeftInMagazine;
         ammoManager.AddAmmo(type, bulletsLeftInMagazine);
         bulletsLeftInMagazine = 0;

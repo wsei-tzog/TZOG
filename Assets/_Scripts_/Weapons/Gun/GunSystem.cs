@@ -77,7 +77,7 @@ public class GunSystem : MonoBehaviour
 
     private void Start()
     {
-
+        audioSource.Stop();
         amountOfAmmoType = ammoManager.GetAmmoCount(type);
         ReloadingFinished();
         Vector3 weaponPosition = transform.position;
@@ -90,6 +90,7 @@ public class GunSystem : MonoBehaviour
     }
     private void Awake()
     {
+        audioSource.Stop();
         fpsCam = Camera.main;
         readyToShoot = true;
         spreadHolder = spread;
@@ -264,8 +265,9 @@ public class GunSystem : MonoBehaviour
     {
         if (ammoLeft > 0 && bulletsLeftInMagazine < magazineSize && !reloading)
         {
-            audioSource.Play();
+            // audioSource.Play();
             reloading = true;
+            audioSource.PlayOneShot(audioSource.clip);
             Invoke("ReloadingFinished", reloadTime);
         }
 

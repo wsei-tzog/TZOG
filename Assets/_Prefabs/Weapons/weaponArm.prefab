@@ -280,7 +280,8 @@ MonoBehaviour:
   bulletsActuallyFired: 0
   ammoManager: {fileID: 0}
   amountOfAmmoType: 0
-  damage: 2
+  bulletsLoaded: 0
+  damage: 4
   magazineSize: 10
   bulletsPerTap: 1
   fireRate: 0.5

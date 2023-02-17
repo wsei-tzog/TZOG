@@ -141,7 +141,8 @@ MonoBehaviour:
   bulletsActuallyFired: 0
   ammoManager: {fileID: 0}
   amountOfAmmoType: 0
-  damage: 10
+  bulletsLoaded: 0
+  damage: 5
   magazineSize: 60
   bulletsPerTap: 1
   fireRate: 0.3
@@ -166,9 +167,6 @@ MonoBehaviour:
   aimPosition: {fileID: 0}
   audioSource: {fileID: 247502087}
   text: {fileID: 0}
-  recoilDuration: 0
-  recoilSpeed: 0
-  recoilBackSpeed: 0
   resettingWeapon: 0
 --- !u!65 &1167737539753138853
 BoxCollider:

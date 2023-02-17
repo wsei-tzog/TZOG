@@ -20,6 +20,7 @@ public class Torch : MonoBehaviour
     {
         // turnOn();
         Activate();
+        audioSource.Stop();
     }
     private void Start()
     {

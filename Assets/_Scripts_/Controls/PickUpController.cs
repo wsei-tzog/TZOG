@@ -84,11 +84,7 @@ public class PickUpController : MonoBehaviour
         }
         else if (rayHittedGameObject.name == "photoQ3")
         {
-            pQ3.showq3();
-        }
-        else
-        {
-            Debug.Log("Pickup controller, lane 89 pickupstuff else");
+            // pQ3.showq3();
         }
     }
 

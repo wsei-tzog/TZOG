@@ -21,7 +21,7 @@ public class GunSystem : MonoBehaviour
     // , recoilForce;
     public float fireRate, spread, aimSpread, spreadHolder, range, reloadTime, aimAnimationSpeed, pushForce;
     // , shootWaveRange;
-    int bulletsLeftInMagazine, bulletsShot;
+    int bulletsLeftInMagazine, bulletsLoaded, bulletsShot;
     bool reloading, isLeftMouseHeld, isAiming;
     // , wasAiming;
     public bool turnOffCanvas, readyToShoot;
@@ -111,8 +111,20 @@ public class GunSystem : MonoBehaviour
 
     }
 
-    public void OnDisable()
+    private void OnEnable()
     {
+        int bulletsToLoad = ammoManager.GetAmmoCount(type);
+
+        if (bulletsLoaded >= bulletsToLoad)
+        {
+            bulletsLeftInMagazine = bulletsLoaded;
+            ammoManager.UseAmmo(type, amountOfAmmoType);
+        }
+    }
+
+    private void OnDisable()
+    {
+        bulletsLoaded = bulletsLeftInMagazine;
         ammoManager.AddAmmo(type, bulletsLeftInMagazine);
         bulletsLeftInMagazine = 0;
     }

@@ -14,7 +14,6 @@ public class photoFound : MonoBehaviour
     private void Awake()
     {
         photoFounded = false;
-        enemies.SetActive(false);
         this.transform.gameObject.GetComponent<Renderer>().material.SetFloat("_startClue", 1f);
         presentMission = true;
 
@@ -36,7 +35,6 @@ public class photoFound : MonoBehaviour
         {
             photoUI.enabled = true;
             photoFounded = true;
-            turnOnEnemies();
             // add to letters
         }
         else
@@ -44,8 +42,4 @@ public class photoFound : MonoBehaviour
 
     }
 
-    public void turnOnEnemies()
-    {
-        enemies.SetActive(true);
-    }
 }

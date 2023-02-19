@@ -119,7 +119,12 @@ public class GunSystem : MonoBehaviour
         if (bulletsLoaded <= bulletsToLoad)
         {
             bulletsLeftInMagazine = bulletsLoaded;
-            ammoManager.UseAmmo(type, amountOfAmmoType);
+            ammoManager.UseAmmo(type, bulletsLeftInMagazine);
+        }
+        else
+        {
+            bulletsLeftInMagazine = bulletsToLoad;
+            ammoManager.UseAmmo(type, bulletsLeftInMagazine);
         }
     }
 
